@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50448839180401760}
   - component: {fileID: 61371556048006068}
   - component: {fileID: 114501615993660484}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,8 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5ada948b25a2914e9c5edc427bcb285, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brickGameObject: {fileID: 0}
-  mainCamera: {fileID: 0}
+  firedByPlayer: 0
 --- !u!212 &212357096804624578
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -14,6 +14,7 @@ public class Spawner : MonoBehaviour
 
     private int spawned = 0;
     private float enemyRespawnTime = 5f;
+    private float spawnAnimationDuration = 1.75f;
     private List<int> spawnLocationOrder;
     private Animator anim;
     private Vector3 enemyDisabledTankPosition = new Vector3(-60, 20, 0);
@@ -59,16 +60,13 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < enemyTanks.Count; i++)
         {
-            //int animLayer = 0;
             GameObject activeSpawnPoint = enemySpawnPoints[spawnLocationOrder[i]];
             Animator anim = activeSpawnPoint.GetComponent<Animator>();
 
-            activeSpawnPoint.SetActive(true);
             anim.SetBool("isSpawning", true);
-            yield return new WaitForSeconds(1.8f);
+            yield return new WaitForSeconds(spawnAnimationDuration);
+            anim.SetBool("isSpawning", false);
 
-            //anim.SetBool("isSpawning", false);
-            //activeSpawnPoint.SetActive(false);
             enemyTanks[i].transform.position = activeSpawnPoint.transform.position;
             enemyTanks[i].gameObject.SetActive(true);
             spawned++;
@@ -78,9 +76,14 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnPlayer(int index)
     {
-        //Play animation
- 
         yield return new WaitWhile(() => playerTanks[index].gameObject.activeSelf == true);
+        GameObject activeSpawnPoint = playerSpawnPoints[index];
+        Animator anim = activeSpawnPoint.GetComponent<Animator>();
+
+        anim.SetBool("isSpawning", true);
+        yield return new WaitForSeconds(spawnAnimationDuration);
+        anim.SetBool("isSpawning", false);
+
         playerTanks[index].SetActive(true);
         playerTanks[index].transform.position = playerSpawnPoints[index].transform.position;
     }

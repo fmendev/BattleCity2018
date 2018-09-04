@@ -6,7 +6,8 @@ public class BulletCollide : MonoBehaviour
 {
     public bool firedByPlayer = false;
 
-    private GameObject brickGameObject;
+    private GameObject brick;
+    private GameObject water;
     private GameObject enemyTank;
     private GameObject player;
     private ContactPoint2D[] contacts;
@@ -16,25 +17,21 @@ public class BulletCollide : MonoBehaviour
 
     void Start()
     {
-        brickGameObject = GameObject.FindGameObjectWithTag("Brick");
+        brick = GameObject.FindGameObjectWithTag("Brick");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if bullet collides with a brick tile, destroy tile
-        if (collision.gameObject == brickGameObject)
+        Debug.Log(collision.gameObject.name);
+        if (collision.gameObject == brick)
         {
             tilemap = collision.gameObject.GetComponent<Tilemap>();
             contacts = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contacts);
             hitPosition = Vector3.zero;
 
-            //Debug.Log("Collision has " + collision.contactCount + " contacts");
             foreach (ContactPoint2D hit in contacts)
             {
-                //Debug.Log("Hit normal: x:" + hit.normal.x + " y:" + hit.normal.y);
-                //Debug.Log("Hit point converted: " + hit.point.x + "," + hit.point.y);
-
                 hitPosition.x = hit.point.x - (.2f * hit.normal.x);
                 hitPosition.y = hit.point.y - (.2f * hit.normal.y);
 
@@ -43,17 +40,19 @@ public class BulletCollide : MonoBehaviour
 
                 tilemap.SetTile(tileHit, null);
                 tilemap.SetTile(adjacentTileHit, null);
-
-                //Debug.Log("Hit point converted: " + hitPosition.x + "," + hitPosition.y);
-                //Debug.Log("Cell: " + tilemap.WorldToCell(hitPosition));
             }
-            gameObject.SetActive(false);
         }
         else if(collision.gameObject.tag == "Enemy" && firedByPlayer)
         {
             collision.gameObject.SetActive(false);
-            gameObject.SetActive(false);
+            
         }
+        else if(collision.gameObject.tag == "Eagle")
+        {
+            Debug.Log("Game Over!");
+        }
+
+        gameObject.SetActive(false);
     }
 
     private Vector3 GetContact(ContactPoint2D contact)
