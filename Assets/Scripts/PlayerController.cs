@@ -108,7 +108,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(onIce);
         if (onIce)
         {
             rb2d.AddForce(moveDirection * playerSpeed * 0.7f * Time.fixedDeltaTime);
@@ -162,6 +161,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #region Ice effects
     private void OnTriggerStay2D(Collider2D collider)
     {
         if (collider.gameObject == ice)
@@ -179,5 +179,5 @@ public class PlayerController : MonoBehaviour
             onIce = false;
         }
     }
-
+    #endregion
 }
