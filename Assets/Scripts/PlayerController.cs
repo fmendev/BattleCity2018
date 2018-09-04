@@ -24,15 +24,22 @@ public class PlayerController : MonoBehaviour
     private int bulletsFiredLimit = 2;
     #endregion
 
+    private bool onIce = false;
+    private GameObject ice;
+    private GameObject ground;
+
     private void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 100, 20), "X: " + horizontalMove.ToString());
         GUI.Label(new Rect(10, 20, 100, 20), "Y: " + verticalMove.ToString());
+        GUI.Label(new Rect(10, 30, 100, 20), "Velocity: " + rb2d.velocity.ToString());
     }
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        ice = GameObject.FindGameObjectWithTag("Ice");
+        ground = GameObject.FindGameObjectWithTag("Ground");
 
         bullets = new List<GameObject>();
         for (int i = 0; i < bulletsTotal; i++)
@@ -51,7 +58,7 @@ public class PlayerController : MonoBehaviour
             if (verticalMove != 0)
             {
                 gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * verticalMove));
-                
+
             }
         }
         else if (!lastMoveUpOrDown)
@@ -101,7 +108,15 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb2d.velocity = moveDirection * playerSpeed * Time.fixedDeltaTime;
+        //Debug.Log(onIce);
+        if (onIce)
+        {
+            rb2d.AddForce(moveDirection * playerSpeed * 0.7f * Time.fixedDeltaTime);
+        }
+        else
+        {
+            rb2d.velocity = moveDirection * playerSpeed * Time.fixedDeltaTime;
+        }
     }
 
     private void Fire()
@@ -120,7 +135,7 @@ public class PlayerController : MonoBehaviour
                 bullets[i].transform.position = gameObject.transform.position + PositionBulletInBarrel(gameObject.transform.localRotation.eulerAngles.z);
                 bullets[i].transform.rotation = gameObject.transform.rotation;
                 bullets[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * bulletSpeed * Time.fixedDeltaTime;
-                bullets[i].GetComponent<BulletCollide>().firedByPlayer = true;
+                bullets[i].GetComponent<BulletCollisions>().firedByPlayer = true;
                 break;
             }
         }
@@ -144,6 +159,24 @@ public class PlayerController : MonoBehaviour
                 return new Vector3(0, -distanceToBarrelTip, 0);
             default:
                 throw new Exception();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+        if (collider.gameObject == ice)
+        {
+            Debug.Log("onIce");
+            onIce = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (collider.gameObject == ice)
+        {
+            Debug.Log("onGround");
+            onIce = false;
         }
     }
 
