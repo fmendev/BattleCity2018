@@ -7,21 +7,22 @@ public class PlayerController : MonoBehaviour
     #region Public variables
     public float playerSpeed;
     public float bulletSpeed;
-    public List<GameObject> bullets;
+    public GameObject bulletPrefab;
     #endregion
 
     #region Movement variables
     private bool lastMoveUpOrDown;
     private float horizontalMove = 0f;
     private float verticalMove = 0f;
+    private Animator anim;
     private Rigidbody2D rb2d;
     private Vector3 moveDirection = Vector3.zero;
     #endregion
 
     #region Bullet variables
-    public GameObject bulletPrefab;
+    private List<GameObject> bullets;
     private int bulletsTotal = 20;
-    private int bulletsFiredLimit = 2;
+    private int bulletsFiredLimit = 1;
     #endregion
 
     private bool onIce = false;
@@ -32,12 +33,13 @@ public class PlayerController : MonoBehaviour
     {
         GUI.Label(new Rect(10, 10, 100, 20), "X: " + horizontalMove.ToString());
         GUI.Label(new Rect(10, 20, 100, 20), "Y: " + verticalMove.ToString());
-        GUI.Label(new Rect(10, 30, 100, 20), "Velocity: " + rb2d.velocity.ToString());
     }
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+
         ice = GameObject.FindGameObjectWithTag("Ice");
         ground = GameObject.FindGameObjectWithTag("Ground");
 
@@ -98,6 +100,15 @@ public class PlayerController : MonoBehaviour
         }
 
         moveDirection = new Vector3(horizontalMove, verticalMove);
+
+        if  (moveDirection == Vector3.zero)
+        {
+            anim.SetBool("isMoving", false);
+        }
+        else
+        {
+            anim.SetBool("isMoving", true);
+        }
         #endregion
 
         if (Input.GetMouseButtonDown(0))
@@ -166,7 +177,6 @@ public class PlayerController : MonoBehaviour
     {
         if (collider.gameObject == ice)
         {
-            Debug.Log("onIce");
             onIce = true;
         }
     }
@@ -175,7 +185,6 @@ public class PlayerController : MonoBehaviour
     {
         if (collider.gameObject == ice)
         {
-            Debug.Log("onGround");
             onIce = false;
         }
     }

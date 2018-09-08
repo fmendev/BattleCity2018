@@ -20,9 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4134018441609642}
   - component: {fileID: 212604024207056494}
-  - component: {fileID: 114994046113656964}
   - component: {fileID: 50415531506797296}
   - component: {fileID: 61533508346260046}
+  - component: {fileID: 95872844864183768}
+  - component: {fileID: 114994046113656964}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -36,8 +37,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1237195701782624}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -15.200024, y: 3.8500018, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.3, y: -33.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -61,7 +62,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &61533508346260046
 BoxCollider2D:
@@ -88,6 +89,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.2862196, y: 3.2904496}
   m_EdgeRadius: 0
+--- !u!95 &95872844864183768
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1237195701782624}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c98c937af350104438b19994c1d5eb68, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114994046113656964
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -99,11 +118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da1cb7c50630bc34c81a77f940503dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpeed: 250
-  bulletSpeed: 300
-  bullets:
-  - {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  playerSpeed: 500
+  bulletSpeed: 1200
+  bulletPrefab: {fileID: 1325828810436950, guid: 04d0dd8389e169e4681547ea59521ecf,
+    type: 2}
 --- !u!212 &212604024207056494
 SpriteRenderer:
   m_ObjectHideFlags: 1

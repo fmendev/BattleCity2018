@@ -20,7 +20,6 @@ public class Spawner : MonoBehaviour
     private Vector3 enemyDisabledTankPosition = new Vector3(-60, 20, 0);
     private Vector3 playerDisabledTankPosition = new Vector3(-10, 20, 0);
     private Vector3 offset = new Vector3(0, -5, 0);
-    private System.Random random = new System.Random();
      
     private void Awake()
     {
@@ -103,9 +102,9 @@ public class Spawner : MonoBehaviour
         }
         for (int i = 0; i < remainder; i++)
         {
-            list.Add(random.Next(0, enemySpawnPoints.Count));
+            list.Add(UnityEngine.Random.Range(0, enemySpawnPoints.Count));
         }
 
-        return list.OrderBy(item => random.Next());
+        return list.OrderBy(item => (int)UnityEngine.Random.value);
     }
 }
