@@ -14,9 +14,8 @@ public class Spawner : MonoBehaviour
 
     private int spawned = 0;
     private float enemyRespawnTime = 5f;
-    private float spawnAnimationDuration = 1.75f;
+    private float spawnAnimationDuration = 1f;
     private List<int> spawnLocationOrder;
-    private Animator anim;
     private Vector3 enemyDisabledTankPosition = new Vector3(-60, 20, 0);
     private Vector3 playerDisabledTankPosition = new Vector3(-10, 20, 0);
     private Vector3 offset = new Vector3(0, -5, 0);

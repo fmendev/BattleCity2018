@@ -130,7 +130,6 @@ public class EnemyAI : MonoBehaviour
 
         gameObject.transform.rotation = SetRotation(moveDirection);
 
-
         //if WeightedRandomDirection not called by OnCollisionEnter, ignore recent barrier encounters
         StackTrace st = new StackTrace();
         if (st.FrameCount == 1)

@@ -9,6 +9,7 @@ TagManager:
   - Eagle
   - Ice
   - Ground
+  - GameOver
   layers:
   - Default
   - TransparentFX

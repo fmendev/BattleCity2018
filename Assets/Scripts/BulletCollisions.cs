@@ -7,7 +7,7 @@ public class BulletCollisions : MonoBehaviour
 {
     public bool firedByPlayer = false;
 
-    private float dyingAnimationDuration = .4f;
+    private float dyingAnimationDuration = .25f;
     private GameObject brick;
     private GameObject water;
     private GameObject enemyTank;
@@ -20,6 +20,7 @@ public class BulletCollisions : MonoBehaviour
     void Start()
     {
         brick = GameObject.FindGameObjectWithTag("Brick");
+        
     }
 
     private IEnumerator OnCollisionEnter2D(Collision2D collision)
@@ -60,15 +61,14 @@ public class BulletCollisions : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
-            Animator anim = collision.gameObject.GetComponent<Animator>();
+            Animator playerAnim = collision.gameObject.GetComponent<Animator>();
             int health = collision.gameObject.GetComponent<PlayerController>().health;
             health--;
 
             if (health == 0)
             {
-                anim.SetBool("isDying", true);
+                playerAnim.SetBool("isDying", true);
                 yield return new WaitForSeconds(dyingAnimationDuration);
-                anim.SetBool("isDying", false);
                 Destroy(collision.gameObject);
             }
             else
@@ -79,6 +79,11 @@ public class BulletCollisions : MonoBehaviour
         else if (collision.gameObject.tag == "Eagle")
         {
             Debug.Log("Game Over!");
+            Animator gameOverAnim = GameObject.FindGameObjectWithTag("GameOver").GetComponent<Animator>();
+            Animator eagleAnim = GameObject.FindGameObjectWithTag("Eagle").GetComponent<Animator>();
+
+            gameOverAnim.SetBool("isEagleDestroyed", true);
+            gameOverAnim.SetBool("isEagleDestroyed", true);
         }
 
         gameObject.SetActive(false);
