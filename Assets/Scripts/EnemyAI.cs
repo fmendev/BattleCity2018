@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public class EnemyAI : MonoBehaviour
 {
-    public List<GameObject> players;
+    public List<GameObject> targets;
     public GameObject bulletPrefab;
 
     private int enemySpeed;
@@ -22,6 +22,7 @@ public class EnemyAI : MonoBehaviour
     private float minFireDelay;
     private float maxFireDelay;
 
+    private int targetIndex = 0;
     private int bulletsTotal = 20;
     private Dictionary<int, float> pNextDirection;
     private List<GameObject> bullets;
@@ -57,8 +58,6 @@ public class EnemyAI : MonoBehaviour
 
         rb2d = GetComponent<Rigidbody2D>();
 
-        //GetComponent<Animator>().SetBool("isMoving", true);
-
         bullets = new List<GameObject>();
         for (int i = 0; i < bulletsTotal; i++)
         {
@@ -87,6 +86,9 @@ public class EnemyAI : MonoBehaviour
 
         minFireDelay = properties.minFireDelay;
         maxFireDelay = properties.maxFireDelay;
+
+        //Make enemy target change for every new enemy spawned
+        targetIndex = gameObject.transform.GetSiblingIndex() % targets.Count;
 
         WeightedRandomDirection();
         Invoke("Fire", UnityEngine.Random.Range(minFireDelay, maxFireDelay));
@@ -156,8 +158,17 @@ public class EnemyAI : MonoBehaviour
 
     private Dictionary<int, float> CalculateDirectionProbability()
     {
-        distance = players[0].transform.position - transform.position;
 
+        if (targets[targetIndex] == null)
+        {
+            targets.Remove(targets[targetIndex]);
+            targetIndex = gameObject.transform.GetSiblingIndex() % targets.Count;
+            distance = targets[targetIndex].transform.position - transform.position;
+        }
+        else
+        {
+            distance = targets[targetIndex].transform.position - transform.position;
+        }
         if (Math.Abs(distance.x) >= Math.Abs(distance.y))
         {
             return new Dictionary<int, float>

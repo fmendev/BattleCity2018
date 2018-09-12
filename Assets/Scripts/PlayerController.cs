@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region Public variables
+    public int health = 1;
     public float playerSpeed;
     public float bulletSpeed;
     public GameObject bulletPrefab;

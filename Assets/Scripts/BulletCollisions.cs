@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -6,6 +7,7 @@ public class BulletCollisions : MonoBehaviour
 {
     public bool firedByPlayer = false;
 
+    private float dyingAnimationDuration = .4f;
     private GameObject brick;
     private GameObject water;
     private GameObject enemyTank;
@@ -20,7 +22,7 @@ public class BulletCollisions : MonoBehaviour
         brick = GameObject.FindGameObjectWithTag("Brick");
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private IEnumerator OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == brick)
         {
@@ -51,8 +53,28 @@ public class BulletCollisions : MonoBehaviour
                 //trigger explosion animation
                 Destroy(collision.gameObject);
             }
+            else
+            {
+                collision.gameObject.GetComponent<EnemyProperties>().health = health;
+            }
+        }
+        else if (collision.gameObject.CompareTag("Player"))
+        {
+            Animator anim = collision.gameObject.GetComponent<Animator>();
+            int health = collision.gameObject.GetComponent<PlayerController>().health;
+            health--;
 
-            collision.gameObject.GetComponent<EnemyProperties>().health = health;
+            if (health == 0)
+            {
+                anim.SetBool("isDying", true);
+                yield return new WaitForSeconds(dyingAnimationDuration);
+                anim.SetBool("isDying", false);
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                collision.gameObject.GetComponent<PlayerController>().health = health;
+            }
         }
         else if (collision.gameObject.tag == "Eagle")
         {
