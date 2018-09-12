@@ -83,7 +83,7 @@ public class BulletCollisions : MonoBehaviour
             Animator eagleAnim = GameObject.FindGameObjectWithTag("Eagle").GetComponent<Animator>();
 
             gameOverAnim.SetBool("isEagleDestroyed", true);
-            gameOverAnim.SetBool("isEagleDestroyed", true);
+            eagleAnim.SetBool("isEagleDestroyed", true);
         }
 
         gameObject.SetActive(false);
