@@ -22,7 +22,9 @@ GameObject:
   - component: {fileID: 212000873480445478}
   - component: {fileID: 50416872428883680}
   - component: {fileID: 61719051745525070}
+  - component: {fileID: 95317071313704818}
   - component: {fileID: 114873371682689856}
+  - component: {fileID: 114560638588884958}
   m_Layer: 0
   m_Name: Enemy_Small
   m_TagString: Enemy
@@ -88,6 +90,47 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.7574615, y: 3.289566}
   m_EdgeRadius: 0
+--- !u!95 &95317071313704818
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636242748718156}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: b24214024ca299a468234b6c37d6c267, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114560638588884958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1636242748718156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b591a61354fdaa342a257a9a8994dd42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tankType: 0
+  tankSpeed: 0
+  bulletSpeed: 0
+  health: 1
+  bulletsFiredLimit: 0
+  primaryDirection: 0.5
+  secondaryDirection: 0.3
+  awayDirection: 0.1
+  minMoveChangeDelay: 3
+  maxMoveChangeDelay: 5
+  minFireDelay: 1.5
+  maxFireDelay: 5
 --- !u!114 &114873371682689856
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -101,8 +144,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   players:
   - {fileID: 0}
-  enemySpeed: 500
-  bulletSpeed: 1200
   bulletPrefab: {fileID: 0}
 --- !u!212 &212000873480445478
 SpriteRenderer:
@@ -139,7 +180,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f733f260bcb69c24ca2b146a10b9bd51, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 45e27954307784541837dc2ef0252857, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

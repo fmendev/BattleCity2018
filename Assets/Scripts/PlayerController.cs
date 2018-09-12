@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+
+        //player should awake facing "front" of level, use eagle
         rb2d = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 

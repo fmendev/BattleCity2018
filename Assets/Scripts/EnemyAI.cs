@@ -8,42 +8,43 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     public List<GameObject> players;
-    public float enemySpeed;
-    public float bulletSpeed;
     public GameObject bulletPrefab;
 
-    private float primaryDirection = .5f;
-    private float secondaryDirection = .3f;
-    private float awayDirection = .1f;
-    private float minMoveChangeDelay = 3f;
-    private float maxMoveChangeDelay = 5f;
-    private float minFireDelay = 1.5f;
-    private float maxFireDelay = 5f;
-    private Dictionary<int, float> pNextDirection; private Rigidbody2D rb2d;
-    private List<Vector3> barrierDirection;
-    private Vector3 distance, previousDirection, moveDirection = Vector3.up;
+    private int enemySpeed;
+    private int bulletSpeed;
+    private int health;
+    private int bulletsFiredLimit;
+    private float primaryDirection;
+    private float secondaryDirection;
+    private float awayDirection;
+    private float minMoveChangeDelay;
+    private float maxMoveChangeDelay;
+    private float minFireDelay;
+    private float maxFireDelay;
 
-    #region Bullet variables
-    private List<GameObject> bullets;
     private int bulletsTotal = 20;
-    private int bulletsFiredLimit = 1;
-    #endregion
+    private Dictionary<int, float> pNextDirection;
+    private List<GameObject> bullets;
+    private List<Vector3> barrierDirection;
+    private Rigidbody2D rb2d;
+    private Vector3 distance, previousDirection, moveDirection = Vector3.up;
 
     private void OnGUI()
     {
-
-        GUI.Label(new Rect(10, 50, 200, 20), "Right " + pNextDirection[0].ToString());
-        GUI.Label(new Rect(10, 60, 200, 20), "Up " + pNextDirection[1].ToString());
-        GUI.Label(new Rect(10, 70, 200, 20), "Left " + pNextDirection[2].ToString());
-        GUI.Label(new Rect(10, 80, 200, 20), "Down " + pNextDirection[3].ToString());
-        GUI.Label(new Rect(10, 90, 200, 20), "Previous " + previousDirection.ToString());
-        GUI.Label(new Rect(10, 100, 200, 20), "Current " + moveDirection.ToString());
-        GUI.Label(new Rect(10, 110, 200, 20), "Current " + pNextDirection.Values.Sum().ToString());
-        GUI.Label(new Rect(10, 130, 200, 20), "B_Count: " + barrierDirection.Count.ToString());
+        GUI.Label(new Rect(10, transform.GetSiblingIndex() * 10, 200, 20), "velocity " + rb2d.velocity.ToString());
+        //GUI.Label(new Rect(10, 50, 200, 20), "Right " + pNextDirection[0].ToString());
+        //GUI.Label(new Rect(10, 60, 200, 20), "Up " + pNextDirection[1].ToString());
+        //GUI.Label(new Rect(10, 70, 200, 20), "Left " + pNextDirection[2].ToString());
+        //GUI.Label(new Rect(10, 80, 200, 20), "Down " + pNextDirection[3].ToString());
+        //GUI.Label(new Rect(10, 90, 200, 20), "Previous " + previousDirection.ToString());
+        //GUI.Label(new Rect(10, 100, 200, 20), "Current " + moveDirection.ToString());
+        //GUI.Label(new Rect(10, 110, 200, 20), "Current " + pNextDirection.Values.Sum().ToString());
+        //GUI.Label(new Rect(10, 130, 200, 20), "B_Count: " + barrierDirection.Count.ToString());
     }
 
     private void Awake()
     {
+        //Initialize dictionary with probability of next random move distribution
         pNextDirection = new Dictionary<int, float>()
         {
             {0, .25f}, //right
@@ -56,6 +57,8 @@ public class EnemyAI : MonoBehaviour
 
         rb2d = GetComponent<Rigidbody2D>();
 
+        //GetComponent<Animator>().SetBool("isMoving", true);
+
         bullets = new List<GameObject>();
         for (int i = 0; i < bulletsTotal; i++)
         {
@@ -66,6 +69,25 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
+        //Initialize enemy tank properties
+        EnemyProperties properties = GetComponent<EnemyProperties>();
+
+        enemySpeed = properties.tankSpeed;
+        bulletSpeed = properties.bulletSpeed;
+
+        health = properties.health;
+        bulletsFiredLimit = properties.bulletsFiredLimit;
+
+        primaryDirection = properties.primaryDirection;
+        secondaryDirection = properties.secondaryDirection;
+        awayDirection = properties.awayDirection;
+
+        minMoveChangeDelay = properties.minMoveChangeDelay;
+        maxMoveChangeDelay = properties.maxMoveChangeDelay;
+
+        minFireDelay = properties.minFireDelay;
+        maxFireDelay = properties.maxFireDelay;
+
         WeightedRandomDirection();
         Invoke("Fire", UnityEngine.Random.Range(minFireDelay, maxFireDelay));
     }

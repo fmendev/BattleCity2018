@@ -41,12 +41,20 @@ public class BulletCollisions : MonoBehaviour
                 tilemap.SetTile(adjacentTileHit, null);
             }
         }
-        else if(collision.gameObject.tag == "Enemy" && firedByPlayer)
+        else if (collision.gameObject.CompareTag("Enemy") && firedByPlayer)
         {
-            collision.gameObject.SetActive(false);
-            
+            int health = collision.gameObject.GetComponent<EnemyProperties>().health;
+            health--;
+
+            if (health == 0)
+            {
+                //trigger explosion animation
+                Destroy(collision.gameObject);
+            }
+
+            collision.gameObject.GetComponent<EnemyProperties>().health = health;
         }
-        else if(collision.gameObject.tag == "Eagle")
+        else if (collision.gameObject.tag == "Eagle")
         {
             Debug.Log("Game Over!");
         }

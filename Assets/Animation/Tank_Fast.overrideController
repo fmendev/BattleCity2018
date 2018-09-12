@@ -1,0 +1,12 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Tank_Fast
+  m_Controller: {fileID: 9100000, guid: c98c937af350104438b19994c1d5eb68, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 2a94717021982b147a20f56e45c8586c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 25fb9939e3f15db4c9379e3830665179, type: 2}
