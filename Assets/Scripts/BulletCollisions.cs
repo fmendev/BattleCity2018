@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -30,28 +31,34 @@ public class BulletCollisions : MonoBehaviour
             tilemap = collision.gameObject.GetComponent<Tilemap>();
             contacts = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contacts);
-            hitPosition = Vector3.zero;
 
-            foreach (ContactPoint2D hit in contacts)
+            foreach (ContactPoint2D contact in contacts)
             {
-                hitPosition.x = hit.point.x - (.2f * hit.normal.x);
-                hitPosition.y = hit.point.y - (.2f * hit.normal.y);
+                tileHit = tilemap.WorldToCell(GetContact(contact));
+                adjacentTileHit = tilemap.WorldToCell(GetAdjacentTile(contact, tileHit));
 
-                tileHit = tilemap.WorldToCell(GetContact(hit));
-                adjacentTileHit = tilemap.WorldToCell(GetAdjacentContact(hit));
-
+                //Debug.Log("hit point: " + hit.point);
+                //Debug.Log("t: " + tileHit);
+                //Debug.Log("a: " + adjacentTileHit);
+                //Debug.Log("Tile: " + tilemap.GetTile(tileHit));
+                //Debug.Log("Adjacent: " + tilemap.GetTile(adjacentTileHit));
                 tilemap.SetTile(tileHit, null);
                 tilemap.SetTile(adjacentTileHit, null);
             }
+            //Debug.Log("next bullet...");
         }
         else if (collision.gameObject.CompareTag("Enemy") && firedByPlayer)
         {
+            Animator enemyAnim = collision.gameObject.GetComponent<Animator>();
             int health = collision.gameObject.GetComponent<EnemyProperties>().health;
             health--;
 
             if (health == 0)
             {
-                //trigger explosion animation
+                enemyAnim.SetBool("isDying", true);
+                collision.gameObject.GetComponent<EnemyProperties>().tankSpeed = 0;
+                yield return new WaitForSeconds(dyingAnimationDuration);
+                enemyAnim.SetBool("isDying", false);
                 Destroy(collision.gameObject);
             }
             else
@@ -81,9 +88,15 @@ public class BulletCollisions : MonoBehaviour
             Debug.Log("Game Over!");
             Animator gameOverAnim = GameObject.FindGameObjectWithTag("GameOver").GetComponent<Animator>();
             Animator eagleAnim = GameObject.FindGameObjectWithTag("Eagle").GetComponent<Animator>();
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
             gameOverAnim.SetBool("isEagleDestroyed", true);
             eagleAnim.SetBool("isEagleDestroyed", true);
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].GetComponent<PlayerController>().enabled = false;
+            }
         }
 
         gameObject.SetActive(false);
@@ -97,29 +110,42 @@ public class BulletCollisions : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
-    private Vector3 GetAdjacentContact(ContactPoint2D contact)
+    private Vector3Int GetAdjacentTile(ContactPoint2D contact, Vector3Int tileHit)
     {
-        float correction = 0.2f;
-        int x = (int)Math.Round(contact.point.x, 0, MidpointRounding.AwayFromZero);
-        int y = (int)Math.Round(contact.point.y, 0, MidpointRounding.AwayFromZero);
+        int normal_x = (int)Math.Round(contact.normal.x, 0);
+        int normal_y = (int)Math.Round(contact.normal.y, 0);
 
-        if (contact.normal.x == 1 || contact.normal.x == -1)
+        Vector3Int adjacentTile = new Vector3Int();
+
+        if (normal_x == 1 || normal_x == -1)
         {
-            if (contact.point.y > y)
-                return new Vector3(contact.point.x, y - correction, 0);
-            else
-                return new Vector3(contact.point.x, y + correction, 0);
+            Vector3Int tileAbove = new Vector3Int(tileHit.x, tileHit.y + 1, tileHit.z);
+            Vector3Int tileBelow = new Vector3Int(tileHit.x, tileHit.y - 1, tileHit.z);
+
+            if (DestructibleTileMapping.tiles_y[tileHit] == DestructibleTileMapping.tiles_y[tileAbove])
+            {
+                adjacentTile = tileAbove;
+            }
+            else if (DestructibleTileMapping.tiles_y[tileHit] == DestructibleTileMapping.tiles_y[tileBelow])
+            {
+                adjacentTile = tileBelow;
+            }
         }
-        else if (contact.normal.y == 1 || contact.normal.y == -1)
+        else if (normal_y == 1 || normal_y == -1)
         {
-            if (contact.point.x > x)
-                return new Vector3(x - correction, contact.point.y, 0);
-            else
-                return new Vector3(x + correction, contact.point.y, 0);
+            Vector3Int tileLeft = new Vector3Int(tileHit.x - 1, tileHit.y, tileHit.z);
+            Vector3Int tileRight = new Vector3Int(tileHit.x + 1, tileHit.y, tileHit.z);
+
+            if (DestructibleTileMapping.tiles_y[tileHit] == DestructibleTileMapping.tiles_y[tileLeft])
+            {
+                adjacentTile = tileLeft;
+            }
+            else if (DestructibleTileMapping.tiles_y[tileHit] == DestructibleTileMapping.tiles_y[tileRight])
+            {
+                adjacentTile = tileRight;
+            }
         }
-        else
-        {
-            throw new Exception("contact.normal values != 1");
-        }
+
+        return adjacentTile;
     }
 }

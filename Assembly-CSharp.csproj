@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\BulletCollisions.cs" />
+    <Compile Include="Assets\Scripts\DestructibleTileMapping.cs" />
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\EnemyProperties.cs" />
     <Compile Include="Assets\Scripts\LevelSettings.cs" />

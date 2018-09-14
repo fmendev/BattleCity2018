@@ -38,8 +38,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636242748718156}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.0999985, y: 9.653302, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,7 +99,7 @@ Animator:
   m_GameObject: {fileID: 1636242748718156}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 1d140b5f63ab58e449ab097084f905e7, type: 2}
+  m_Controller: {fileID: 9100000, guid: e3e436def07e33f4bbcf807ccabd7b40, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -142,9 +142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b010cd71f47633d429194d882e65536f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players:
+  targets:
   - {fileID: 0}
-  bulletPrefab: {fileID: 0}
+  - {fileID: 0}
+  bulletPrefab: {fileID: 1325828810436950, guid: 04d0dd8389e169e4681547ea59521ecf,
+    type: 2}
 --- !u!212 &212000873480445478
 SpriteRenderer:
   m_ObjectHideFlags: 1
