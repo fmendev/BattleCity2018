@@ -275,6 +275,7 @@ public class EnemyAI : MonoBehaviour
                 bullets[i].transform.rotation = gameObject.transform.rotation;
                 bullets[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * bulletSpeed * Time.fixedDeltaTime;
                 bullets[i].GetComponent<BulletCollisions>().firedByPlayer = false;
+                bullets[i].GetComponent<BulletCollisions>().shooter = gameObject;
                 break;
             }
         }
@@ -284,7 +285,7 @@ public class EnemyAI : MonoBehaviour
 
     private Vector3 PositionBulletInBarrel(float rotation)
     {
-        float distanceToBarrelTip = 2f;
+        float distanceToBarrelTip = 1.4f;
         switch ((int)rotation)
         {
             case 0:

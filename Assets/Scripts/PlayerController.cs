@@ -149,6 +149,7 @@ public class PlayerController : MonoBehaviour
                 bullets[i].transform.rotation = gameObject.transform.rotation;
                 bullets[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * bulletSpeed * Time.fixedDeltaTime;
                 bullets[i].GetComponent<BulletCollisions>().firedByPlayer = true;
+                bullets[i].GetComponent<BulletCollisions>().shooter = gameObject;
                 break;
             }
         }
@@ -156,7 +157,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 PositionBulletInBarrel(float rotation)
     {
-        float distanceToBarrelTip = 2f;
+        float distanceToBarrelTip = 1.4f;
         switch ((int)rotation)
         {
             case 0:
