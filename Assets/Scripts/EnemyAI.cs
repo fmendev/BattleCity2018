@@ -32,7 +32,8 @@ public class EnemyAI : MonoBehaviour
 
     private void OnGUI()
     {
-        GUI.Label(new Rect(10, transform.GetSiblingIndex() * 10, 200, 20), "velocity " + rb2d.velocity.ToString());
+        //GUI.Label(new Rect(10, transform.GetSiblingIndex() * 10, 200, 20), "playerVelocity " + playerVelocity.ToString());
+        GUI.Label(new Rect(10, transform.GetSiblingIndex() * 10 + 10, 200, 20), "enemyVelocity " + rb2d.velocity.ToString());
         //GUI.Label(new Rect(10, 50, 200, 20), "Right " + pNextDirection[0].ToString());
         //GUI.Label(new Rect(10, 60, 200, 20), "Up " + pNextDirection[1].ToString());
         //GUI.Label(new Rect(10, 70, 200, 20), "Left " + pNextDirection[2].ToString());
@@ -111,6 +112,16 @@ public class EnemyAI : MonoBehaviour
         barrierDirection.Add(contacts[0].normal);
         WeightedRandomDirection();
     }
+
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        Vector2 playerVelocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
+    //        UnityEngine.Debug.Log("Player velocity: " + playerVelocity);
+    //        rb2d.AddForce(-playerVelocity * Time.deltaTime);
+    //    }
+    //}
 
     private void WeightedRandomDirection()
     {

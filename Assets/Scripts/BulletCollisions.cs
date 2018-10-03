@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -21,7 +20,6 @@ public class BulletCollisions : MonoBehaviour
     void Start()
     {
         brick = GameObject.FindGameObjectWithTag("Brick");
-        
     }
 
     private IEnumerator OnCollisionEnter2D(Collision2D collision)
@@ -29,7 +27,7 @@ public class BulletCollisions : MonoBehaviour
         if (collision.gameObject == brick)
         {
             Vector3Int tileHit, adjacentTileHit;
-            Vector3 normal, point;
+            Vector3 normal = Vector3.zero, point;
 
             //Get contacts
             contacts = new ContactPoint2D[collision.contactCount];
@@ -41,17 +39,37 @@ public class BulletCollisions : MonoBehaviour
             {
                 normal = new Vector3(contacts[0].normal.x, contacts[0].normal.y);
             }
+            //if contacts have different normals, default to opposite direction player is facing, eg.: (-1,0) when player is facing right
             else
             {
-                foreach (var contact in contacts)
+                GameObject player = GameObject.FindGameObjectWithTag("Player");
+                float direction = player.transform.localRotation.eulerAngles.z;
+                switch ((int)direction)
                 {
-                    Debug.Log(contact.normal);
+                    case 0:
+                        normal = new Vector3(-1, 0, 0);
+                        break;
+                    case 90:
+                    case -270:
+                        normal = new Vector3(0, 1, 0);
+                        break;
+                    case 180:
+                    case -180:
+                        normal = new Vector3(1, 0, 0);
+                        break;
+                    case -90:
+                    case 270:
+                        normal = new Vector3(0, -1, 0);
+                        break;
+                    default:
+                        throw new Exception();
                 }
-                throw new Exception("Vector normal to collision not same for all contacts");
             }
 
             float correction = .5f;
-            point = new Vector3(contacts.Average(c => c.point.x - (correction * normal.x)), (contacts.Average(c => c.point.y - ((correction * normal.y)))));
+
+            point = new Vector3(contacts.Average(c => c.point.x - (correction * normal.x)),
+                               (contacts.Average(c => c.point.y - (correction * normal.y))));
 
             Tilemap tilemap = collision.gameObject.GetComponent<Tilemap>();
             tileHit = tilemap.WorldToCell(point);
@@ -59,6 +77,7 @@ public class BulletCollisions : MonoBehaviour
 
             tilemap.SetTile(tileHit, null);
             tilemap.SetTile(adjacentTileHit, null);
+
         }
         else if (collision.gameObject.CompareTag("Enemy") && firedByPlayer && collision.gameObject != shooter)
         {
