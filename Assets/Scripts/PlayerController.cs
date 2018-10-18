@@ -7,8 +7,7 @@ public class PlayerController : MonoBehaviour
     #region Public variables
     public int health = 1;
     public float playerSpeed;
-    public float bulletSpeed;
-    public GameObject bulletPrefab;
+
     #endregion
 
     #region Movement variables
@@ -18,12 +17,6 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb2d;
     private Vector3 moveDirection = Vector3.zero;
-    #endregion
-
-    #region Bullet variables
-    private List<GameObject> bullets;
-    private int bulletsTotal = 20;
-    private int bulletsFiredLimit = 1;
     #endregion
 
     private bool onIce = false;
@@ -45,12 +38,7 @@ public class PlayerController : MonoBehaviour
         ice = GameObject.FindGameObjectWithTag("Ice");
         ground = GameObject.FindGameObjectWithTag("Ground");
 
-        bullets = new List<GameObject>();
-        for (int i = 0; i < bulletsTotal; i++)
-        {
-            bullets.Add(Instantiate(bulletPrefab));
-            bullets[i].SetActive(false);
-        }
+
     }
 
     private void Update()
@@ -112,11 +100,6 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isMoving", true);
         }
         #endregion
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Fire();
-        }
     }
 
     private void FixedUpdate()
@@ -128,50 +111,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             rb2d.velocity = moveDirection * playerSpeed * Time.fixedDeltaTime;
-        }
-    }
-
-    private void Fire()
-    {
-        int bulletsFired = 0;
-
-        for (int i = 0; i < bullets.Count; i++)
-        {
-            if (bullets[i].gameObject.activeSelf == true)
-            {
-                bulletsFired++;
-            }
-            else if (bullets[i].gameObject.activeSelf == false && bulletsFired < bulletsFiredLimit)
-            {
-                bullets[i].gameObject.SetActive(true);
-                bullets[i].transform.position = gameObject.transform.position + PositionBulletInBarrel(gameObject.transform.localRotation.eulerAngles.z);
-                bullets[i].transform.rotation = gameObject.transform.rotation;
-                bullets[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * bulletSpeed * Time.fixedDeltaTime;
-                bullets[i].GetComponent<BulletCollisions>().firedByPlayer = true;
-                bullets[i].GetComponent<BulletCollisions>().shooter = gameObject;
-                break;
-            }
-        }
-    }
-
-    private Vector3 PositionBulletInBarrel(float rotation)
-    {
-        float distanceToBarrelTip = 1.4f;
-        switch ((int)rotation)
-        {
-            case 0:
-                return new Vector3(distanceToBarrelTip, 0, 0);
-            case 90:
-            case -270:
-                return new Vector3(0, distanceToBarrelTip, 0);
-            case 180:
-            case -180:
-                return new Vector3(-distanceToBarrelTip, 0, 0);
-            case -90:
-            case 270:
-                return new Vector3(0, -distanceToBarrelTip, 0);
-            default:
-                throw new Exception();
         }
     }
 

@@ -33,7 +33,6 @@ public class EnemyAI : MonoBehaviour
     private void OnGUI()
     {
         //GUI.Label(new Rect(10, transform.GetSiblingIndex() * 10, 200, 20), "playerVelocity " + playerVelocity.ToString());
-        GUI.Label(new Rect(10, transform.GetSiblingIndex() * 10 + 10, 200, 20), "enemyVelocity " + rb2d.velocity.ToString());
         //GUI.Label(new Rect(10, 50, 200, 20), "Right " + pNextDirection[0].ToString());
         //GUI.Label(new Rect(10, 60, 200, 20), "Up " + pNextDirection[1].ToString());
         //GUI.Label(new Rect(10, 70, 200, 20), "Left " + pNextDirection[2].ToString());
