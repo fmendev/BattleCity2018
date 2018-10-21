@@ -9,13 +9,8 @@ public class BulletCollisions : MonoBehaviour
     public bool firedByPlayer = false;
     public GameObject shooter;
 
-    private float dyingAnimationDuration = .25f;
+    private readonly float dyingAnimationDuration = .25f;
     private GameObject brick;
-    private GameObject water;
-    private GameObject enemyTank;
-    private GameObject player;
-    private ContactPoint2D[] contacts;
-    private Vector3 hitPosition;
 
     void Start()
     {
@@ -30,7 +25,7 @@ public class BulletCollisions : MonoBehaviour
             Vector3 normal = Vector3.zero, point;
 
             //Get contacts
-            contacts = new ContactPoint2D[collision.contactCount];
+            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contacts);
 
             //Check that the normal vector for all contact points is the same

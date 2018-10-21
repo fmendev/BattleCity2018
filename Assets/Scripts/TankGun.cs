@@ -4,26 +4,29 @@ using UnityEngine;
 
 public class TankGun : MonoBehaviour
 {
-    public float bulletSpeed;
-    public GameObject bulletPrefab;
+    public float shellSpeed;
+    public int shellAmmo = 3;
+    public GameObject shellPrefab;
 
-    private List<GameObject> bullets;
-    private int bulletsTotal = 20;
-    private int bulletsFiredLimit = 3;
+    private ShellDisplay shellDisplay;
+    private List<GameObject> shellPool;
+    private int shellPoolCount = 20;
 
-    private AudioSource SFXSource;
-    public AudioClip ShootingSFX;
+    private AudioSource sfxSource;
+    public AudioClip shootingSFX;
 
     private void Awake()
     {
-        bullets = new List<GameObject>();
-        for (int i = 0; i < bulletsTotal; i++)
+        shellPool = new List<GameObject>();
+        for (int i = 0; i < shellPoolCount; i++)
         {
-            bullets.Add(Instantiate(bulletPrefab));
-            bullets[i].SetActive(false);
+            shellPool.Add(Instantiate(shellPrefab));
+            shellPool[i].SetActive(false);
         }
 
-        SFXSource = gameObject.GetComponent<AudioSource>();
+        sfxSource = gameObject.GetComponent<AudioSource>();
+
+        shellDisplay = GameObject.FindGameObjectWithTag("ShellDisplay").GetComponent<ShellDisplay>();
     }
 
     private void Update()
@@ -36,25 +39,22 @@ public class TankGun : MonoBehaviour
 
     private void Fire()
     {
-        int bulletsFired = 0;
-
-        for (int i = 0; i < bullets.Count; i++)
+        for (int i = 0; i < shellPool.Count; i++)
         {
-            if (bullets[i].gameObject.activeSelf == true)
+            if (shellPool[i].gameObject.activeSelf == false && shellAmmo > 0)
             {
-                bulletsFired++;
-            }
-            else if (bullets[i].gameObject.activeSelf == false && bulletsFired < bulletsFiredLimit)
-            {
-                bullets[i].gameObject.SetActive(true);
-                bullets[i].transform.position = gameObject.transform.position + PositionBulletInBarrel(gameObject.transform.localRotation.eulerAngles.z);
-                bullets[i].transform.rotation = gameObject.transform.rotation;
-                bullets[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * bulletSpeed * Time.fixedDeltaTime;
-                bullets[i].GetComponent<BulletCollisions>().firedByPlayer = true;
-                bullets[i].GetComponent<BulletCollisions>().shooter = gameObject;
+                shellPool[i].gameObject.SetActive(true);
+                shellPool[i].transform.position = gameObject.transform.position + PositionBulletInBarrel(gameObject.transform.localRotation.eulerAngles.z);
+                shellPool[i].transform.rotation = gameObject.transform.rotation;
+                shellPool[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * shellSpeed * Time.fixedDeltaTime;
+                shellPool[i].GetComponent<BulletCollisions>().firedByPlayer = true;
+                shellPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
 
-                SFXSource.clip = ShootingSFX;
-                SFXSource.Play();
+                shellDisplay.ReloadShell(shellAmmo);
+                shellAmmo--;
+
+                sfxSource.clip = shootingSFX;
+                sfxSource.Play();
                 break;
             }
         }

@@ -10,6 +10,7 @@ TagManager:
   - Ice
   - Ground
   - GameOver
+  - ShellDisplay
   layers:
   - Default
   - TransparentFX
