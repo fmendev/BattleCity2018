@@ -216,10 +216,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0099b4c1fa6db49438da1989df91f92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletSpeed: 0
-  bulletPrefab: {fileID: 1325828810436950, guid: 04d0dd8389e169e4681547ea59521ecf,
+  shellPrefab: {fileID: 1325828810436950, guid: 04d0dd8389e169e4681547ea59521ecf,
     type: 2}
-  ShootingSFX: {fileID: 8300000, guid: 8a21640b4c40a0e44afc5a66ec4d54d8, type: 3}
+  shellSpeed: 1000
+  currentMaxAmmo: 3
+  currentShellAmmo: 3
+  shootingSFX: {fileID: 8300000, guid: 8a21640b4c40a0e44afc5a66ec4d54d8, type: 3}
 --- !u!114 &114923120683244710
 MonoBehaviour:
   m_ObjectHideFlags: 1

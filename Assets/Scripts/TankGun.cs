@@ -1,32 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TankGun : MonoBehaviour
 {
-    public float shellSpeed;
-    public int shellAmmo = 3;
+    private static TankGun singletonInstance;
+
     public GameObject shellPrefab;
 
-    private ShellDisplay shellDisplay;
-    private List<GameObject> shellPool;
+    [SerializeField]
+    private float shellSpeed = 1000;
+    [SerializeField]
+    private int currentMaxAmmo = 3;
+    [SerializeField]
+    private int currentShellAmmo = 3;
+
     private int shellPoolCount = 20;
+    private List<int> isLoaded = new List<int>();
+    private List<GameObject> playerShellAmmoPool = new List<GameObject>();
+    private ShellDisplay shellDisplay;
 
     private AudioSource sfxSource;
     public AudioClip shootingSFX;
 
     private void Awake()
     {
-        shellPool = new List<GameObject>();
-        for (int i = 0; i < shellPoolCount; i++)
-        {
-            shellPool.Add(Instantiate(shellPrefab));
-            shellPool[i].SetActive(false);
-        }
+        InitializeSingleton();
+        InitializeShellAmmoPool();
+        InitializeLoadingStatus();
 
         sfxSource = gameObject.GetComponent<AudioSource>();
 
         shellDisplay = GameObject.FindGameObjectWithTag("ShellDisplay").GetComponent<ShellDisplay>();
+    }
+
+    private void InitializeLoadingStatus()
+    {
+        for (int i = 0; i < currentMaxAmmo; i++)
+        {
+            isLoaded.Add(1);
+        }
     }
 
     private void Update()
@@ -39,19 +53,22 @@ public class TankGun : MonoBehaviour
 
     private void Fire()
     {
-        for (int i = 0; i < shellPool.Count; i++)
+        for (int i = 0; i < playerShellAmmoPool.Count; i++)
         {
-            if (shellPool[i].gameObject.activeSelf == false && shellAmmo > 0)
+            if (playerShellAmmoPool[i].gameObject.activeSelf == false && currentShellAmmo > 0)
             {
-                shellPool[i].gameObject.SetActive(true);
-                shellPool[i].transform.position = gameObject.transform.position + PositionBulletInBarrel(gameObject.transform.localRotation.eulerAngles.z);
-                shellPool[i].transform.rotation = gameObject.transform.rotation;
-                shellPool[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * shellSpeed * Time.fixedDeltaTime;
-                shellPool[i].GetComponent<BulletCollisions>().firedByPlayer = true;
-                shellPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
+                playerShellAmmoPool[i].gameObject.SetActive(true);
+                playerShellAmmoPool[i].transform.position = gameObject.transform.position + PositionBulletInBarrel(gameObject.transform.localRotation.eulerAngles.z);
+                playerShellAmmoPool[i].transform.rotation = gameObject.transform.rotation;
+                playerShellAmmoPool[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * shellSpeed * Time.fixedDeltaTime;
+                playerShellAmmoPool[i].GetComponent<BulletCollisions>().firedByPlayer = true;
+                playerShellAmmoPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
 
-                shellDisplay.ReloadShell(shellAmmo);
-                shellAmmo--;
+                int shellFiredIndex = isLoaded.FindLastIndex(s => s == 1);
+                isLoaded[shellFiredIndex] = 0;
+
+                currentShellAmmo--;
+                shellDisplay.ReloadShell(shellFiredIndex);
 
                 sfxSource.clip = shootingSFX;
                 sfxSource.Play();
@@ -79,5 +96,39 @@ public class TankGun : MonoBehaviour
             default:
                 throw new Exception();
         }
+    }
+
+    private void InitializeSingleton()
+    {
+        singletonInstance = this;
+    }
+
+    private void InitializeShellAmmoPool()
+    {
+        for (int i = 0; i < shellPoolCount; i++)
+        {
+            playerShellAmmoPool.Add(Instantiate(shellPrefab));
+            playerShellAmmoPool[i].SetActive(false);
+        }
+    }
+
+    public static int GetCurrentAmmo()
+    {
+        return singletonInstance.currentShellAmmo;
+    }
+
+    public static void SetCurrentAmmo(int currentAmmo)
+    {
+        singletonInstance.currentShellAmmo = currentAmmo;
+    }
+
+    public static int GetCurrentMaxAmmo()
+    {
+        return singletonInstance.currentMaxAmmo;
+    }
+
+    public static void SetShellAsLoaded(int shellIndex)
+    {
+        singletonInstance.isLoaded[shellIndex] = 1;
     }
 }

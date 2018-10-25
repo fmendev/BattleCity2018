@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShellWipe : MonoBehaviour {
 
-    public GameObject currentShell;
+    public int shellDisplayIndex;
     public Texture2D targetTexture, originalTexture;
 
     private Color[,] targetTextureColors;
@@ -15,19 +15,33 @@ public class ShellWipe : MonoBehaviour {
 
     private void Awake()
     {
+        LoadTextures();
         ResetTextures();
+        shellDisplayIndex = transform.GetSiblingIndex();
     }
 
     private void Update()
     {
-        if (increment < targetTexture.height)
+        //Check if other shells are currently reloading
+        var reloadingStatus = ShellDisplay.isReloading.Where((s, i) => i != shellDisplayIndex).ToList();
+        var otherReloading = reloadingStatus.Any(s => s == 1);
+
+        //If no other shells are reloading, start reloading this shell
+        if (increment < targetTexture.height && !otherReloading)
+        {
             StartCoroutine("DrawPixels");
-        else
+        }
+        else if (increment == targetTexture.height)
         {
             increment = 1;
             currentPixelRow = 0;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<TankGun>().shellAmmo++;
-            Debug.Log("Loaded " + GameObject.FindGameObjectWithTag("Player").GetComponent<TankGun>().shellAmmo);
+
+            int ammo = TankGun.GetCurrentAmmo();
+            TankGun.SetCurrentAmmo(ammo + 1);
+
+            ShellDisplay.isReloading[shellDisplayIndex] = 0;
+            TankGun.SetShellAsLoaded(shellDisplayIndex);
+
             ResetTextures();
             enabled = false;
         }
@@ -35,6 +49,7 @@ public class ShellWipe : MonoBehaviour {
 
     IEnumerator DrawPixels()
     {
+        ShellDisplay.isReloading[shellDisplayIndex] = 1;
         increment = currentPixelRow + 1;
 
         //filling a part of the temporary texture with the target texture 
@@ -54,10 +69,21 @@ public class ShellWipe : MonoBehaviour {
         yield return null;
     }
 
-    private void ResetTextures()
+    private void LoadTextures()
     {
         targetTextureColors = new Color[targetTexture.width, targetTexture.height];
 
+        for (int y = 0; y < targetTexture.height; y++)
+        {
+            for (int x = 0; x < targetTexture.width; x++)
+            {
+                targetTextureColors[x, y] = targetTexture.GetPixel(x, y);
+            }
+        }
+    }
+
+    private void ResetTextures()
+    {
         tmpTexture = new Texture2D(originalTexture.width, originalTexture.height);
 
         for (int y = 0; y < tmpTexture.height; y++)
@@ -68,12 +94,6 @@ public class ShellWipe : MonoBehaviour {
             }
         }
 
-        for (int y = 0; y < targetTexture.height; y++)
-        {
-            for (int x = 0; x < targetTexture.width; x++)
-            {
-                targetTextureColors[x, y] = targetTexture.GetPixel(x, y);
-            }
-        }
+        gameObject.GetComponent<RawImage>().texture = targetTexture;
     }
 }
