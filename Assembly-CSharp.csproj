@@ -66,6 +66,9 @@
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\EnemyProperties.cs" />
     <Compile Include="Assets\Scripts\LevelSettings.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\IntroTank.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\MenuSelectionSprite.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\PlayerSounds.cs" />
     <Compile Include="Assets\Scripts\ShellDisplay.cs" />
