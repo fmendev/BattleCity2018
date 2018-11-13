@@ -117,9 +117,9 @@ public class TankGun : MonoBehaviour
         return singletonInstance.currentShellAmmo;
     }
 
-    public static void SetCurrentAmmo(int currentAmmo)
+    public static void SetCurrentAmmo(int amount)
     {
-        singletonInstance.currentShellAmmo = currentAmmo;
+        singletonInstance.currentShellAmmo = amount;
     }
 
     public static int GetCurrentMaxAmmo()
@@ -127,8 +127,25 @@ public class TankGun : MonoBehaviour
         return singletonInstance.currentMaxAmmo;
     }
 
+    public static void IncreaseMaxAmmo()
+    {
+        singletonInstance.isLoaded.Add(1);
+        singletonInstance.currentShellAmmo++;
+        singletonInstance.currentMaxAmmo++;
+    }
+
     public static void SetShellAsLoaded(int shellIndex)
     {
         singletonInstance.isLoaded[shellIndex] = 1;
+    }
+
+    public static float GetShellSpeed()
+    {
+        return singletonInstance.shellSpeed;
+    }
+
+    public static void SetShellSpeed(float speed)
+    {
+        singletonInstance.shellSpeed = speed;
     }
 }

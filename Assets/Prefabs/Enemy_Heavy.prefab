@@ -119,7 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b591a61354fdaa342a257a9a8994dd42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankType: 2
+  enemyType: 2
+  hasPU: 0
   tankSpeed: 0
   bulletSpeed: 0
   health: 1

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ShellDisplay : MonoBehaviour
 {
+    private static ShellDisplay singletonInstance;
+
     public List<GameObject> shellDisplay;
     public static List<int> isReloading;
 
@@ -14,6 +16,8 @@ public class ShellDisplay : MonoBehaviour
     //TODO: make it work for additional player
     private void Awake()
     {
+        InitializeSingleton();
+
         disabledShell = Resources.Load<Texture2D>("ImprintShell");
         availableShell = Resources.Load<Texture2D>("Shell");
     }
@@ -22,6 +26,11 @@ public class ShellDisplay : MonoBehaviour
     {
         InitializeReloadingStatus();
         UpdateAmmoDisplay();
+    }
+
+    private void InitializeSingleton()
+    {
+        singletonInstance = this;
     }
 
     public void ReloadShell(int shellFiredIndex)
@@ -40,12 +49,21 @@ public class ShellDisplay : MonoBehaviour
         }
     }
 
-    private void UpdateAmmoDisplay()
+    public static void UpdateAmmoDisplay()
     {
-            for (int i = shellDisplay.Count - 1; i > TankGun.GetCurrentMaxAmmo() - 1; i--)
+        for (int i = 0; i < singletonInstance.shellDisplay.Count; i++)
+        {
+            if (isReloading[i] == 0)
             {
-                shellDisplay[i].GetComponent<RawImage>().texture = disabledShell;
-                shellDisplay[i].GetComponent<RawImage>().color = new Color32(75, 75, 75, 255);
+                singletonInstance.shellDisplay[i].GetComponent<RawImage>().texture = singletonInstance.availableShell;
+                singletonInstance.shellDisplay[i].GetComponent<RawImage>().color = new Color32(255, 255, 255, 255);
             }
+        }
+
+        for (int i = singletonInstance.shellDisplay.Count - 1; i > TankGun.GetCurrentMaxAmmo() - 1; i--)
+        {
+            singletonInstance.shellDisplay[i].GetComponent<RawImage>().texture = singletonInstance.disabledShell;
+            singletonInstance.shellDisplay[i].GetComponent<RawImage>().color = new Color32(75, 75, 75, 255);
+        }
     }
 }

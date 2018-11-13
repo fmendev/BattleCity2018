@@ -82,10 +82,14 @@ public class BulletCollisions : MonoBehaviour
 
             if (health == 0)
             {
-                enemyAnim.SetBool("isDying", true);
+                if (collision.gameObject.GetComponent<EnemyProperties>().hasPU && !collision.gameObject.GetComponent<EnemyProperties>().spawnedPU)
+                {
+                    PowerUpController.SpawnPowerup();
+                    collision.gameObject.GetComponent<EnemyProperties>().spawnedPU = true;
+                }
                 collision.gameObject.GetComponent<EnemyProperties>().tankSpeed = 0;
+                enemyAnim.SetBool("isDying", true);
                 yield return new WaitForSeconds(dyingAnimationDuration);
-                enemyAnim.SetBool("isDying", false);
                 Destroy(collision.gameObject);
             }
             else

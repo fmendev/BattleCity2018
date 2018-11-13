@@ -9,14 +9,29 @@ public class IntroTank : MonoBehaviour {
     public Texture2D introTank;
     public GameObject flashPanel;
     public GameObject mainMenuPanel;
+    public GameObject background;
 
     private Color color;
+    private float alphaDelta = .005f;
+    private float rgbDelta = .25f;
     private bool flashing = false;
     private bool optionsFadingIn = false;
 
+    private AudioSource audioSource;
+    public AudioClip tankSFX;
+    public AudioClip fireSFX;
+    public AudioClip mainMenuMusic;
+
     void Start ()
     {
+        audioSource = gameObject.GetComponent<AudioSource>();
         gameObject.GetComponent<RawImage>().enabled = false;
+
+        audioSource.clip = tankSFX;
+        audioSource.Play();
+
+        color = new Color(0, 0, 0, 255);
+        background.GetComponent<RawImage>().color = color;
 
         for (int i = 0; i < mainMenuPanel.transform.childCount; i++)
         {
@@ -42,8 +57,11 @@ public class IntroTank : MonoBehaviour {
         yield return new WaitForSeconds(1f);
 
         transform.GetChild(2).gameObject.SetActive(false);
-        gameObject.GetComponent<RawImage>().enabled = true;
+        //gameObject.GetComponent<RawImage>().enabled = true;
 
+        audioSource.Stop();
+        audioSource.clip = fireSFX;
+        audioSource.Play();
         flashPanel.SetActive(true);
         flashing = true;
         flashPanel.GetComponent<RawImage>().color = color;
@@ -54,13 +72,20 @@ public class IntroTank : MonoBehaviour {
         if (flashing)
         {
             float alpha = flashPanel.GetComponent<RawImage>().color.a;
-            color = new Color(255, 255, 255, alpha - .01f);
-            flashPanel.GetComponent<RawImage>().color = color;
+            Color flashColor = new Color(255, 255, 255, alpha - alphaDelta);
+            flashPanel.GetComponent<RawImage>().color = flashColor;
 
-            if (color.a <= 0)
+            float rgb = background.GetComponent<RawImage>().color.r;
+            Color backgroundColor = new Color(rgb + rgbDelta, rgb + rgbDelta, rgb + rgbDelta, 255);
+            background.GetComponent<RawImage>().color = backgroundColor;
+
+            if (flashColor.a <= 0)
             {
-                color = new Color(255, 255, 255, 1);
-                flashPanel.GetComponent<RawImage>().color = color;
+                flashColor = new Color(255, 255, 255, 1);
+                backgroundColor = new Color(255, 255, 255, 255);
+                flashPanel.GetComponent<RawImage>().color = flashColor;
+                background.GetComponent<RawImage>().color = backgroundColor;
+
                 flashing = false;
                 flashPanel.SetActive(false);
                 optionsFadingIn = true;

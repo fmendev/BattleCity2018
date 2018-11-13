@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -37,8 +36,6 @@ public class PlayerController : MonoBehaviour
 
         ice = GameObject.FindGameObjectWithTag("Ice");
         ground = GameObject.FindGameObjectWithTag("Ground");
-
-
     }
 
     private void Update()
@@ -50,7 +47,6 @@ public class PlayerController : MonoBehaviour
             if (verticalMove != 0)
             {
                 gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * verticalMove));
-
             }
         }
         else if (!lastMoveUpOrDown)
