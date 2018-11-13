@@ -3,32 +3,37 @@
 public class PowerUpEffects : MonoBehaviour
 {
     public PowerUpType puType;
+    public float timer = 10f;
 
     private GameObject player;
+    private Animator anim;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        anim = GetComponent<Animator>();
 
         if (puType == PowerUpType.Ammo)
         {
-            GetComponent<SpriteRenderer>().sprite = PowerUpController.GetAmmoPUSprite();
+            anim.SetBool("isAmmo", true);
         }
 
         else if (puType == PowerUpType.BulletSpeed)
         {
-            GetComponent<SpriteRenderer>().sprite = PowerUpController.GetBulletSpeedPUSprite();
+            anim.SetBool("isBulletSpeed", true);
         }
 
         else if (puType == PowerUpType.Money)
         {
-            GetComponent<SpriteRenderer>().sprite = PowerUpController.GetMoneyPUSprite();
+            anim.SetBool("isMoney", true);
         }
 
         else if (puType == PowerUpType.TankSpeed)
         {
-            GetComponent<SpriteRenderer>().sprite = PowerUpController.GetTankSpeedPUSprite();
+            anim.SetBool("isTankSpeed", true);
         }
+
+        Destroy(gameObject, timer);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -57,5 +62,7 @@ public class PowerUpEffects : MonoBehaviour
                 player.GetComponent<PlayerController>().playerSpeed = speed * 1.15f;
             }
         }
+
+        Destroy(gameObject);
     }
 }

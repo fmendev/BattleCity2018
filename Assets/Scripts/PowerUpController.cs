@@ -13,19 +13,19 @@ public class PowerUpController : MonoBehaviour
     private GameObject bounds;
     private float minX, minY, maxX, maxY;
 
-    private Sprite ammo;
-    private Sprite tankSpeed;
-    private Sprite bulletSpeed;
-    private Sprite money;
+    //private Sprite ammo;
+    //private Sprite tankSpeed;
+    //private Sprite bulletSpeed;
+    //private Sprite money;
 
     private void Awake()
     {
         InitializeSingleton();
 
-        ammo = Resources.Load<Sprite>("Ammo_PU");
-        tankSpeed = Resources.Load<Sprite>("TankSpeed_PU");
-        bulletSpeed = Resources.Load<Sprite>("BulletSpeed_PU");
-        money = Resources.Load<Sprite>("Money_PU");
+        //ammo = Resources.Load<Sprite>("Ammo_PU");
+        //tankSpeed = Resources.Load<Sprite>("TankSpeed_PU");
+        //bulletSpeed = Resources.Load<Sprite>("BulletSpeed_PU");
+        //money = Resources.Load<Sprite>("Money_PU");
     }
 
     private void Start()
@@ -76,25 +76,25 @@ public class PowerUpController : MonoBehaviour
         return new Vector3(x, y);
     }
 
-    public static Sprite GetAmmoPUSprite()
-    {
-        return singletonInstance.ammo;
-    }
+    //public static Sprite GetAmmoPUSprite()
+    //{
+    //    return singletonInstance.ammo;
+    //}
 
-    public static Sprite GetTankSpeedPUSprite()
-    {
-        return singletonInstance.tankSpeed;
-    }
+    //public static Sprite GetTankSpeedPUSprite()
+    //{
+    //    return singletonInstance.tankSpeed;
+    //}
 
-    public static Sprite GetBulletSpeedPUSprite()
-    {
-        return singletonInstance.bulletSpeed;
-    }
+    //public static Sprite GetBulletSpeedPUSprite()
+    //{
+    //    return singletonInstance.bulletSpeed;
+    //}
 
-    public static Sprite GetMoneyPUSprite()
-    {
-        return singletonInstance.money;
-    }
+    //public static Sprite GetMoneyPUSprite()
+    //{
+    //    return singletonInstance.money;
+    //}
 
     private static PowerUpType GetRandomPUType()
     {

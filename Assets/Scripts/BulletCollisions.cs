@@ -8,8 +8,8 @@ public class BulletCollisions : MonoBehaviour
 {
     public bool firedByPlayer = false;
     public GameObject shooter;
+    public GameObject explosion;
 
-    private readonly float dyingAnimationDuration = .25f;
     private GameObject brick;
 
     void Start()
@@ -17,7 +17,7 @@ public class BulletCollisions : MonoBehaviour
         brick = GameObject.FindGameObjectWithTag("Brick");
     }
 
-    private IEnumerator OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == brick)
         {
@@ -87,9 +87,10 @@ public class BulletCollisions : MonoBehaviour
                     PowerUpController.SpawnPowerup();
                     collision.gameObject.GetComponent<EnemyProperties>().spawnedPU = true;
                 }
-                collision.gameObject.GetComponent<EnemyProperties>().tankSpeed = 0;
-                enemyAnim.SetBool("isDying", true);
-                yield return new WaitForSeconds(dyingAnimationDuration);
+
+                explosion.transform.localPosition = collision.gameObject.transform.localPosition;
+
+                Instantiate(explosion);
                 Destroy(collision.gameObject);
             }
             else
@@ -105,8 +106,9 @@ public class BulletCollisions : MonoBehaviour
 
             if (health == 0)
             {
-                playerAnim.SetBool("isDying", true);
-                yield return new WaitForSeconds(dyingAnimationDuration);
+                explosion.transform.localPosition = collision.gameObject.transform.localPosition;
+
+                Instantiate(explosion);
                 Destroy(collision.gameObject);
             }
             else

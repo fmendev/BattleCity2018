@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212775362215444308}
   - component: {fileID: 61044568640267330}
   - component: {fileID: 114138804844971366}
+  - component: {fileID: 95070042189765880}
   m_Layer: 0
   m_Name: PowerUp
   m_TagString: Untagged
@@ -36,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1439774273823470}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -47.844906, y: -7.0106583, z: 0}
+  m_LocalPosition: {x: -17.475231, y: -11.823325, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -67,6 +68,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.087127, y: 3.7215672}
   m_EdgeRadius: 0
+--- !u!95 &95070042189765880
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1439774273823470}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4e50818f526bcd64f91ecc5aa84205e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114138804844971366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -78,7 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037c33e5f31034f4a92a94087f21a186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puType: 0
+  puType: 3
+  timer: 10
 --- !u!212 &212775362215444308
 SpriteRenderer:
   m_ObjectHideFlags: 1
