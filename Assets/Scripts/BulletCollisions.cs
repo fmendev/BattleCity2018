@@ -109,7 +109,7 @@ public class BulletCollisions : MonoBehaviour
 
                 Instantiate(explosion);
                 LivesController.DecreaseLives();
-                Destroy(collision.gameObject);
+                collision.gameObject.SetActive(false);
             }
         }
         else if (collision.gameObject.tag == "Eagle")

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MenuSelectionSprite : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -8,10 +9,13 @@ public class MenuSelectionSprite : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerEnter(PointerEventData eventData)
     {
         selectionSprite.gameObject.SetActive(true);
+        gameObject.GetComponent<Outline>().enabled = true;
+        SoundManager.PlaySfx(SoundManager.GetSFX(SFX.mouseOnOption));
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         selectionSprite.gameObject.SetActive(false);
+        gameObject.GetComponent<Outline>().enabled = false;
     }
 }

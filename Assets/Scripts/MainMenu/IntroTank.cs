@@ -10,6 +10,7 @@ public class IntroTank : MonoBehaviour {
     public GameObject flashPanel;
     public GameObject mainMenuPanel;
     public GameObject background;
+    public GameObject title;
 
     private Color color;
     private float alphaDelta = .005f;
@@ -17,18 +18,11 @@ public class IntroTank : MonoBehaviour {
     private bool flashing = false;
     private bool optionsFadingIn = false;
 
-    private AudioSource audioSource;
-    public AudioClip tankSFX;
-    public AudioClip fireSFX;
-    public AudioClip mainMenuMusic;
-
     void Start ()
     {
-        audioSource = gameObject.GetComponent<AudioSource>();
         gameObject.GetComponent<RawImage>().enabled = false;
 
-        audioSource.clip = tankSFX;
-        audioSource.Play();
+        SoundManager.PlaySfx(SoundManager.GetSFX(SFX.introTankRolling));
 
         color = new Color(0, 0, 0, 255);
         background.GetComponent<RawImage>().color = color;
@@ -59,9 +53,8 @@ public class IntroTank : MonoBehaviour {
         transform.GetChild(2).gameObject.SetActive(false);
         //gameObject.GetComponent<RawImage>().enabled = true;
 
-        audioSource.Stop();
-        audioSource.clip = fireSFX;
-        audioSource.Play();
+        SoundManager.PlaySfx(SoundManager.GetSFX(SFX.introTankFiring));
+        title.gameObject.SetActive(true);
 
         flashPanel.SetActive(true);
         flashing = true;
@@ -101,11 +94,12 @@ public class IntroTank : MonoBehaviour {
                 color = new Color(255, 255, 255, alpha + .01f);
                 mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = color;
 
-                if (color.a >= 255)
+                if (color.a >= 1)
                 {
                     color = new Color(255, 255, 255, 1);
                     mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = color;
                     optionsFadingIn = false;
+                    SoundManager.PlayMusic(0);
                 }
             }
         }

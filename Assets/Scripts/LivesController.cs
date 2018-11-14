@@ -13,6 +13,8 @@ public class LivesController : MonoBehaviour {
 
     [SerializeField]
     private int currentLives;
+    [SerializeField]
+    private float playerRespawnDelay;
 
     private int livesCap = 5;
 
@@ -21,8 +23,14 @@ public class LivesController : MonoBehaviour {
         InitializeSingleton();
 
         currentLives = 3;
+        playerRespawnDelay = 1f;
 
         UpdateLivesDisplay();
+    }
+
+    private void Start()
+    {
+        PlayerSpawner.SpawnPlayer();
     }
 
     private void UpdateLivesDisplay()
@@ -59,7 +67,13 @@ public class LivesController : MonoBehaviour {
         if (singletonInstance.currentLives > 0)
         {
             singletonInstance.UpdateLivesDisplay();
-            //Instantiate()
+            PlayerSpawner.SpawnPlayer();
+            ArmorController.IncreaseArmor();
+        }
+        else
+        {
+            Animator gameOverAnim = GameObject.FindGameObjectWithTag("GameOver").GetComponent<Animator>();
+            gameOverAnim.SetBool("isEagleDestroyed", true);
         }
     }
 }
