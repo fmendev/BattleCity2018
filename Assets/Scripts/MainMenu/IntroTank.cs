@@ -62,6 +62,7 @@ public class IntroTank : MonoBehaviour {
         audioSource.Stop();
         audioSource.clip = fireSFX;
         audioSource.Play();
+
         flashPanel.SetActive(true);
         flashing = true;
         flashPanel.GetComponent<RawImage>().color = color;
