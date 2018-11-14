@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firedByPlayer: 1
   shooter: {fileID: 0}
+  explosion: {fileID: 1286967844662432, guid: febdbcee1234458409b2a4d395d7ff47, type: 2}
 --- !u!212 &212357096804624578
 SpriteRenderer:
   m_ObjectHideFlags: 1

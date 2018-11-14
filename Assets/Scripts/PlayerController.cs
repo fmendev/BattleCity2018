@@ -4,9 +4,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region Public variables
-    public int health = 1;
     public float playerSpeed;
+    public string currentSizeParameter;
 
+    //public Sprite s1, s2, s3;
     #endregion
 
     #region Movement variables
@@ -36,6 +37,8 @@ public class PlayerController : MonoBehaviour
 
         ice = GameObject.FindGameObjectWithTag("Ice");
         ground = GameObject.FindGameObjectWithTag("Ground");
+
+        currentSizeParameter = "isMoving_S0";
     }
 
     private void Update()
@@ -87,13 +90,13 @@ public class PlayerController : MonoBehaviour
 
         moveDirection = new Vector3(horizontalMove, verticalMove);
 
-        if  (moveDirection == Vector3.zero)
+        if (moveDirection == Vector3.zero)
         {
-            anim.SetBool("isMoving", false);
+            anim.SetBool(currentSizeParameter, false);
         }
         else
         {
-            anim.SetBool("isMoving", true);
+            anim.SetBool(currentSizeParameter, true);
         }
         #endregion
     }

@@ -101,21 +101,15 @@ public class BulletCollisions : MonoBehaviour
         else if (collision.gameObject.CompareTag("Player") && collision.gameObject != shooter)
         {
             Animator playerAnim = collision.gameObject.GetComponent<Animator>();
-            int health = collision.gameObject.GetComponent<PlayerController>().health;
-            health--;
+            ArmorController.TakeDamage();
 
-            if (health == 0)
+            if (ArmorController.GetArmor() == 0)
             {
                 explosion.transform.localPosition = collision.gameObject.transform.localPosition;
 
                 Instantiate(explosion);
                 Destroy(collision.gameObject);
             }
-            else
-            {
-                collision.gameObject.GetComponent<PlayerController>().health = health;
-            }
-
         }
         else if (collision.gameObject.tag == "Eagle")
         {
