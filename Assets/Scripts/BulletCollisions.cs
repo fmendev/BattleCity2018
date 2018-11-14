@@ -108,6 +108,7 @@ public class BulletCollisions : MonoBehaviour
                 explosion.transform.localPosition = collision.gameObject.transform.localPosition;
 
                 Instantiate(explosion);
+                LivesController.DecreaseLives();
                 Destroy(collision.gameObject);
             }
         }

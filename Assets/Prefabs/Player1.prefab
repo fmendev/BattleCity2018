@@ -216,9 +216,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0099b4c1fa6db49438da1989df91f92c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shellPrefab: {fileID: 1325828810436950, guid: 04d0dd8389e169e4681547ea59521ecf,
+  shellPrefab: {fileID: 1325828810436950, guid: 28ef018fc2d1f1b489400196ebfbc445,
     type: 2}
-  shellSpeed: 1000
+  shellSpeed: 1250
   currentMaxAmmo: 3
   currentShellAmmo: 3
   shootingSFX: {fileID: 8300000, guid: 8a21640b4c40a0e44afc5a66ec4d54d8, type: 3}
@@ -246,8 +246,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da1cb7c50630bc34c81a77f940503dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
-  playerSpeed: 500
+  playerSpeed: 650
+  currentSizeParameter: 
 --- !u!212 &212604024207056494
 SpriteRenderer:
   m_ObjectHideFlags: 1
