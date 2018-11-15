@@ -27,7 +27,7 @@ public class PowerUpEffects : MonoBehaviour
             anim.SetBool("isAmmo", true);
         }
 
-        else if (puType == PowerUpType.BulletSpeed)
+        else if (puType == PowerUpType.ShellSpeed)
         {
             anim.SetBool("isBulletSpeed", true);
         }
@@ -56,19 +56,19 @@ public class PowerUpEffects : MonoBehaviour
         {
             if (puType == PowerUpType.Ammo)
             {
-                if (TankGun.GetCurrentMaxAmmo() < ammoCap)
+                if (WeaponsController.GetCurrentMaxAmmo() < ammoCap)
                 {
-                    TankGun.IncreaseMaxAmmo();
+                    WeaponsController.IncreaseMaxAmmo();
                     ShellDisplay.UpdateAmmoDisplay();
                 }
             }
 
-            else if (puType == PowerUpType.BulletSpeed)
+            else if (puType == PowerUpType.ShellSpeed)
             {
-                if (TankGun.GetShellSpeed() < shellSpeedCap)
+                if (WeaponsController.GetShellSpeed() < shellSpeedCap)
                 {
-                    float shellSpeed = TankGun.GetShellSpeed();
-                    TankGun.SetShellSpeed(shellSpeed * 1.15f);
+                    float shellSpeed = WeaponsController.GetShellSpeed();
+                    WeaponsController.SetShellSpeed(shellSpeed * 1.15f);
                 }
             }
 

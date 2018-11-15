@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PowerUpType { Ammo, TankSpeed, BulletSpeed, Money, Armor };
+public enum PowerUpType { Ammo, TankSpeed, ShellSpeed, Money, Armor };
 
 public class PowerUpController : MonoBehaviour
 {

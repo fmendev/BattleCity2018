@@ -60,7 +60,7 @@ public class ShellDisplay : MonoBehaviour
             }
         }
 
-        for (int i = singletonInstance.shellDisplay.Count - 1; i > TankGun.GetCurrentMaxAmmo() - 1; i--)
+        for (int i = singletonInstance.shellDisplay.Count - 1; i > WeaponsController.GetCurrentMaxAmmo() - 1; i--)
         {
             singletonInstance.shellDisplay[i].GetComponent<RawImage>().texture = singletonInstance.disabledShell;
             singletonInstance.shellDisplay[i].GetComponent<RawImage>().color = new Color32(75, 75, 75, 255);

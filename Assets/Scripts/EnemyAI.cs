@@ -11,9 +11,9 @@ public class EnemyAI : MonoBehaviour
     public GameObject bulletPrefab;
 
     private int enemySpeed;
-    private int bulletSpeed;
+    private int shellSpeed;
     private int health;
-    private int bulletsFiredLimit;
+    private int shellsFiredLimit;
     private float primaryDirection;
     private float secondaryDirection;
     private float awayDirection;
@@ -23,10 +23,11 @@ public class EnemyAI : MonoBehaviour
     private float maxFireDelay;
 
     private int targetIndex = 0;
-    private int bulletsTotal = 20;
+    private int ammoPoolCount = 20;
     private Dictionary<int, float> pNextDirection;
-    private List<GameObject> bullets;
+    private List<GameObject> ammoPool;
     private List<Vector3> barrierDirection;
+    private GameObject bigAmmoPool;
     private Rigidbody2D rb2d;
     private Vector3 distance, previousDirection, moveDirection = Vector3.up;
 
@@ -58,11 +59,13 @@ public class EnemyAI : MonoBehaviour
 
         rb2d = GetComponent<Rigidbody2D>();
 
-        bullets = new List<GameObject>();
-        for (int i = 0; i < bulletsTotal; i++)
+        bigAmmoPool = GameObject.FindGameObjectWithTag("AmmoPool");
+
+        ammoPool = new List<GameObject>();
+        for (int i = 0; i < ammoPoolCount; i++)
         {
-            bullets.Add(Instantiate(bulletPrefab));
-            bullets[i].SetActive(false);
+            ammoPool.Add(Instantiate(bulletPrefab, bigAmmoPool.transform));
+            ammoPool[i].SetActive(false);
         }
     }
 
@@ -72,10 +75,10 @@ public class EnemyAI : MonoBehaviour
         EnemyProperties properties = GetComponent<EnemyProperties>();
 
         enemySpeed = properties.tankSpeed;
-        bulletSpeed = properties.bulletSpeed;
+        shellSpeed = properties.shellSpeed;
 
         health = properties.health;
-        bulletsFiredLimit = properties.bulletsFiredLimit;
+        shellsFiredLimit = properties.shellsFiredLimit;
 
         primaryDirection = properties.primaryDirection;
         secondaryDirection = properties.secondaryDirection;
@@ -87,7 +90,7 @@ public class EnemyAI : MonoBehaviour
         minFireDelay = properties.minFireDelay;
         maxFireDelay = properties.maxFireDelay;
 
-        //Make enemy target change for every new enemy spawned
+        //Make new enemy target different than last enemy spawned
         targetIndex = gameObject.transform.GetSiblingIndex() % targets.Count;
 
         WeightedRandomDirection();
@@ -270,22 +273,22 @@ public class EnemyAI : MonoBehaviour
 
     private void Fire()
     {
-        int bulletsFired = 0;
+        int shellsFired = 0;
 
-        for (int i = 0; i < bullets.Count; i++)
+        for (int i = 0; i < ammoPool.Count; i++)
         {
-            if (bullets[i].gameObject.activeSelf == true)
+            if (ammoPool[i].gameObject.activeSelf == true)
             {
-                bulletsFired++;
+                shellsFired++;
             }
-            else if (bullets[i].gameObject.activeSelf == false && bulletsFired < bulletsFiredLimit)
+            else if (ammoPool[i].gameObject.activeSelf == false && shellsFired < shellsFiredLimit)
             {
-                bullets[i].gameObject.SetActive(true);
-                bullets[i].transform.position = gameObject.transform.position + PositionBulletInBarrel(gameObject.transform.localRotation.eulerAngles.z);
-                bullets[i].transform.rotation = gameObject.transform.rotation;
-                bullets[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * bulletSpeed * Time.fixedDeltaTime;
-                bullets[i].GetComponent<BulletCollisions>().firedByPlayer = false;
-                bullets[i].GetComponent<BulletCollisions>().shooter = gameObject;
+                ammoPool[i].gameObject.SetActive(true);
+                ammoPool[i].transform.position = gameObject.transform.position + PositionProjectileInBarrel(gameObject.transform.localRotation.eulerAngles.z);
+                ammoPool[i].transform.rotation = gameObject.transform.rotation;
+                ammoPool[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * shellSpeed * Time.fixedDeltaTime;
+                ammoPool[i].GetComponent<BulletCollisions>().firedByPlayer = false;
+                ammoPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
                 break;
             }
         }
@@ -293,7 +296,7 @@ public class EnemyAI : MonoBehaviour
         Invoke("Fire", UnityEngine.Random.Range(minFireDelay, maxFireDelay));
     }
 
-    private Vector3 PositionBulletInBarrel(float rotation)
+    private Vector3 PositionProjectileInBarrel(float rotation)
     {
         float distanceToBarrelTip = 1.4f;
         switch ((int)rotation)

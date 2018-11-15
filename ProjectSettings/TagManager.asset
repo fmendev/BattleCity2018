@@ -12,6 +12,7 @@ TagManager:
   - GameOver
   - ShellDisplay
   - Bounds
+  - AmmoPool
   layers:
   - Default
   - TransparentFX

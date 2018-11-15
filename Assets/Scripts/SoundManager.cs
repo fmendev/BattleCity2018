@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public enum SFX { introTankRolling, introTankFiring, mouseOnOption, startGame, playerFire, bulletHitsBrick, bulletHitsWall, tankExplosion, powerUpSpawn };
+public enum SFX { introTankRolling, introTankFiring, mouseOnOption, startGame, playerFire, projectileHitsBrick, projectileHitsWall, tankExplosion, powerUpSpawn };
 
 public class SoundManager : MonoBehaviour
 {
@@ -20,8 +20,8 @@ public class SoundManager : MonoBehaviour
 
     //In game
     public AudioClip playerFire;
-    public AudioClip bulletHitsBrick;
-    public AudioClip bulletHitsWall;
+    public AudioClip projectileHitsBrick;
+    public AudioClip projectileHitsWall;
     public AudioClip tankExplosion;
     public AudioClip powerUpSpawn;
 
@@ -62,8 +62,8 @@ public class SoundManager : MonoBehaviour
         else if (sfx == SFX.mouseOnOption) return singletonInstance.mouseOnOption;
         else if (sfx == SFX.startGame) return singletonInstance.startGame;
         else if (sfx == SFX.playerFire) return singletonInstance.playerFire;
-        else if (sfx == SFX.bulletHitsBrick) return singletonInstance.bulletHitsBrick;
-        else if (sfx == SFX.bulletHitsWall) return singletonInstance.bulletHitsWall;
+        else if (sfx == SFX.projectileHitsBrick) return singletonInstance.projectileHitsBrick;
+        else if (sfx == SFX.projectileHitsWall) return singletonInstance.projectileHitsWall;
         else if (sfx == SFX.tankExplosion) return singletonInstance.tankExplosion;
         else if (sfx == SFX.powerUpSpawn) return singletonInstance.powerUpSpawn;
 

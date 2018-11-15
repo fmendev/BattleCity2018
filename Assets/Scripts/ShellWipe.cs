@@ -36,11 +36,11 @@ public class ShellWipe : MonoBehaviour {
             increment = 1;
             currentPixelRow = 0;
 
-            int ammo = TankGun.GetCurrentAmmo();
-            TankGun.SetCurrentAmmo(ammo + 1);
+            int ammo = WeaponsController.GetCurrentAmmo();
+            WeaponsController.SetCurrentAmmo(ammo + 1);
 
             ShellDisplay.isReloading[shellDisplayIndex] = 0;
-            TankGun.SetShellAsLoaded(shellDisplayIndex);
+            WeaponsController.SetShellAsLoaded(shellDisplayIndex);
 
             ResetTextures();
             enabled = false;

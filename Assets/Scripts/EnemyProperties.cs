@@ -16,10 +16,10 @@ public class EnemyProperties : MonoBehaviour
     private Animator anim;
 
     public int tankSpeed;
-    public int bulletSpeed;
+    public int shellSpeed;
 
     public int health;
-    public int bulletsFiredLimit;
+    public int shellsFiredLimit;
 
     public float primaryDirection;
     public float secondaryDirection;
@@ -36,10 +36,10 @@ public class EnemyProperties : MonoBehaviour
         if (enemyType == EnemyType.Small)
         {
             tankSpeed = 500;
-            bulletSpeed = 1200;
+            shellSpeed = 1200;
 
             health = 1;
-            bulletsFiredLimit = 1;
+            shellsFiredLimit = 1;
 
             primaryDirection = .5f;
             secondaryDirection = .3f;
@@ -54,10 +54,10 @@ public class EnemyProperties : MonoBehaviour
         else if (enemyType == EnemyType.Fast)
         {
             tankSpeed = 850;
-            bulletSpeed = 1200;
+            shellSpeed = 1200;
 
             health = 1;
-            bulletsFiredLimit = 1;
+            shellsFiredLimit = 1;
 
             primaryDirection = .35f;
             secondaryDirection = .4f;
@@ -72,10 +72,10 @@ public class EnemyProperties : MonoBehaviour
         else if (enemyType == EnemyType.Heavy)
         {
             tankSpeed = 500;
-            bulletSpeed = 1800;
+            shellSpeed = 1800;
 
             health = 1;
-            bulletsFiredLimit = 2;
+            shellsFiredLimit = 2;
 
             primaryDirection = .5f;
             secondaryDirection = .3f;
@@ -90,10 +90,10 @@ public class EnemyProperties : MonoBehaviour
         else if (enemyType == EnemyType.Armored)
         {
             tankSpeed = 400;
-            bulletSpeed = 1800;
+            shellSpeed = 1800;
 
             health = 4;
-            bulletsFiredLimit = 2;
+            shellsFiredLimit = 2;
 
             primaryDirection = .5f;
             secondaryDirection = .3f;
