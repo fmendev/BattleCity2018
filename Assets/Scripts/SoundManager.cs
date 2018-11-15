@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public enum SFX { introTankRolling, introTankFiring, mouseOnOption, playerFire, playerBulletImpact, tankExplosion , powerUpSpawn };
+public enum SFX { introTankRolling, introTankFiring, mouseOnOption, startGame, playerFire, bulletHitsBrick, bulletHitsWall, tankExplosion, powerUpSpawn };
 
 public class SoundManager : MonoBehaviour
 {
@@ -16,10 +16,12 @@ public class SoundManager : MonoBehaviour
     public AudioClip introTankRolling;
     public AudioClip introTankFiring;
     public AudioClip mouseOnOption;
+    public AudioClip startGame;
 
     //In game
     public AudioClip playerFire;
-    public AudioClip playerBulletImpact;
+    public AudioClip bulletHitsBrick;
+    public AudioClip bulletHitsWall;
     public AudioClip tankExplosion;
     public AudioClip powerUpSpawn;
 
@@ -58,8 +60,10 @@ public class SoundManager : MonoBehaviour
         if (sfx == SFX.introTankFiring) return singletonInstance.introTankFiring;
         else if (sfx == SFX.introTankRolling) return singletonInstance.introTankRolling;
         else if (sfx == SFX.mouseOnOption) return singletonInstance.mouseOnOption;
+        else if (sfx == SFX.startGame) return singletonInstance.startGame;
         else if (sfx == SFX.playerFire) return singletonInstance.playerFire;
-        else if (sfx == SFX.playerBulletImpact) return singletonInstance.playerBulletImpact;
+        else if (sfx == SFX.bulletHitsBrick) return singletonInstance.bulletHitsBrick;
+        else if (sfx == SFX.bulletHitsWall) return singletonInstance.bulletHitsWall;
         else if (sfx == SFX.tankExplosion) return singletonInstance.tankExplosion;
         else if (sfx == SFX.powerUpSpawn) return singletonInstance.powerUpSpawn;
 

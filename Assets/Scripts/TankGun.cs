@@ -21,16 +21,12 @@ public class TankGun : MonoBehaviour
     private List<GameObject> playerShellAmmoPool = new List<GameObject>();
     private ShellDisplay shellDisplay;
 
-    private AudioSource sfxSource;
-    public AudioClip shootingSFX;
-
     private void Awake()
     {
         InitializeSingleton();
+
         InitializeShellAmmoPool();
         InitializeLoadingStatus();
-
-        sfxSource = gameObject.GetComponent<AudioSource>();
 
         shellDisplay = GameObject.FindGameObjectWithTag("ShellDisplay").GetComponent<ShellDisplay>();
     }
@@ -70,8 +66,7 @@ public class TankGun : MonoBehaviour
                 currentShellAmmo--;
                 shellDisplay.ReloadShell(shellFiredIndex);
 
-                sfxSource.clip = shootingSFX;
-                sfxSource.Play();
+                SoundManager.PlaySfx(SoundManager.GetSFX(SFX.playerFire));
                 break;
             }
         }

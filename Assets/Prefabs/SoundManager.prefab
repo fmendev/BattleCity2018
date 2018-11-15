@@ -251,7 +251,9 @@ MonoBehaviour:
   introTankRolling: {fileID: 8300000, guid: 464200a939f832341af2a5239eb7cef8, type: 3}
   introTankFiring: {fileID: 8300000, guid: 2e2255535391b654dad07c28abe443ad, type: 3}
   mouseOnOption: {fileID: 8300000, guid: 75ea2ec0f75570b45b61e933d49ae6a9, type: 3}
-  playerFire: {fileID: 0}
-  playerBulletImpact: {fileID: 0}
-  tankExplosion: {fileID: 0}
-  powerUpSpawn: {fileID: 0}
+  startGame: {fileID: 8300000, guid: 4f135b89fe50ab9478799dc56733b62e, type: 3}
+  playerFire: {fileID: 8300000, guid: 8a21640b4c40a0e44afc5a66ec4d54d8, type: 3}
+  bulletHitsBrick: {fileID: 8300000, guid: b35c93283321e344ea1f7a6635a88e18, type: 3}
+  bulletHitsWall: {fileID: 8300000, guid: 75029e631d63f3746a165e25259c776f, type: 3}
+  tankExplosion: {fileID: 8300000, guid: ecdbc5d34197bda44a532cc4b7d3e426, type: 3}
+  powerUpSpawn: {fileID: 8300000, guid: 89bc5b55c8d0b4a41bd327fc15e2d7d7, type: 3}
