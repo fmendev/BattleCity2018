@@ -4,16 +4,9 @@ public class PlayerSpawner : MonoBehaviour
 {
     private static PlayerSpawner singletonInstance;
 
-    public GameObject playerTank;
-
     private void Awake()
     {
         InitializeSingleton();   
-    }
-
-    private void Start()
-    {
-        playerTank.gameObject.SetActive(false);
     }
 
     private void InitializeSingleton()
@@ -29,8 +22,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private void ActivatePlayer()
     {
-        playerTank.SetActive(true);
-        playerTank.transform.position = transform.position;
+        Instantiate(TankFactory.GetPlayer(), gameObject.transform);
         GetComponent<Animator>().SetBool("isSpawning", false);
     }
 }

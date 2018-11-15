@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\MainMenu\IntroTank.cs" />
     <Compile Include="Assets\Scripts\MainMenu\MenuSelectionSprite.cs" />
     <Compile Include="Assets\Scripts\MainMenu\SceneLoader.cs" />
+    <Compile Include="Assets\Scripts\PauseManager.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\PlayerSpawner.cs" />
     <Compile Include="Assets\Scripts\PowerUpController.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Assets\Scripts\ShellDisplay.cs" />
     <Compile Include="Assets\Scripts\ShellWipe.cs" />
     <Compile Include="Assets\Scripts\SoundManager.cs" />
+    <Compile Include="Assets\Scripts\TankFactory.cs" />
     <Compile Include="Assets\Scripts\TooltipController.cs" />
     <Compile Include="Assets\Scripts\TooltipFunctions.cs" />
     <Compile Include="Assets\Scripts\TowerController.cs" />
