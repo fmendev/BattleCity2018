@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 50415531506797296}
   - component: {fileID: 61533508346260046}
   - component: {fileID: 95872844864183768}
-  - component: {fileID: 114994046113656964}
   - component: {fileID: 114100044500878854}
   m_Layer: 0
   m_Name: Player1
@@ -124,19 +123,6 @@ MonoBehaviour:
   shellSpeed: 1250
   currentMaxAmmo: 3
   currentShellAmmo: 3
---- !u!114 &114994046113656964
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1237195701782624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da1cb7c50630bc34c81a77f940503dc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerSpeed: 650
-  currentSizeParameter: 
 --- !u!212 &212604024207056494
 SpriteRenderer:
   m_ObjectHideFlags: 1

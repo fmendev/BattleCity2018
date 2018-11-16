@@ -59,9 +59,9 @@ public class WeaponsController : MonoBehaviour
             if (ammoPool[i].gameObject.activeSelf == false && currentShellAmmo > 0)
             {
                 ammoPool[i].gameObject.SetActive(true);
-                ammoPool[i].transform.position = gameObject.transform.position + PositionProjectileInBarrel(gameObject.transform.localRotation.eulerAngles.z);
-                ammoPool[i].transform.rotation = gameObject.transform.rotation;
-                ammoPool[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * shellSpeed * Time.fixedDeltaTime;
+                ammoPool[i].transform.position = PlayerController.GetPlayerTransform().position+ PositionProjectileInBarrel(PlayerController.GetPlayerTransform().eulerAngles.z);
+                ammoPool[i].transform.rotation = PlayerController.GetPlayerTransform().rotation;
+                ammoPool[i].GetComponent<Rigidbody2D>().velocity = PlayerController.GetPlayerTransform().right * shellSpeed * Time.fixedDeltaTime;
                 ammoPool[i].GetComponent<BulletCollisions>().firedByPlayer = true;
                 ammoPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
 
@@ -79,7 +79,7 @@ public class WeaponsController : MonoBehaviour
 
     private Vector3 PositionProjectileInBarrel(float rotation)
     {
-        float distanceToBarrelTip = 1.4f;
+        float distanceToBarrelTip = 1.7f;
         switch ((int)rotation)
         {
             case 0:

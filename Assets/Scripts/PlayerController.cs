@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    #region Public variables
-    public float playerSpeed;
-    public string currentSizeParameter;
+    private static PlayerController singletonInstance;
 
-    //public Sprite s1, s2, s3;
-    #endregion
+    [SerializeField]
+    private float playerSpeed;
+
+    private string currentSizeParameter;
+    private GameObject playerObject;
 
     #region Movement variables
     private bool lastMoveUpOrDown;
@@ -19,24 +21,9 @@ public class PlayerController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     #endregion
 
-    private bool onIce = false;
-    private GameObject ice;
-    private GameObject ground;
-
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 100, 20), "X: " + horizontalMove.ToString());
-        GUI.Label(new Rect(10, 20, 100, 20), "Y: " + verticalMove.ToString());
-    }
-
     private void Awake()
     {
-        //player should awake facing "front" of level, use eagle
-        rb2d = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-
-        ice = GameObject.FindGameObjectWithTag("Ice");
-        ground = GameObject.FindGameObjectWithTag("Ground");
+        InitializeSingleton();
 
         currentSizeParameter = "isMoving_S0";
     }
@@ -49,7 +36,7 @@ public class PlayerController : MonoBehaviour
             verticalMove = Input.GetAxisRaw("Vertical");
             if (verticalMove != 0)
             {
-                gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * verticalMove));
+                playerObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 * verticalMove));
             }
         }
         else if (!lastMoveUpOrDown)
@@ -57,7 +44,7 @@ public class PlayerController : MonoBehaviour
             horizontalMove = Input.GetAxisRaw("Horizontal");
             if (horizontalMove != 0)
             {
-                gameObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180 * Math.Max(0, -horizontalMove)));
+                playerObject.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 180 * Math.Max(0, -horizontalMove)));
             }
         }
 
@@ -103,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (onIce)
+        if (playerObject.GetComponent<PlayerCollisions>().onIce)
         {
             rb2d.AddForce(moveDirection * playerSpeed * 0.7f * Time.fixedDeltaTime);
         }
@@ -113,21 +100,60 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    #region Ice effects
-    private void OnTriggerStay2D(Collider2D collider)
+    private void InitializeSingleton()
     {
-        if (collider.gameObject == ice)
+        if (singletonInstance == null)
         {
-            onIce = true;
+            singletonInstance = this;
+        }
+        else if (singletonInstance != this)
+        {
+            Destroy(gameObject);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
+    public static void RefreshPlayerController()
     {
-        if (collider.gameObject == ice)
-        {
-            onIce = false;
-        }
+        singletonInstance.StartCoroutine(singletonInstance.RefreshWhenPlayerActive());
     }
-    #endregion
+
+    private IEnumerator RefreshWhenPlayerActive()
+    {
+        yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player") != null);
+
+        playerObject = GameObject.FindGameObjectWithTag("Player");
+        rb2d = playerObject.GetComponent<Rigidbody2D>();
+        anim = playerObject.GetComponent<Animator>();
+    }
+
+    public static Transform GetPlayerTransform()
+    {
+        return singletonInstance.playerObject.transform;
+    }
+
+    public static float GetPlayerSpeed()
+    {
+        return singletonInstance.playerSpeed;
+    }
+
+    public static void SetPlayerSpeed(float speed)
+    {
+        singletonInstance.playerSpeed = speed;
+    }
+
+    public static string GetSizeParameter()
+    {
+        return singletonInstance.currentSizeParameter;
+    }
+
+    public static void SetSizeParameter(string param)
+    {
+        singletonInstance.currentSizeParameter = param;
+    }
+
+    public static void SetAnimationParameter(string param, bool value)
+    {
+        singletonInstance.anim.SetBool(param, value);
+    }
 }
+

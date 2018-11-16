@@ -79,34 +79,34 @@ public class PowerUpEffects : MonoBehaviour
 
             else if (puType == PowerUpType.TankSpeed)
             {
-                float tankSpeed = player.GetComponent<PlayerController>().playerSpeed;
+                float tankSpeed = PlayerController.GetPlayerSpeed();
 
                 if (tankSpeed < tankSpeedCap)
                 {
-                    player.GetComponent<PlayerController>().playerSpeed = tankSpeed * 1.15f;
+                    PlayerController.SetPlayerSpeed(tankSpeed * 1.15f);
                 }
             }
 
             else if (puType == PowerUpType.Armor)
             {
                 int currentMaxArmor = ArmorController.GetMaxArmor();
-                string param = player.GetComponent<PlayerController>().currentSizeParameter;
+                string param = PlayerController.GetSizeParameter();
 
-                player.GetComponent<Animator>().SetBool(param, false);
+                PlayerController.SetAnimationParameter(param, false);
 
                 if (currentMaxArmor < armorCap)
                 {
                     if (currentMaxArmor == 1)
                     {
-                        player.GetComponent<PlayerController>().currentSizeParameter = "isMoving_S1";
+                        PlayerController.SetSizeParameter("isMoving_S1");
                     }
                     else if (currentMaxArmor == 2)
                     {
-                        player.GetComponent<PlayerController>().currentSizeParameter = "isMoving_S2";
+                        PlayerController.SetSizeParameter("isMoving_S2");
                     }
                     else if (currentMaxArmor == 3)
                     {
-                        player.GetComponent<PlayerController>().currentSizeParameter = "isMoving_S3";
+                        PlayerController.SetSizeParameter("isMoving_S3");
                     }
 
                     //Increase max armor and set it to the new max
