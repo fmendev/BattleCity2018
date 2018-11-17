@@ -7,13 +7,12 @@ using UnityEngine;
 [Serializable]
 public class EnemyAI : MonoBehaviour
 {
-    public List<GameObject> targets;
-    public GameObject bulletPrefab;
+    public GameObject shellPrefab;
+    public bool GUIon = true;
 
     private int enemySpeed;
     private int shellSpeed;
     private int health;
-    private int shellsFiredLimit;
     private float primaryDirection;
     private float secondaryDirection;
     private float awayDirection;
@@ -21,27 +20,69 @@ public class EnemyAI : MonoBehaviour
     private float maxMoveChangeDelay;
     private float minFireDelay;
     private float maxFireDelay;
+    public Transform currentTarget;
 
-    private int targetIndex = 0;
-    private int ammoPoolCount = 20;
-    private Dictionary<int, float> pNextDirection;
-    private List<GameObject> ammoPool;
-    private List<Vector3> barrierDirection;
-    private GameObject bigAmmoPool;
     private Rigidbody2D rb2d;
-    private Vector3 distance, previousDirection, moveDirection = Vector3.up;
+    private Dictionary<int, float> pNextDirection;
+    private Vector3 previousDirection, moveDirection = Vector3.up;
+    private List<Vector3> barrierDirection = new List<Vector3>();
+
+    private GameObject brick;
+    private GameObject water;
+    private GameObject concrete;
+    private GameObject ice;
+    private GameObject ground;
+    private GameObject eagle;
+
+    //Fire function variables
+    private int ammoPoolCount = 20;
+    private GameObject bigAmmoPool;
+    private List<GameObject> ammoPool = new List<GameObject>();
 
     private void OnGUI()
     {
-        //GUI.Label(new Rect(10, transform.GetSiblingIndex() * 10, 200, 20), "playerVelocity " + playerVelocity.ToString());
-        //GUI.Label(new Rect(10, 50, 200, 20), "Right " + pNextDirection[0].ToString());
-        //GUI.Label(new Rect(10, 60, 200, 20), "Up " + pNextDirection[1].ToString());
-        //GUI.Label(new Rect(10, 70, 200, 20), "Left " + pNextDirection[2].ToString());
-        //GUI.Label(new Rect(10, 80, 200, 20), "Down " + pNextDirection[3].ToString());
-        //GUI.Label(new Rect(10, 90, 200, 20), "Previous " + previousDirection.ToString());
-        //GUI.Label(new Rect(10, 100, 200, 20), "Current " + moveDirection.ToString());
-        //GUI.Label(new Rect(10, 110, 200, 20), "Current " + pNextDirection.Values.Sum().ToString());
-        //GUI.Label(new Rect(10, 130, 200, 20), "B_Count: " + barrierDirection.Count.ToString());
+        int offsetX = 0;
+        int offsetY = 150;
+
+        if (GUIon)
+        {
+            string barrier0 = "null";
+            string barrier1 = "null";
+
+            if (barrierDirection.Count >= 1)
+            {
+                if (barrierDirection[0].x == 1) barrier0 = "Left";
+                else if (barrierDirection[0].x == -1) barrier0 = "Right";
+                else if (barrierDirection[0].y == 1) barrier0 = "Down";
+                else if (barrierDirection[0].y == -1) barrier0 = "Up";
+                else barrier0 = "??";
+            }
+            else barrier0 = "null";
+
+            if (barrierDirection.Count >= 2)
+            {
+                if (barrierDirection[1].x == 1) barrier1 = "Left";
+                else if (barrierDirection[1].x == -1) barrier1 = "Right";
+                else if (barrierDirection[1].y == 1) barrier1 = "Down";
+                else if (barrierDirection[1].y == -1) barrier1 = "Up";
+                else barrier1 = "??";
+            }
+            else barrier1 = "null";
+
+            GUI.Label(new Rect(10 + offsetX, 20 + offsetY, 200, 20), "pRight " + pNextDirection[0].ToString());
+            GUI.Label(new Rect(10 + offsetX, 30 + offsetY, 200, 20), "pUp " + pNextDirection[1].ToString());
+            GUI.Label(new Rect(10 + offsetX, 40 + offsetY, 200, 20), "pLeft " + pNextDirection[2].ToString());
+            GUI.Label(new Rect(10 + offsetX, 50 + offsetY, 200, 20), "pDown " + pNextDirection[3].ToString());
+            GUI.Label(new Rect(10 + offsetX, 60 + offsetY, 200, 20), "Dir Prev" + previousDirection.ToString());
+            GUI.Label(new Rect(10 + offsetX, 70 + offsetY, 200, 20), "Dir Cur" + moveDirection.ToString());
+            GUI.Label(new Rect(10 + offsetX, 80 + offsetY, 200, 20), "pSUM " + pNextDirection.Values.Sum().ToString());
+            GUI.Label(new Rect(10 + offsetX, 90 + offsetY, 200, 20), "Target Cur: " + currentTarget.ToString());
+            GUI.Label(new Rect(10 + offsetX, 100 + offsetY, 200, 20), "Barrier[0]: " + barrier0);
+            GUI.Label(new Rect(10 + offsetX, 110 + offsetY, 200, 20), "Barrier[1]: " + barrier1);
+
+            if (pNextDirection.Values.Sum() > 1)
+                UnityEngine.Debug.Log("Probabilities greater than 1");
+        }
     }
 
     private void Awake()
@@ -49,24 +90,23 @@ public class EnemyAI : MonoBehaviour
         //Initialize dictionary with probability of next random move distribution
         pNextDirection = new Dictionary<int, float>()
         {
-            {0, .25f}, //right
-            {1, .25f}, //up
-            {2, .25f}, //left
-            {3, .25f}  //down
+            {0, 0f}, //right
+            {1, 0f}, //up
+            {2, 0f}, //left
+            {3, 1f}  //down
         };
 
-        barrierDirection = new List<Vector3>();
-
         rb2d = GetComponent<Rigidbody2D>();
-
         bigAmmoPool = GameObject.FindGameObjectWithTag("AmmoPool");
 
-        ammoPool = new List<GameObject>();
-        for (int i = 0; i < ammoPoolCount; i++)
-        {
-            ammoPool.Add(Instantiate(bulletPrefab, bigAmmoPool.transform));
-            ammoPool[i].SetActive(false);
-        }
+        brick = GameObject.FindGameObjectWithTag("Brick");
+        water = GameObject.FindGameObjectWithTag("Water");
+        concrete = GameObject.FindGameObjectWithTag("Concrete");
+        ice = GameObject.FindGameObjectWithTag("Ice");
+        ground = GameObject.FindGameObjectWithTag("Ground");
+        eagle = GameObject.FindGameObjectWithTag("Eagle");
+
+        InitializeAmmoPool();
     }
 
     private void Start()
@@ -77,8 +117,7 @@ public class EnemyAI : MonoBehaviour
         enemySpeed = properties.tankSpeed;
         shellSpeed = properties.shellSpeed;
 
-        health = properties.health;
-        shellsFiredLimit = properties.shellsFiredLimit;
+        health = properties.armor;
 
         primaryDirection = properties.primaryDirection;
         secondaryDirection = properties.secondaryDirection;
@@ -90,10 +129,10 @@ public class EnemyAI : MonoBehaviour
         minFireDelay = properties.minFireDelay;
         maxFireDelay = properties.maxFireDelay;
 
-        //Make new enemy target different than last enemy spawned
-        targetIndex = gameObject.transform.GetSiblingIndex() % targets.Count;
+        currentTarget = RefreshTarget();
 
         WeightedRandomDirection();
+
         Invoke("Fire", UnityEngine.Random.Range(minFireDelay, maxFireDelay));
     }
 
@@ -104,32 +143,54 @@ public class EnemyAI : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
-        Vector3 hitPosition = Vector3.zero;
-        collision.GetContacts(contacts);
+        //barrierDirection keeps a list of last two barriers encountered
 
-        if(barrierDirection.Count == 2)
-            barrierDirection.Remove(barrierDirection.First());
+        //Colliders to turn away from
+        if (collision.gameObject == brick || collision.gameObject == water || collision.gameObject == concrete || collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Boundary"))
+        {
+            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contacts);
 
-        barrierDirection.Add(contacts[0].normal);
-        WeightedRandomDirection();
+            if (barrierDirection.Count == 2)
+                barrierDirection.Remove(barrierDirection.First());
+
+            barrierDirection.Add(contacts[0].normal);
+            WeightedRandomDirection();
+        }
+
+        //Colliders to turn to and shoot
+        else if (collision.gameObject.CompareTag("Player") || collision.gameObject == eagle)
+        {
+            CancelInvoke("WeightedRandomDirection");
+
+            ContactPoint2D[] contacts = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contacts);
+
+            if (!contacts.All(c => Math.Round(c.normal.x) == Math.Round(contacts[0].normal.x))
+                && !contacts.All(c => Math.Round(c.normal.y) == Math.Round(contacts[0].normal.y)))
+            {
+                throw new Exception("Multiple normal to contacts values from enemy-player collision");
+            }
+
+            moveDirection = contacts[0].normal * -1;
+
+            gameObject.transform.rotation = SetRotation(moveDirection);
+
+            CancelInvoke("Fire");
+            Invoke("Fire", 0f);
+
+            Invoke("WeightedRandomDirection", UnityEngine.Random.Range(minMoveChangeDelay, maxMoveChangeDelay));
+        }
     }
-
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Player"))
-    //    {
-    //        Vector2 playerVelocity = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
-    //        UnityEngine.Debug.Log("Player velocity: " + playerVelocity);
-    //        rb2d.AddForce(-playerVelocity * Time.deltaTime);
-    //    }
-    //}
 
     private void WeightedRandomDirection()
     {
         CancelInvoke("WeightedRandomDirection");
 
+        //Get probability distribution for the next direction
         pNextDirection = CalculateDirectionProbability();
+
+        //If 
         if (barrierDirection.Any())
         {
             pNextDirection = SetBarrierDirectionProbablity(barrierDirection);
@@ -151,36 +212,11 @@ public class EnemyAI : MonoBehaviour
         Invoke("WeightedRandomDirection", UnityEngine.Random.Range(minMoveChangeDelay, maxMoveChangeDelay));
     }
 
-    private Quaternion SetRotation(Vector3 direction)
-    {
-        if (direction.y != 0)
-        {
-            return Quaternion.Euler(new Vector3(0, 0, 90 * direction.y));
-        }
-
-        else if (direction.x != 0)
-        {
-            return Quaternion.Euler(new Vector3(0, 0, 180 * Math.Max(0, -direction.x)));
-        }
-        else
-        {
-            throw new Exception("Enemy tank assigned invalid direction");
-        }
-    }
-
     private Dictionary<int, float> CalculateDirectionProbability()
     {
+        currentTarget = RefreshTarget();
+        Vector3 distance = currentTarget.position - transform.position;
 
-        if (targets[targetIndex] == null)
-        {
-            targets.Remove(targets[targetIndex]);
-            targetIndex = gameObject.transform.GetSiblingIndex() % targets.Count;
-            distance = targets[targetIndex].transform.position - transform.position;
-        }
-        else
-        {
-            distance = targets[targetIndex].transform.position - transform.position;
-        }
         if (Math.Abs(distance.x) >= Math.Abs(distance.y))
         {
             return new Dictionary<int, float>
@@ -211,7 +247,7 @@ public class EnemyAI : MonoBehaviour
         float pLeft = pNextDirection[2];
         float pDown = pNextDirection[3];
 
-        //Set probability of most recent barrier hit to zero
+        //Set probability of most recent barriers hit to zero
         for (int i = 0; i < barrierDirection.Count; i++)
         {
             pRight = barrierDirection[i].x == -1 ? 0 : pRight;
@@ -271,6 +307,51 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private Transform RefreshTarget()
+    {
+        EnemyProperties properties = GetComponent<EnemyProperties>();
+
+        if (properties.preferredTarget == Target.Eagle)
+        {
+            currentTarget = eagle.transform;
+        }
+        else if (properties.preferredTarget == Target.Player)
+        {
+            //If target is refreshed while player is not in the scene, eagle will be the target until refresh is called again
+            if (GameObject.FindGameObjectWithTag("Player").transform != null)
+            {
+                currentTarget = GameObject.FindGameObjectWithTag("Player").transform;
+            }
+            else
+            {
+                currentTarget = eagle.transform;
+            }
+        }
+        else
+        {
+            throw new Exception("Preferred target undefined");
+        }
+
+        return currentTarget;
+    }
+
+    private Quaternion SetRotation(Vector3 direction)
+    {
+        if (direction.y != 0)
+        {
+            return Quaternion.Euler(new Vector3(0, 0, 90 * direction.y));
+        }
+
+        else if (direction.x != 0)
+        {
+            return Quaternion.Euler(new Vector3(0, 0, 180 * Math.Max(0, -direction.x)));
+        }
+        else
+        {
+            throw new Exception("Enemy tank assigned invalid direction");
+        }
+    }
+
     private void Fire()
     {
         int shellsFired = 0;
@@ -281,7 +362,7 @@ public class EnemyAI : MonoBehaviour
             {
                 shellsFired++;
             }
-            else if (ammoPool[i].gameObject.activeSelf == false && shellsFired < shellsFiredLimit)
+            else if (ammoPool[i].gameObject.activeSelf == false)
             {
                 ammoPool[i].gameObject.SetActive(true);
                 ammoPool[i].transform.position = gameObject.transform.position + PositionProjectileInBarrel(gameObject.transform.localRotation.eulerAngles.z);
@@ -314,6 +395,15 @@ public class EnemyAI : MonoBehaviour
                 return new Vector3(0, -distanceToBarrelTip, 0);
             default:
                 throw new Exception();
+        }
+    }
+
+    private void InitializeAmmoPool()
+    {
+        for (int i = 0; i < ammoPoolCount; i++)
+        {
+            ammoPool.Add(Instantiate(shellPrefab, bigAmmoPool.transform));
+            ammoPool[i].SetActive(false);
         }
     }
 }

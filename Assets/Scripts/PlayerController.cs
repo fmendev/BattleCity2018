@@ -126,6 +126,10 @@ public class PlayerController : MonoBehaviour
         anim = playerObject.GetComponent<Animator>();
     }
 
+    public static GameObject GetPlayerObject()
+    {
+        return singletonInstance.playerObject;
+    }
     public static Transform GetPlayerTransform()
     {
         return singletonInstance.playerObject.transform;

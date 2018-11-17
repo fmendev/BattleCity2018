@@ -22,7 +22,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private void ActivatePlayer()
     {
-        GameObject player = Instantiate(TankFactory.GetPlayer());
+        GameObject player = Instantiate(TankFactory.GetPlayerTank());
         player.transform.position = gameObject.transform.position;
         GetComponent<Animator>().SetBool("isSpawning", false);
         PlayerController.RefreshPlayerController();

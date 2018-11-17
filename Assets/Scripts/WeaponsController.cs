@@ -59,11 +59,13 @@ public class WeaponsController : MonoBehaviour
             if (ammoPool[i].gameObject.activeSelf == false && currentShellAmmo > 0)
             {
                 ammoPool[i].gameObject.SetActive(true);
-                ammoPool[i].transform.position = PlayerController.GetPlayerTransform().position+ PositionProjectileInBarrel(PlayerController.GetPlayerTransform().eulerAngles.z);
+                ammoPool[i].transform.position = PlayerController.GetPlayerTransform().position + PositionProjectileInBarrel(PlayerController.GetPlayerTransform().eulerAngles.z);
                 ammoPool[i].transform.rotation = PlayerController.GetPlayerTransform().rotation;
+
                 ammoPool[i].GetComponent<Rigidbody2D>().velocity = PlayerController.GetPlayerTransform().right * shellSpeed * Time.fixedDeltaTime;
+
                 ammoPool[i].GetComponent<BulletCollisions>().firedByPlayer = true;
-                ammoPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
+                ammoPool[i].GetComponent<BulletCollisions>().shooter = PlayerController.GetPlayerObject();
 
                 int shellFiredIndex = isLoaded.FindLastIndex(s => s == 1);
                 isLoaded[shellFiredIndex] = 0;

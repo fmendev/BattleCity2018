@@ -39,7 +39,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636242748718156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.0999985, y: 9.653302, z: 0}
+  m_LocalPosition: {x: -59.2, y: 13.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -121,10 +121,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 2
   hasPU: 0
+  spawnedPU: 0
   tankSpeed: 0
-  bulletSpeed: 0
-  health: 1
-  bulletsFiredLimit: 0
+  shellSpeed: 0
+  armor: 0
   primaryDirection: 0.5
   secondaryDirection: 0.3
   awayDirection: 0.1
@@ -132,6 +132,7 @@ MonoBehaviour:
   maxMoveChangeDelay: 5
   minFireDelay: 1.5
   maxFireDelay: 5
+  preferredTarget: 0
 --- !u!114 &114873371682689856
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,11 +144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b010cd71f47633d429194d882e65536f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targets:
-  - {fileID: 0}
-  - {fileID: 0}
-  bulletPrefab: {fileID: 1325828810436950, guid: 04d0dd8389e169e4681547ea59521ecf,
+  shellPrefab: {fileID: 1325828810436950, guid: 28ef018fc2d1f1b489400196ebfbc445,
     type: 2}
+  GUIon: 0
+  currentTarget: {fileID: 0}
 --- !u!212 &212000873480445478
 SpriteRenderer:
   m_ObjectHideFlags: 1

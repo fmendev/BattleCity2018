@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum EnemyType { Small, Fast, Heavy, Armored };
+public enum Target { Player, Eagle };
+
 public class EnemyProperties : MonoBehaviour
 {
-    public enum EnemyType { Small, Fast, Heavy, Armored };
     public EnemyType enemyType;
 
     public bool hasPU = false;
@@ -18,8 +20,7 @@ public class EnemyProperties : MonoBehaviour
     public int tankSpeed;
     public int shellSpeed;
 
-    public int health;
-    public int shellsFiredLimit;
+    public int armor;
 
     public float primaryDirection;
     public float secondaryDirection;
@@ -31,6 +32,8 @@ public class EnemyProperties : MonoBehaviour
     public float minFireDelay;
     public float maxFireDelay;
 
+    public Target preferredTarget;
+
     private void Awake()
     {
         if (enemyType == EnemyType.Small)
@@ -38,72 +41,76 @@ public class EnemyProperties : MonoBehaviour
             tankSpeed = 500;
             shellSpeed = 1200;
 
-            health = 1;
-            shellsFiredLimit = 1;
+            armor = 1;
 
-            primaryDirection = .5f;
-            secondaryDirection = .3f;
-            awayDirection = .1f;
+            primaryDirection = .45f;
+            secondaryDirection = .45f;
+            awayDirection = .05f;
 
             minMoveChangeDelay = 3f;
             maxMoveChangeDelay = 5f;
 
-            minFireDelay = 1.5f;
+            minFireDelay = 3f;
             maxFireDelay = 5f;
+
+            preferredTarget = Target.Player;
         }
         else if (enemyType == EnemyType.Fast)
         {
             tankSpeed = 850;
             shellSpeed = 1200;
 
-            health = 1;
-            shellsFiredLimit = 1;
+            armor = 1;
 
-            primaryDirection = .35f;
-            secondaryDirection = .4f;
-            awayDirection = .15f;
+            primaryDirection = .45f;
+            secondaryDirection = .45f;
+            awayDirection = .05f;
 
             minMoveChangeDelay = 1f;
             maxMoveChangeDelay = 5f;
 
-            minFireDelay = 1.5f;
+            minFireDelay = 1f;
             maxFireDelay = 5f;
+
+            preferredTarget = Target.Eagle;
         }
         else if (enemyType == EnemyType.Heavy)
         {
             tankSpeed = 500;
             shellSpeed = 1800;
 
-            health = 1;
-            shellsFiredLimit = 2;
+            armor = 1;
 
-            primaryDirection = .5f;
-            secondaryDirection = .3f;
-            awayDirection = .1f;
+            primaryDirection = .75f;
+            secondaryDirection = .2f;
+            awayDirection = .025f;
 
             minMoveChangeDelay = 3f;
             maxMoveChangeDelay = 5f;
 
-            minFireDelay = 1.5f;
+            minFireDelay = 1f;
             maxFireDelay = 3.5f;
+
+            preferredTarget = Target.Player;
         }
         else if (enemyType == EnemyType.Armored)
         {
             tankSpeed = 400;
             shellSpeed = 1800;
 
-            health = 4;
-            shellsFiredLimit = 2;
+            armor = 4;
 
-            primaryDirection = .5f;
-            secondaryDirection = .3f;
-            awayDirection = .1f;
+            primaryDirection = .75f;
+            secondaryDirection = .2f;
+            awayDirection = .025f;
 
             minMoveChangeDelay = 5f;
             maxMoveChangeDelay = 6f;
 
             minFireDelay = 3f;
             maxFireDelay = 5f;
+
+            preferredTarget = Target.Player;
         }
 
         //PU and respective animation

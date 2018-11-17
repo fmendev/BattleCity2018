@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50415531506797296}
   - component: {fileID: 61533508346260046}
   - component: {fileID: 95872844864183768}
-  - component: {fileID: 114100044500878854}
+  - component: {fileID: 114020370108005658}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -107,7 +107,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114100044500878854
+--- !u!114 &114020370108005658
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,14 +115,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1237195701782624}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0099b4c1fa6db49438da1989df91f92c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6aa78a31f1687764a91d36849d98a0a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shellPrefab: {fileID: 1325828810436950, guid: 28ef018fc2d1f1b489400196ebfbc445,
-    type: 2}
-  shellSpeed: 1250
-  currentMaxAmmo: 3
-  currentShellAmmo: 3
+  onIce: 0
 --- !u!212 &212604024207056494
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -23,28 +23,32 @@ public class TankFactory : MonoBehaviour
         singletonInstance = this;
     }
     
-    public static GameObject GetPlayer()
+    public static GameObject GetPlayerTank()
     {
         return singletonInstance.player;
     }
 
-    public static GameObject GetEnemySmall()
+    public static GameObject GetEnemyTank(EnemyType type)
     {
-        return singletonInstance.enemySmall;
-    }
-
-    public static GameObject GetEnemyHeavy()
-    {
-        return singletonInstance.enemyHeavy;
-    }
-
-    public static GameObject GetEnemyFast()
-    {
-        return singletonInstance.enemyFast;
-    }
-
-    public static GameObject GetEnemyArmored()
-    {
-        return singletonInstance.enemyArmored;
+        if (type == EnemyType.Small)
+        {
+            return singletonInstance.enemySmall;
+        }
+        else if (type == EnemyType.Heavy)
+        {
+            return singletonInstance.enemyHeavy;
+        }
+        else if (type == EnemyType.Fast)
+        {
+            return singletonInstance.enemyFast;
+        }
+        else if (type == EnemyType.Armored)
+        {
+            return singletonInstance.enemyArmored;
+        }
+        else
+        {
+            throw new Exception("Enemy type not defined");
+        }
     }
 }

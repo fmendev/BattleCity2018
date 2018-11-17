@@ -11,8 +11,12 @@ TagManager:
   - Ground
   - GameOver
   - ShellDisplay
-  - Bounds
   - AmmoPool
+  - Concrete
+  - Water
+  - Projectile
+  - Bounds
+  - Boundary
   layers:
   - Default
   - TransparentFX

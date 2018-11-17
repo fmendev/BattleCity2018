@@ -74,10 +74,12 @@ public class BulletCollisions : MonoBehaviour
             tilemap.SetTile(adjacentTileHit, null);
 
         }
+
+        //Enemy is hit by player's bullet
         else if (collision.gameObject.CompareTag("Enemy") && firedByPlayer && collision.gameObject != shooter)
         {
             Animator enemyAnim = collision.gameObject.GetComponent<Animator>();
-            int health = collision.gameObject.GetComponent<EnemyProperties>().health;
+            int health = collision.gameObject.GetComponent<EnemyProperties>().armor;
             health--;
 
             if (health == 0)
@@ -95,7 +97,7 @@ public class BulletCollisions : MonoBehaviour
             }
             else
             {
-                collision.gameObject.GetComponent<EnemyProperties>().health = health;
+                collision.gameObject.GetComponent<EnemyProperties>().armor = health;
             }
         }
         else if (collision.gameObject.CompareTag("Player") && collision.gameObject != shooter)
