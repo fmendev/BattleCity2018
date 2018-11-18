@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     public GameObject shellPrefab;
-    public bool GUIon = true;
+    public bool GUIenabled = true;
 
     private int enemySpeed;
     private int shellSpeed;
@@ -39,12 +39,14 @@ public class EnemyAI : MonoBehaviour
     private GameObject bigAmmoPool;
     private List<GameObject> ammoPool = new List<GameObject>();
 
+    bool isFrozen = false;
+
     private void OnGUI()
     {
         int offsetX = 0;
         int offsetY = 150;
 
-        if (GUIon)
+        if (GUIenabled)
         {
             string barrier0 = "null";
             string barrier1 = "null";
@@ -202,7 +204,8 @@ public class EnemyAI : MonoBehaviour
             moveDirection = GetSelectedDirection();
         }
 
-        gameObject.transform.rotation = SetRotation(moveDirection);
+        if (!isFrozen)
+            gameObject.transform.rotation = SetRotation(moveDirection);
 
         //if WeightedRandomDirection not called by OnCollisionEnter, ignore recent barrier encounters
         StackTrace st = new StackTrace();
@@ -367,7 +370,9 @@ public class EnemyAI : MonoBehaviour
                 ammoPool[i].gameObject.SetActive(true);
                 ammoPool[i].transform.position = gameObject.transform.position + PositionProjectileInBarrel(gameObject.transform.localRotation.eulerAngles.z);
                 ammoPool[i].transform.rotation = gameObject.transform.rotation;
+
                 ammoPool[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * shellSpeed * Time.fixedDeltaTime;
+
                 ammoPool[i].GetComponent<BulletCollisions>().firedByPlayer = false;
                 ammoPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
                 break;
@@ -405,5 +410,18 @@ public class EnemyAI : MonoBehaviour
             ammoPool.Add(Instantiate(shellPrefab, bigAmmoPool.transform));
             ammoPool[i].SetActive(false);
         }
+    }
+
+    public void PauseAI()
+    {
+        CancelInvoke();
+        isFrozen = true;
+    }
+
+    public void ResumeAI()
+    {
+        isFrozen = false;
+        WeightedRandomDirection();
+        Invoke("Fire", UnityEngine.Random.Range(minFireDelay, maxFireDelay));
     }
 }

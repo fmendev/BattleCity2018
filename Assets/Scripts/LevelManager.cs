@@ -14,13 +14,13 @@ public class LevelManager : MonoBehaviour
     {
         InitializeSingleton();
 
-        customTankOrder = "0";// 00212111333";
+        customTankOrder = "000212111333";
         enemyTankList = GenerateEnemyTankList();
     }
 
     private void Start ()
     {
-        StartCoroutine(PlayEagleTooltipAnimation());
+        StartCoroutine(PlayScriptedTooltiAnimations());
 	}
 
     private void InitializeSingleton()
@@ -28,14 +28,28 @@ public class LevelManager : MonoBehaviour
         singletonInstance = this;
     }
 
-    private IEnumerator PlayEagleTooltipAnimation()
+    private IEnumerator PlayScriptedTooltiAnimations()
     {
-        //This wrapper function is just to add a delay before the first tooltip shows up
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(2f);
         TooltipController.PlayTooltipAnimation(Tooltip.Eagle);
-        //PauseManager.FreezeGame();
+        PauseManager.FreezeDynamicObjects();
+        EnemySpawnerController.SetSpawnFrequency(.3f);
+        EnemySpawnerController.SetSpawnStartTime(0f);
+
+        yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 3);
+        TooltipController.PlayTooltipAnimation(Tooltip.FirstWave);
+        PauseManager.FreezeDynamicObjects();
+        EnemySpawnerController.SetSpawnFrequency(4f);
+        EnemySpawnerController.SetSpawnStartTime(2f);
+
+        yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 4);
+        TooltipController.PlayTooltipAnimation(Tooltip.Ammo);
+        yield return new WaitForSeconds(.5f);
+        TooltipController.PlayTooltipAnimation(Tooltip.HealthBar);
+        yield return new WaitForSeconds(.5f);
+        TooltipController.PlayTooltipAnimation(Tooltip.Lives);
     }
-    
+
     public static List<EnemyType> GetEnemyTankList()
     {
         return singletonInstance.enemyTankList;

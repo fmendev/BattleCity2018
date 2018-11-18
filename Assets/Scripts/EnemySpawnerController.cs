@@ -9,17 +9,7 @@ public class EnemySpawnerController : MonoBehaviour
 {
     private static EnemySpawnerController singletonInstance;
 
-    //public List<GameObject> enemySpawnPoints;
-    //public List<GameObject> enemyTanks;
-
-    //private int spawned = 0;
-    //private float enemyRespawnTime = 5f;
-    //private float spawnAnimationDuration = 1f;
-    //private List<int> spawnLocationOrder;
-    //private Vector3 enemyDisabledTankPosition = new Vector3(-60, 20, 0);
-    //private Vector3 playerDisabledTankPosition = new Vector3(-10, 20, 0);
-    //private Vector3 offset = new Vector3(0, -5, 0);
-
+    private int enemiesSpawned;
     private int currentSpawnPoint;
     private int currentEnemySpawning;
     private float spawningStartTime;
@@ -30,9 +20,10 @@ public class EnemySpawnerController : MonoBehaviour
     {
         InitializeSingleton();
 
+        enemiesSpawned = 0;
         currentSpawnPoint = 0;
         currentEnemySpawning = 0;
-        spawningStartTime = 1f;
+        spawningStartTime = 2.1f;
         spawningFrequencyRate = 4f;
     }
 
@@ -45,6 +36,8 @@ public class EnemySpawnerController : MonoBehaviour
 
     private void SpawnEnemy()
     {
+        enemiesSpawned++;
+        Debug.Log("Invoke Spawn called");
         transform.GetChild(currentSpawnPoint).GetComponent<EnemySpawner>().SpawnEnemy(tankSpawningOrder[currentEnemySpawning]);
 
         //Loop through available spawn points
@@ -64,6 +57,7 @@ public class EnemySpawnerController : MonoBehaviour
         }
         else
         {
+            Debug.Log("Reached end of enemy list. Invoke canceled");
             CancelInvoke("SpawnEnemy");
         }
     }
@@ -82,4 +76,38 @@ public class EnemySpawnerController : MonoBehaviour
     {
         singletonInstance.spawningFrequencyRate = frequency;
     }
+
+    public static float GetSpawnStartTime()
+    {
+        return singletonInstance.spawningStartTime;
+    }
+
+    public static void SetSpawnStartTime(float startTime)
+    {
+        singletonInstance.spawningStartTime = startTime;
+    }
+
+    public static int GetNumberEnemiesSpawned()
+    {
+        return singletonInstance.enemiesSpawned;
+    }
+
+    public static void PauseEnemySpawning()
+    {
+        singletonInstance.CancelInvoke();
+    }
+
+    public static void ResumeEnemySpawning()
+    {
+        if (singletonInstance.currentEnemySpawning < singletonInstance.tankSpawningOrder.Count - 1)
+        {
+            singletonInstance.InvokeRepeating("SpawnEnemy", singletonInstance.spawningStartTime, singletonInstance.spawningFrequencyRate);
+        }
+        
+    }
+
+    //public static void IncreaseEnemiesSpawnedCounter()
+    //{
+    //    singletonInstance.enemiesSpawned++;
+    //}
 }

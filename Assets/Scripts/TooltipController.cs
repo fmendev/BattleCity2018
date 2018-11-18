@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public enum Tooltip { Eagle, Enemy, Ammo, HealthBar, Lives};
+public enum Tooltip { Eagle, FirstWave, Ammo, HealthBar, Lives};
 
 public class TooltipController : MonoBehaviour
 {
@@ -14,19 +14,21 @@ public class TooltipController : MonoBehaviour
     public GameObject crosshair;
 
     public GameObject crosshairEaglePosition;
-    public GameObject crosshairEnemyPosition;
+    public GameObject crosshairFirstWavePosition1;
+    public GameObject crosshairFirstWavePosition2;
+    public GameObject crosshairFirstWavePosition3;
     public GameObject crosshairAmmoPosition;
     public GameObject crosshairHealthBarPosition;
     public GameObject crosshairLivesPosition;
     public GameObject tooltipEaglePosition;
-    public GameObject tooltipEnemyPosition;
+    public GameObject tooltipFirstWavePosition;
     public GameObject tooltipAmmoPosition;
     public GameObject tooltipHealthBarPosition;
     public GameObject tooltipLivesPosition;
 
     private Dictionary<Tooltip, string> tooltipMessages;
     private Dictionary<Tooltip, GameObject> tooltipPositions;
-    private Dictionary<Tooltip, GameObject> crosshairPositions;
+    private Dictionary<Tooltip, List<GameObject>> crosshairPositions;
     private string continueMessage;
 
     private GameObject activeTooltip;
@@ -39,17 +41,29 @@ public class TooltipController : MonoBehaviour
         continueMessage = "Press [SPACE] or [CLICK] to continue...";
         tooltipMessages = new Dictionary<Tooltip, string>()
         {
-            { Tooltip.Eagle, "This is the Condor, symbol of our land\nDefend at all costs!!!" }
+            { Tooltip.Eagle, "This is the Condor, symbol of our land\nDefend at all costs!!!" },
+            { Tooltip.FirstWave, "Foreign invaders, defiling our land\nDestroy them all" },
+            { Tooltip.Ammo, "Ammo" },
+            { Tooltip.HealthBar, "Health" },
+            { Tooltip.Lives, "Lives" }
         };
 
         tooltipPositions = new Dictionary<Tooltip, GameObject>()
         {
-            { Tooltip.Eagle, tooltipEaglePosition }
+            { Tooltip.Eagle, tooltipEaglePosition },
+            { Tooltip.FirstWave, tooltipFirstWavePosition },
+            { Tooltip.Ammo, tooltipAmmoPosition },
+            { Tooltip.HealthBar, tooltipHealthBarPosition },
+            { Tooltip.Lives, tooltipLivesPosition }
         };
 
-        crosshairPositions = new Dictionary<Tooltip, GameObject>()
+        crosshairPositions = new Dictionary<Tooltip, List<GameObject>>
         {
-            { Tooltip.Eagle, crosshairEaglePosition }
+            { Tooltip.Eagle, new List<GameObject>() { crosshairEaglePosition } },
+            { Tooltip.FirstWave, new List<GameObject>() { crosshairFirstWavePosition1, crosshairFirstWavePosition2, crosshairFirstWavePosition3 } },
+            { Tooltip.Ammo, new List<GameObject>() { crosshairAmmoPosition } },
+            { Tooltip.HealthBar, new List<GameObject>() { crosshairHealthBarPosition } },
+            { Tooltip.Lives, new List<GameObject>() { crosshairLivesPosition } }
         };
     }
 
@@ -60,14 +74,19 @@ public class TooltipController : MonoBehaviour
 
     public static void PlayTooltipAnimation(Tooltip key)
     {
+        //Shows crosshair, and after a given delay shows tooltip
         singletonInstance.ShowCrosshair(key);
         singletonInstance.StartCoroutine(singletonInstance.ShowToolTip(key));
     }
 
     private void ShowCrosshair(Tooltip key)
     {
-        GameObject position = singletonInstance.crosshairPositions[key];
-        singletonInstance.activeTooltip = Instantiate(singletonInstance.crosshair, position.transform);
+        List<GameObject> positions = singletonInstance.crosshairPositions[key];
+
+        foreach (var position in positions)
+        {
+            singletonInstance.activeTooltip = Instantiate(singletonInstance.crosshair, position.transform);
+        }
     }
 
     private IEnumerator ShowToolTip(Tooltip key)
