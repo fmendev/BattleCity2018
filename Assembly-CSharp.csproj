@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ArmorController.cs" />
     <Compile Include="Assets\Scripts\BulletCollisions.cs" />
+    <Compile Include="Assets\Scripts\CrosshairBehavior.cs" />
     <Compile Include="Assets\Scripts\DestructibleTileMapping.cs" />
     <Compile Include="Assets\Scripts\EnemyAI.cs" />
     <Compile Include="Assets\Scripts\EnemyProperties.cs" />
@@ -84,8 +85,8 @@
     <Compile Include="Assets\Scripts\ShellWipe.cs" />
     <Compile Include="Assets\Scripts\SoundManager.cs" />
     <Compile Include="Assets\Scripts\TankFactory.cs" />
+    <Compile Include="Assets\Scripts\TooltipBehavior.cs" />
     <Compile Include="Assets\Scripts\TooltipController.cs" />
-    <Compile Include="Assets\Scripts\TooltipFunctions.cs" />
     <Compile Include="Assets\Scripts\TowerController.cs" />
     <Compile Include="Assets\Scripts\WeaponsController.cs" />
     <Compile Include="Assets\Tilemap\Brushes\Tint Brush Smooth\Scripts\TintTextureGenerator.cs" />

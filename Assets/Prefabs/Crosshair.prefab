@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4232566221212488}
   - component: {fileID: 212049392517767752}
   - component: {fileID: 95077552117979578}
+  - component: {fileID: 114825879250273286}
   m_Layer: 0
   m_Name: Crosshair
   m_TagString: Untagged
@@ -59,6 +60,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114825879250273286
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1458501586724084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de963cb0b0f820c4d9e5be578d435d44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfDestroys: 0
 --- !u!212 &212049392517767752
 SpriteRenderer:
   m_ObjectHideFlags: 1

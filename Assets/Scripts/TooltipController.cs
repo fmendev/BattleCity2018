@@ -85,7 +85,7 @@ public class TooltipController : MonoBehaviour
 
         foreach (var position in positions)
         {
-            singletonInstance.activeTooltip = Instantiate(singletonInstance.crosshair, position.transform);
+            Instantiate(singletonInstance.crosshair, position.transform);
         }
     }
 
