@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +6,7 @@ using UnityEngine.UI;
 public class TooltipBehavior : MonoBehaviour
 {
     public GameObject flashPanel;
-    public bool selfDestroys = false;
+    public bool isSelfClosing = false;
 
     private float tooltipCloseDelay = 2f;
 
@@ -83,7 +82,7 @@ public class TooltipBehavior : MonoBehaviour
             }
         }
 
-        if (!selfDestroys)
+        if (!isSelfClosing)
         {
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
             {

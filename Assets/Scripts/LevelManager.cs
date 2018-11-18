@@ -31,23 +31,23 @@ public class LevelManager : MonoBehaviour
     private IEnumerator PlayScriptedTooltiAnimations()
     {
         yield return new WaitForSeconds(2f);
-        TooltipController.PlayTooltipAnimation(Tooltip.Eagle);
+        TooltipController.PlayTooltipAnimation(Tooltip.Eagle, false);
         PauseManager.FreezeDynamicObjects();
         EnemySpawnerController.SetSpawnFrequency(.3f);
         EnemySpawnerController.SetSpawnStartTime(0f);
 
         yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 3);
-        TooltipController.PlayTooltipAnimation(Tooltip.FirstWave);
+        TooltipController.PlayTooltipAnimation(Tooltip.FirstWave, false);
         PauseManager.FreezeDynamicObjects();
         EnemySpawnerController.SetSpawnFrequency(4f);
         EnemySpawnerController.SetSpawnStartTime(2f);
 
         yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 4);
-        TooltipController.PlayTooltipAnimation(Tooltip.Ammo);
+        TooltipController.PlayTooltipAnimation(Tooltip.Ammo, true);
         yield return new WaitForSeconds(.5f);
-        TooltipController.PlayTooltipAnimation(Tooltip.HealthBar);
+        TooltipController.PlayTooltipAnimation(Tooltip.HealthBar, true);
         yield return new WaitForSeconds(.5f);
-        TooltipController.PlayTooltipAnimation(Tooltip.Lives);
+        TooltipController.PlayTooltipAnimation(Tooltip.Lives, true);
     }
 
     public static List<EnemyType> GetEnemyTankList()

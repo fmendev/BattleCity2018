@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -72,29 +71,32 @@ public class TooltipController : MonoBehaviour
         singletonInstance = this;
     }
 
-    public static void PlayTooltipAnimation(Tooltip key)
+    public static void PlayTooltipAnimation(Tooltip key, bool isSelfClosing)
     {
         //Shows crosshair, and after a given delay shows tooltip
-        singletonInstance.ShowCrosshair(key);
-        singletonInstance.StartCoroutine(singletonInstance.ShowToolTip(key));
+
+        singletonInstance.ShowCrosshair(key, isSelfClosing);
+        singletonInstance.StartCoroutine(singletonInstance.ShowToolTip(key, isSelfClosing));
     }
 
-    private void ShowCrosshair(Tooltip key)
+    private void ShowCrosshair(Tooltip key, bool isSelfClosing)
     {
         List<GameObject> positions = singletonInstance.crosshairPositions[key];
 
         foreach (var position in positions)
         {
-            Instantiate(singletonInstance.crosshair, position.transform);
+            GameObject crosshair = Instantiate(singletonInstance.crosshair, position.transform);
+            crosshair.GetComponent<CrosshairBehavior>().isSelfClosing = isSelfClosing;
         }
     }
 
-    private IEnumerator ShowToolTip(Tooltip key)
+    private IEnumerator ShowToolTip(Tooltip key, bool isSelfClosing)
     {
         yield return new WaitForSeconds(tooltipDelay);
         GameObject position = singletonInstance.tooltipPositions[key];
         singletonInstance.activeTooltip = Instantiate(singletonInstance.tooltip, position.transform);
-        
+
+        singletonInstance.activeTooltip.GetComponent<TooltipBehavior>().isSelfClosing = isSelfClosing;
         singletonInstance.activeTooltip.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = singletonInstance.tooltipMessages[key];
         singletonInstance.activeTooltip.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = singletonInstance.continueMessage;
     }

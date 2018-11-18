@@ -1,22 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
 public class CrosshairBehavior : MonoBehaviour
 {
-    public bool selfDestroys = false;
+    public bool isSelfClosing = false;
 
     private float crosshairDismissDelay = 2f;
 
     private void Update()
     {
-        if (!selfDestroys)
+        if (!isSelfClosing)
         {
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
             {
