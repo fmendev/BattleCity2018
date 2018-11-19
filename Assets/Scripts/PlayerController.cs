@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        #region Player movement and orientation
         if (lastMoveUpOrDown)
         {
             verticalMove = Input.GetAxisRaw("Vertical");
@@ -85,7 +84,6 @@ public class PlayerController : MonoBehaviour
         {
             anim.SetBool(currentSizeParameter, true);
         }
-        #endregion
     }
 
     private void FixedUpdate()

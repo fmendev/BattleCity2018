@@ -6,7 +6,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadScene(int level)
     {
         SceneManager.LoadScene(level);
-        SoundManager.PlaySfx(SoundManager.GetSFX(SFX.startGame));
+        SoundManager.PlaySfx(SFX.StartGame);
     }
 
     public void QuitGame()

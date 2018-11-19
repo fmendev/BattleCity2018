@@ -15,7 +15,7 @@ public class PauseManager : MonoBehaviour
     private List<Vector2> projectileVelocitiesAtFreeze;
     private List<Vector2> tankVelocitiesAtFreeze;
 
-    private void Awake ()
+    private void Awake()
     {
         InitializeSingleton();
 
@@ -35,40 +35,38 @@ public class PauseManager : MonoBehaviour
 
     public static void FreezeDynamicObjects()
     {
+        Debug.Log("Freeze called");
         singletonInstance.StartCoroutine("BeginFreezingDynamicObjects");
+        singletonInstance.isFrozen = true;
     }
 
     private IEnumerator BeginFreezingDynamicObjects()
     {
-        //No other function other than freezing some elements while tooltips show
+        //Pause enemy spawning
+        EnemySpawnerController.PauseEnemySpawning();
 
-        if (!isFrozen)
+        //Freeze bullets
+        for (int i = 0; i < ammoPool.transform.childCount; i++)
         {
-            Debug.Log("Commence Pausing");
-            isFrozen = true;
-            //Pause enemy spawning
-            EnemySpawnerController.PauseEnemySpawning();
-            //Freeze bullets
-            for (int i = 0; i < ammoPool.transform.childCount; i++)
+            if (ammoPool.transform.GetChild(i).gameObject.activeSelf)
             {
-                if (ammoPool.transform.GetChild(i).gameObject.activeSelf)
-                {
-                    Vector2 velocity = ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity;
-                    projectileVelocitiesAtFreeze.Add(velocity);
+                Vector2 velocity = ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity;
+                projectileVelocitiesAtFreeze.Add(velocity);
 
-                    ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-                }
+                ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
+        }
 
-            //Deactivate player controller
-            logicController.GetComponent<PlayerController>().enabled = false;
-            logicController.GetComponent<WeaponsController>().enabled = false;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
+        //Deactivate player controller
+        logicController.GetComponent<PlayerController>().enabled = false;
+        logicController.GetComponent<WeaponsController>().enabled = false;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
 
-            //Deactivate enemy AI
-            //Yield until all enemies that have started to spawn finish and are on scene, so that the loop disables all of them
-            yield return new WaitWhile(() => enemyTankParentObject.transform.childCount != EnemySpawnerController.GetNumberEnemiesSpawned());
-
+        //Deactivate enemy AI
+        do
+        {
+            tankVelocitiesAtFreeze.Clear();
             for (int i = 0; i < enemyTankParentObject.transform.childCount; i++)
             {
                 enemyTankParentObject.transform.GetChild(i).GetComponent<EnemyAI>().PauseAI();
@@ -78,45 +76,42 @@ public class PauseManager : MonoBehaviour
                 Vector2 velocity = enemyTankParentObject.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity;
                 tankVelocitiesAtFreeze.Add(velocity);
                 enemyTankParentObject.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-                Debug.Log("Pausing enemy: " + i);
             }
+            yield return new WaitForFixedUpdate();
 
-            Debug.Log("Done pausing");
-        }
+        } while (isFrozen);
     }
 
     public static void UnfreezeDynamicObjects()
     {
-        if (singletonInstance.isFrozen)
+        Debug.Log("Unfreeze called");
+
+        singletonInstance.isFrozen = false;
+
+        //Resume enemy spawning
+        EnemySpawnerController.ResumeEnemySpawning();
+        //Unfreeze bullets
+        for (int i = 0; i < singletonInstance.ammoPool.transform.childCount; i++)
         {
-            Debug.Log("Resuming");
-            singletonInstance.isFrozen = false;
-
-            //Resume enemy spawning
-            EnemySpawnerController.ResumeEnemySpawning();
-            //Unfreeze bullets
-            for (int i = 0; i < singletonInstance.ammoPool.transform.childCount; i++)
+            if (singletonInstance.ammoPool.transform.GetChild(i).gameObject.activeSelf)
             {
-                if (singletonInstance.ammoPool.transform.GetChild(i).gameObject.activeSelf)
-                {
-                    singletonInstance.ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = singletonInstance.projectileVelocitiesAtFreeze[i];
-                }
+                singletonInstance.ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = singletonInstance.projectileVelocitiesAtFreeze[i];
             }
+        }
 
-            //Reactivate player controller
-            singletonInstance.logicController.GetComponent<PlayerController>().enabled = true;
-            singletonInstance.logicController.GetComponent<WeaponsController>().enabled = true;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = true;
+        //Reactivate player controller
+        singletonInstance.logicController.GetComponent<PlayerController>().enabled = true;
+        singletonInstance.logicController.GetComponent<WeaponsController>().enabled = true;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = true;
 
 
-            //Reactivate enemy AI
-            for (int i = 0; i < singletonInstance.enemyTankParentObject.transform.childCount; i++)
-            {
-                singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<EnemyAI>().enabled = true;
-                singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<Animator>().enabled = true;
-                singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = singletonInstance.tankVelocitiesAtFreeze[i];
-                singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<EnemyAI>().ResumeAI();
-            }
+        //Reactivate enemy AI
+        for (int i = 0; i < singletonInstance.enemyTankParentObject.transform.childCount; i++)
+        {
+            singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<EnemyAI>().enabled = true;
+            singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<Animator>().enabled = true;
+            singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = singletonInstance.tankVelocitiesAtFreeze[i];
+            singletonInstance.enemyTankParentObject.transform.GetChild(i).GetComponent<EnemyAI>().ResumeAI();
         }
     }
 }

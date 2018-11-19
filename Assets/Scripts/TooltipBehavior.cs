@@ -22,9 +22,13 @@ public class TooltipBehavior : MonoBehaviour
     private Color color;
     private float alphaDeltaBlinking = .02f;
     private bool continueBlinking = false;
-    private bool fadingIn = false;
+    private bool blinkFadingIn = false;
 
-	private void Awake ()
+    //Fade out
+    private bool fadingOut = false;
+    private float alphaDeltaFadeOut = .04f;
+
+    private void Awake ()
     {
         flashing = true;
 
@@ -39,6 +43,17 @@ public class TooltipBehavior : MonoBehaviour
 
     private void Update ()
     {
+        if (fadingOut)
+        {
+            float alpha = gameObject.GetComponent<Image>().color.a;
+            Color fadeOutColor = new Color(255, 255, 255, alpha - alphaDeltaFadeOut);
+            gameObject.GetComponent<Image>().color = fadeOutColor;
+
+            if (fadeOutColor.a <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
         if (flashing)
         {
             float alpha = flashPanel.GetComponent<RawImage>().color.a;
@@ -61,7 +76,7 @@ public class TooltipBehavior : MonoBehaviour
             float alpha = gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().color.a;
             Color blinkingColor = color;
 
-            if (fadingIn)
+            if (blinkFadingIn)
             {
                 blinkingColor.a = alpha + alphaDeltaBlinking;
             }
@@ -74,11 +89,11 @@ public class TooltipBehavior : MonoBehaviour
 
             if (blinkingColor.a >= 1)
             {
-                 fadingIn = false;
+                 blinkFadingIn = false;
             }
             else if (blinkingColor.a <= 0)
             {
-                fadingIn = true;
+                blinkFadingIn = true;
             }
         }
 
@@ -99,7 +114,7 @@ public class TooltipBehavior : MonoBehaviour
     private IEnumerator CloseTooltip()
     {
         yield return new WaitForSeconds(tooltipCloseDelay);
-        Destroy(gameObject);
+        fadingOut = true;
     }
 
     private IEnumerator AnimateMainText()

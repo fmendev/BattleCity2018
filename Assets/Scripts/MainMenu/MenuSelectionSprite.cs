@@ -10,7 +10,7 @@ public class MenuSelectionSprite : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         selectionSprite.gameObject.SetActive(true);
         gameObject.GetComponent<Outline>().enabled = true;
-        SoundManager.PlaySfx(SoundManager.GetSFX(SFX.mouseOnOption));
+        SoundManager.PlaySfx(SFX.MouseOnOption);
     }
 
     public void OnPointerExit(PointerEventData eventData)

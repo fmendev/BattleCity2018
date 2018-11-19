@@ -146,7 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shellPrefab: {fileID: 1325828810436950, guid: 28ef018fc2d1f1b489400196ebfbc445,
     type: 2}
-  GUIon: 0
+  enabledGUI: 0
   currentTarget: {fileID: 0}
 --- !u!212 &212000873480445478
 SpriteRenderer:

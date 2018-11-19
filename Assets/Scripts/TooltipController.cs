@@ -31,7 +31,7 @@ public class TooltipController : MonoBehaviour
     private string continueMessage;
 
     private GameObject activeTooltip;
-    private float tooltipDelay = 1f;
+    private float tooltipDelay = 2f;
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class TooltipController : MonoBehaviour
         tooltipMessages = new Dictionary<Tooltip, string>()
         {
             { Tooltip.Eagle, "This is the Condor, symbol of our land\nDefend at all costs!!!" },
-            { Tooltip.FirstWave, "Foreign invaders, defiling our land\nDestroy them all" },
+            { Tooltip.FirstWave, "Foreign invaders, defiling our land\nDestroy them all!!!" },
             { Tooltip.Ammo, "Ammo" },
             { Tooltip.HealthBar, "Health" },
             { Tooltip.Lives, "Lives" }
@@ -86,8 +86,10 @@ public class TooltipController : MonoBehaviour
         foreach (var position in positions)
         {
             GameObject crosshair = Instantiate(singletonInstance.crosshair, position.transform);
-            crosshair.GetComponent<CrosshairBehavior>().isSelfClosing = isSelfClosing;
+            crosshair.GetComponent<TargetBehavior>().isSelfClosing = isSelfClosing;
         }
+
+        SoundManager.PlaySfx(SFX.Target);
     }
 
     private IEnumerator ShowToolTip(Tooltip key, bool isSelfClosing)
@@ -98,8 +100,10 @@ public class TooltipController : MonoBehaviour
 
         singletonInstance.activeTooltip.GetComponent<TooltipBehavior>().isSelfClosing = isSelfClosing;
         singletonInstance.activeTooltip.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = singletonInstance.tooltipMessages[key];
-        singletonInstance.activeTooltip.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = singletonInstance.continueMessage;
+
+        if (!isSelfClosing)
+        {
+            singletonInstance.activeTooltip.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = singletonInstance.continueMessage;
+        }
     }
-
-
 }

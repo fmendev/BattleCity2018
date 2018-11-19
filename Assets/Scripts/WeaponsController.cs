@@ -64,8 +64,8 @@ public class WeaponsController : MonoBehaviour
 
                 ammoPool[i].GetComponent<Rigidbody2D>().velocity = PlayerController.GetPlayerTransform().right * shellSpeed * Time.fixedDeltaTime;
 
-                ammoPool[i].GetComponent<BulletCollisions>().firedByPlayer = true;
-                ammoPool[i].GetComponent<BulletCollisions>().shooter = PlayerController.GetPlayerObject();
+                ammoPool[i].GetComponent<ProjectileCollisions>().firedByPlayer = true;
+                ammoPool[i].GetComponent<ProjectileCollisions>().shooter = PlayerController.GetPlayerObject();
 
                 int shellFiredIndex = isLoaded.FindLastIndex(s => s == 1);
                 isLoaded[shellFiredIndex] = 0;
@@ -73,7 +73,7 @@ public class WeaponsController : MonoBehaviour
                 currentShellAmmo--;
                 shellDisplay.ReloadShell(shellFiredIndex);
 
-                SoundManager.PlaySfx(SoundManager.GetSFX(SFX.playerFire));
+                SoundManager.PlaySfx(SFX.PlayerFire);
                 break;
             }
         }

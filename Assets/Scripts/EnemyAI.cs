@@ -8,7 +8,7 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     public GameObject shellPrefab;
-    public bool GUIenabled = true;
+    public bool enabledGUI = false;
 
     private int enemySpeed;
     private int shellSpeed;
@@ -24,7 +24,7 @@ public class EnemyAI : MonoBehaviour
 
     private Rigidbody2D rb2d;
     private Dictionary<int, float> pNextDirection;
-    private Vector3 previousDirection, moveDirection = Vector3.up;
+    private Vector3 previousDirection, moveDirection;
     private List<Vector3> barrierDirection = new List<Vector3>();
 
     private GameObject brick;
@@ -46,7 +46,7 @@ public class EnemyAI : MonoBehaviour
         int offsetX = 0;
         int offsetY = 150;
 
-        if (GUIenabled)
+        if (enabledGUI)
         {
             string barrier0 = "null";
             string barrier1 = "null";
@@ -113,6 +113,13 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
+        //Set initial orientation;
+        currentTarget = eagle.transform;
+        Vector3 orientation = GetInitialOrientation();
+
+        previousDirection = moveDirection = orientation;
+        gameObject.transform.rotation = SetRotation(orientation);
+
         //Initialize enemy tank properties
         EnemyProperties properties = GetComponent<EnemyProperties>();
 
@@ -133,8 +140,7 @@ public class EnemyAI : MonoBehaviour
 
         currentTarget = RefreshTarget();
 
-        WeightedRandomDirection();
-
+        Invoke("WeightedRandomDirection", 3f); 
         Invoke("Fire", UnityEngine.Random.Range(minFireDelay, maxFireDelay));
     }
 
@@ -373,8 +379,8 @@ public class EnemyAI : MonoBehaviour
 
                 ammoPool[i].GetComponent<Rigidbody2D>().velocity = gameObject.transform.right * shellSpeed * Time.fixedDeltaTime;
 
-                ammoPool[i].GetComponent<BulletCollisions>().firedByPlayer = false;
-                ammoPool[i].GetComponent<BulletCollisions>().shooter = gameObject;
+                ammoPool[i].GetComponent<ProjectileCollisions>().firedByPlayer = false;
+                ammoPool[i].GetComponent<ProjectileCollisions>().shooter = gameObject;
                 break;
             }
         }
@@ -409,6 +415,20 @@ public class EnemyAI : MonoBehaviour
         {
             ammoPool.Add(Instantiate(shellPrefab, bigAmmoPool.transform));
             ammoPool[i].SetActive(false);
+        }
+    }
+
+    private Vector3 GetInitialOrientation()
+    {
+        Vector3 distance = currentTarget.position - transform.position;
+
+        if (Math.Abs(distance.x) >= Math.Abs(distance.y))
+        {
+            return distance.x >= 0 ? Vector3.right : Vector3.left;
+        }
+        else
+        {
+            return distance.y >= 0 ? Vector3.up : Vector3.down;
         }
     }
 

@@ -22,7 +22,7 @@ public class IntroTank : MonoBehaviour {
     {
         gameObject.GetComponent<RawImage>().enabled = false;
 
-        SoundManager.PlaySfx(SoundManager.GetSFX(SFX.introTankRolling));
+        SoundManager.PlaySfx(SFX.IntroTankRolling);
 
         color = new Color(0, 0, 0, 255);
         background.GetComponent<RawImage>().color = color;
@@ -51,9 +51,8 @@ public class IntroTank : MonoBehaviour {
         yield return new WaitForSeconds(1f);
 
         transform.GetChild(2).gameObject.SetActive(false);
-        //gameObject.GetComponent<RawImage>().enabled = true;
 
-        SoundManager.PlaySfx(SoundManager.GetSFX(SFX.introTankFiring));
+        SoundManager.PlaySfx(SFX.IntroTankFiring);
         title.gameObject.SetActive(true);
 
         flashPanel.SetActive(true);

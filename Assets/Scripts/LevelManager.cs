@@ -7,8 +7,12 @@ public class LevelManager : MonoBehaviour
 {
     private static LevelManager singletonInstance;
 
+    public GameObject enemyTankParentObject;
+
     private List<EnemyType> enemyTankList;
     private string customTankOrder;
+
+    private Vector3 initialPlayerOrientation;
 
     private void Awake()
     {
@@ -20,7 +24,9 @@ public class LevelManager : MonoBehaviour
 
     private void Start ()
     {
-        StartCoroutine(PlayScriptedTooltiAnimations());
+        StartCoroutine(PlayScriptedTooltipAnimations());
+
+        initialPlayerOrientation = Vector3.up;
 	}
 
     private void InitializeSingleton()
@@ -28,19 +34,23 @@ public class LevelManager : MonoBehaviour
         singletonInstance = this;
     }
 
-    private IEnumerator PlayScriptedTooltiAnimations()
+    private IEnumerator PlayScriptedTooltipAnimations()
     {
         yield return new WaitForSeconds(2f);
         TooltipController.PlayTooltipAnimation(Tooltip.Eagle, false);
         PauseManager.FreezeDynamicObjects();
-        EnemySpawnerController.SetSpawnFrequency(.3f);
+        EnemySpawnerController.SetSpawnFrequency(.8f);
         EnemySpawnerController.SetSpawnStartTime(0f);
 
+        //Freeze as soon as spawned has been called on the 3rd enemy
         yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 3);
-        TooltipController.PlayTooltipAnimation(Tooltip.FirstWave, false);
         PauseManager.FreezeDynamicObjects();
+
+        //Show crosshairs once all three enemies are spawned and on scene
+        yield return new WaitWhile(() => enemyTankParentObject.transform.childCount != 3);
+        TooltipController.PlayTooltipAnimation(Tooltip.FirstWave, false);
         EnemySpawnerController.SetSpawnFrequency(4f);
-        EnemySpawnerController.SetSpawnStartTime(2f);
+        EnemySpawnerController.SetSpawnStartTime(1f);
 
         yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 4);
         TooltipController.PlayTooltipAnimation(Tooltip.Ammo, true);
@@ -53,6 +63,11 @@ public class LevelManager : MonoBehaviour
     public static List<EnemyType> GetEnemyTankList()
     {
         return singletonInstance.enemyTankList;
+    }
+
+    public static Vector3 GetInitialPlayerOrientation()
+    {
+        return singletonInstance.initialPlayerOrientation;
     }
 
     private List<EnemyType> GenerateEnemyTankList()

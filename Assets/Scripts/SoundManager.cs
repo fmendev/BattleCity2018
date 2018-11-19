@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-public enum SFX { introTankRolling, introTankFiring, mouseOnOption, startGame, playerFire, projectileHitsBrick, projectileHitsWall, tankExplosion, powerUpSpawn };
+public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, PowerUpSpawn,
+                  Target};
 
 public class SoundManager : MonoBehaviour
 {
@@ -22,8 +23,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip playerFire;
     public AudioClip projectileHitsBrick;
     public AudioClip projectileHitsWall;
-    public AudioClip tankExplosion;
+    public AudioClip explosionEnemyRegular;
     public AudioClip powerUpSpawn;
+    public AudioClip target;
 
     void Awake()
     {
@@ -50,22 +52,23 @@ public class SoundManager : MonoBehaviour
         singletonInstance.sfxSource.Play();
     }
 
-    public static void PlaySfx(AudioClip clip)
+    public static void PlaySfx(SFX sfx)
     {
-        singletonInstance.sfxSource.PlayOneShot(clip);
+        singletonInstance.sfxSource.PlayOneShot(singletonInstance.GetSFX(sfx));
     }
 
-    public static AudioClip GetSFX(SFX sfx)
+    private AudioClip GetSFX(SFX sfx)
     {
-        if (sfx == SFX.introTankFiring) return singletonInstance.introTankFiring;
-        else if (sfx == SFX.introTankRolling) return singletonInstance.introTankRolling;
-        else if (sfx == SFX.mouseOnOption) return singletonInstance.mouseOnOption;
-        else if (sfx == SFX.startGame) return singletonInstance.startGame;
-        else if (sfx == SFX.playerFire) return singletonInstance.playerFire;
-        else if (sfx == SFX.projectileHitsBrick) return singletonInstance.projectileHitsBrick;
-        else if (sfx == SFX.projectileHitsWall) return singletonInstance.projectileHitsWall;
-        else if (sfx == SFX.tankExplosion) return singletonInstance.tankExplosion;
-        else if (sfx == SFX.powerUpSpawn) return singletonInstance.powerUpSpawn;
+        if (sfx == SFX.IntroTankFiring) return singletonInstance.introTankFiring;
+        else if (sfx == SFX.IntroTankRolling) return singletonInstance.introTankRolling;
+        else if (sfx == SFX.MouseOnOption) return singletonInstance.mouseOnOption;
+        else if (sfx == SFX.StartGame) return singletonInstance.startGame;
+        else if (sfx == SFX.PlayerFire) return singletonInstance.playerFire;
+        else if (sfx == SFX.ProjectileHitsBrick) return singletonInstance.projectileHitsBrick;
+        else if (sfx == SFX.ProjectileHitsWall) return singletonInstance.projectileHitsWall;
+        else if (sfx == SFX.ExplosionEnemyRegular) return singletonInstance.explosionEnemyRegular;
+        else if (sfx == SFX.PowerUpSpawn) return singletonInstance.powerUpSpawn;
+        else if (sfx == SFX.Target) return singletonInstance.target;
 
         else
             throw new Exception("SFX not found");
