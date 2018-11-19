@@ -31,7 +31,7 @@ public class TooltipController : MonoBehaviour
     private string continueMessage;
 
     private GameObject activeTooltip;
-    private float tooltipDelay = 2f;
+    private float tooltipDelay = 1f;
 
     private void Awake()
     {

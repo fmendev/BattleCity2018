@@ -10,10 +10,9 @@ public class WeaponsController : MonoBehaviour
     public GameObject shellPrefab;
 
     [SerializeField]
-    private float shellSpeed = 1000;
-    [SerializeField]
+    private float shellSpeed;
+
     private int currentMaxAmmo = 3;
-    [SerializeField]
     private int currentShellAmmo = 3;
 
     private int ammoPoolCount = 20;

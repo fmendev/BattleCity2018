@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -25,14 +23,14 @@ public class EnemySpawnerController : MonoBehaviour
         currentEnemySpawning = 0;
         spawningStartTime = 2.1f;
         spawningFrequencyRate = 4f;
+
+        Debug.Log("Spawning invoked (start, freq): " + spawningStartTime + " " + spawningFrequencyRate);
+        InvokeRepeating("SpawnEnemy", spawningStartTime, spawningFrequencyRate);
     }
 
     private void Start()
     {
         tankSpawningOrder = LevelManager.GetEnemyTankList();
-
-        //Debug.Log("Spawning invoked (start, freq): " + spawningStartTime + " " + spawningFrequencyRate);
-        InvokeRepeating("SpawnEnemy", spawningStartTime, spawningFrequencyRate);
     }
 
     private void SpawnEnemy()

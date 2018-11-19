@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     public GameObject enemyTankParentObject;
 
     private int currentLevel;
+    private bool isPlayerReady = false;
 
     private List<EnemyType> enemyTankList;
     private string customTankOrder;
@@ -41,6 +42,8 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator PlayScriptedTooltipAnimations()
     {
+        yield return new WaitWhile(() => isPlayerReady == false);
+        PlayerSpawner.SpawnPlayer();
         yield return new WaitForSeconds(2f);
         TooltipController.PlayTooltipAnimation(Tooltip.Eagle, false);
         PauseManager.FreezeDynamicObjects();
@@ -54,7 +57,7 @@ public class LevelManager : MonoBehaviour
         //Show crosshairs once all three enemies are spawned and on scene
         yield return new WaitWhile(() => enemyTankParentObject.transform.childCount != 3);
         TooltipController.PlayTooltipAnimation(Tooltip.FirstWave, false);
-        EnemySpawnerController.SetSpawnFrequency(4f);
+        EnemySpawnerController.SetSpawnFrequency(6f);
         EnemySpawnerController.SetSpawnStartTime(1f);
 
         yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 4);
@@ -73,6 +76,16 @@ public class LevelManager : MonoBehaviour
     public static Vector3 GetInitialPlayerOrientation()
     {
         return singletonInstance.initialPlayerOrientation;
+    }
+
+    public static int GetCurrentLevel()
+    {
+        return singletonInstance.currentLevel;
+    }
+
+    public static void SetPlayerReadyStatus(bool status)
+    {
+        singletonInstance.isPlayerReady = status;
     }
 
     private List<EnemyType> GenerateEnemyTankList()

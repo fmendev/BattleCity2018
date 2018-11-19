@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\PowerUpController.cs" />
     <Compile Include="Assets\Scripts\PowerUpEffects.cs" />
     <Compile Include="Assets\Scripts\ProjectileCollisions.cs" />
+    <Compile Include="Assets\Scripts\ReadyScreenBehavior.cs" />
     <Compile Include="Assets\Scripts\ShellDisplay.cs" />
     <Compile Include="Assets\Scripts\ShellWipe.cs" />
     <Compile Include="Assets\Scripts\SoundManager.cs" />

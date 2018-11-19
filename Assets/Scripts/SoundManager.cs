@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, ExplosionEnemyArmored, ExplosionPlayer,
-                  ExplosionEagle, PowerUpSpawn, Target, InteractUI};
+                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI};
 
 public class SoundManager : MonoBehaviour
 {
@@ -27,15 +27,17 @@ public class SoundManager : MonoBehaviour
     public AudioClip explosionEnemyArmored;
     public AudioClip explosionPlayer;
     public AudioClip explosionEagle;
-    public AudioClip powerUpSpawn;
     public AudioClip target;
     public AudioClip interactUI;
+    public AudioClip spawnEnemy;
+    public AudioClip spawnPowerUp;
 
     void Awake()
     {
         InitializaSingleton();
         DontDestroyOnLoad(gameObject);
-        sfxSource.volume = .9f;
+        sfxSource.volume = .8f;
+        musicSource.volume = .8f;
     }
 
     private void InitializaSingleton()
@@ -64,7 +66,7 @@ public class SoundManager : MonoBehaviour
             singletonInstance.sfxSource.volume = 1f;
         }
         singletonInstance.sfxSource.PlayOneShot(singletonInstance.GetSFX(sfx));
-        singletonInstance.sfxSource.volume = .9f;
+        singletonInstance.sfxSource.volume = .8f;
     }
 
     private AudioClip GetSFX(SFX sfx)
@@ -80,7 +82,8 @@ public class SoundManager : MonoBehaviour
         else if (sfx == SFX.ExplosionEnemyArmored) return singletonInstance.explosionEnemyArmored;
         else if (sfx == SFX.ExplosionPlayer) return singletonInstance.explosionPlayer;
         else if (sfx == SFX.ExplosionEagle) return singletonInstance.explosionEagle;
-        else if (sfx == SFX.PowerUpSpawn) return singletonInstance.powerUpSpawn;
+        else if (sfx == SFX.SpawnPowerUp) return singletonInstance.spawnPowerUp;
+        else if (sfx == SFX.SpawnEnemy) return singletonInstance.spawnEnemy;
         else if (sfx == SFX.Target) return singletonInstance.target;
         else if (sfx == SFX.InteractUI) return singletonInstance.interactUI;
 

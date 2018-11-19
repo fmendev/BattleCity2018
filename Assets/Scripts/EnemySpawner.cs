@@ -14,6 +14,7 @@ public class EnemySpawner : MonoBehaviour
         //Debug.Log("Spawn animation started at " + a.ToString("s.ffff"));
         enemyTypeSpawning = type; 
         GetComponent<Animator>().SetBool("isSpawning", true);
+        SoundManager.PlaySfx(SFX.SpawnEnemy);
         //After spawn animation completes, it calls ActivatePlayer via event. This brings the player on scene and resets the trigger
     }
 

@@ -86,8 +86,6 @@ public class PauseManager : MonoBehaviour
 
     public static void UnfreezeDynamicObjects()
     {
-        Debug.Log("Unfreeze called");
-
         singletonInstance.isFrozen = false;
 
         //Resume enemy spawning

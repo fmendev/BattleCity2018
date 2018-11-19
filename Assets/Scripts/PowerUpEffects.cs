@@ -8,13 +8,9 @@ public class PowerUpEffects : MonoBehaviour
     private GameObject player;
     private Animator anim;
 
-    [SerializeField]
     private float shellSpeedCap = 2500;
-    [SerializeField]
     private float tankSpeedCap = 1050;
-    [SerializeField]
     private int armorCap = 4;
-    [SerializeField]
     private int ammoCap = 7;
 
     private void Start()

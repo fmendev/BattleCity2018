@@ -11,26 +11,15 @@ public class LivesController : MonoBehaviour {
     public GameObject playerPrefab;
     public GameObject livesDisplay;
 
-    [SerializeField]
-    private int currentLives;
-    [SerializeField]
-    private float playerRespawnDelay;
-
+    private int currentLives = 3;
     private int livesCap = 5;
+
+    private float playerRespawnDelay = 2f;
 
     private void Awake()
     {
         InitializeSingleton();
-
-        currentLives = 3;
-        playerRespawnDelay = 1f;
-
         UpdateLivesDisplay();
-    }
-
-    private void Start()
-    {
-        PlayerSpawner.SpawnPlayer();
     }
 
     private void UpdateLivesDisplay()
