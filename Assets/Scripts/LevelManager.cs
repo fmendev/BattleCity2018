@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour
 
     public GameObject enemyTankParentObject;
 
+    private int currentLevel;
+
     private List<EnemyType> enemyTankList;
     private string customTankOrder;
 
@@ -18,12 +20,15 @@ public class LevelManager : MonoBehaviour
     {
         InitializeSingleton();
 
+        currentLevel = 1;
+
         customTankOrder = "000212111333";
         enemyTankList = GenerateEnemyTankList();
     }
 
     private void Start ()
     {
+        SoundManager.PlayMusic(currentLevel);
         StartCoroutine(PlayScriptedTooltipAnimations());
 
         initialPlayerOrientation = Vector3.up;

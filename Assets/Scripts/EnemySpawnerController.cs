@@ -31,7 +31,7 @@ public class EnemySpawnerController : MonoBehaviour
     {
         tankSpawningOrder = LevelManager.GetEnemyTankList();
 
-        Debug.Log("Spawning invoked (start, freq): " + spawningStartTime + " " + spawningFrequencyRate);
+        //Debug.Log("Spawning invoked (start, freq): " + spawningStartTime + " " + spawningFrequencyRate);
         InvokeRepeating("SpawnEnemy", spawningStartTime, spawningFrequencyRate);
     }
 
@@ -95,7 +95,7 @@ public class EnemySpawnerController : MonoBehaviour
 
     public static void PauseEnemySpawning()
     {
-        Debug.Log("Canceled");
+        Debug.Log("Spawning paused");
         singletonInstance.CancelInvoke();
     }
 
@@ -103,7 +103,7 @@ public class EnemySpawnerController : MonoBehaviour
     {
         if (singletonInstance.currentEnemySpawning < singletonInstance.tankSpawningOrder.Count - 1)
         {
-            Debug.Log("Spawning resumed (start, freq): " + singletonInstance.spawningStartTime + " " + singletonInstance.spawningFrequencyRate);
+            //Debug.Log("Spawning resumed (start, freq): " + singletonInstance.spawningStartTime + ", " + singletonInstance.spawningFrequencyRate);
             singletonInstance.InvokeRepeating("SpawnEnemy", singletonInstance.spawningStartTime, singletonInstance.spawningFrequencyRate);
         }
         

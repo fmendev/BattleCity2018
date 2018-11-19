@@ -7,9 +7,9 @@ public class PauseManager : MonoBehaviour
     private static PauseManager singletonInstance;
 
     public GameObject enemyTankParentObject;
-    public GameObject logicController;
 
     private GameObject ammoPool;
+    private GameObject logicController;
     private bool isFrozen = false;
 
     private List<Vector2> projectileVelocitiesAtFreeze;
@@ -21,6 +21,8 @@ public class PauseManager : MonoBehaviour
 
         projectileVelocitiesAtFreeze = new List<Vector2>();
         tankVelocitiesAtFreeze = new List<Vector2>();
+
+        logicController = GameObject.FindGameObjectWithTag("LogicController");
     }
 
     private void Start()

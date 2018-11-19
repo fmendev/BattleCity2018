@@ -102,6 +102,7 @@ public class TooltipBehavior : MonoBehaviour
             if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
             {
                 PauseManager.UnfreezeDynamicObjects();
+                SoundManager.PlaySfx(SFX.InteractUI);
                 Destroy(gameObject);
             }
         }

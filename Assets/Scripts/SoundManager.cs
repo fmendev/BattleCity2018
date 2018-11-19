@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
-public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, PowerUpSpawn,
-                  Target};
+public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, ExplosionEnemyArmored, ExplosionPlayer,
+                  ExplosionEagle, PowerUpSpawn, Target, InteractUI};
 
 public class SoundManager : MonoBehaviour
 {
@@ -24,13 +24,18 @@ public class SoundManager : MonoBehaviour
     public AudioClip projectileHitsBrick;
     public AudioClip projectileHitsWall;
     public AudioClip explosionEnemyRegular;
+    public AudioClip explosionEnemyArmored;
+    public AudioClip explosionPlayer;
+    public AudioClip explosionEagle;
     public AudioClip powerUpSpawn;
     public AudioClip target;
+    public AudioClip interactUI;
 
     void Awake()
     {
         InitializaSingleton();
         DontDestroyOnLoad(gameObject);
+        sfxSource.volume = .9f;
     }
 
     private void InitializaSingleton()
@@ -54,7 +59,12 @@ public class SoundManager : MonoBehaviour
 
     public static void PlaySfx(SFX sfx)
     {
+        if (sfx == SFX.ExplosionPlayer || sfx == SFX.ExplosionEnemyArmored || sfx == SFX.ExplosionEagle)
+        {
+            singletonInstance.sfxSource.volume = 1f;
+        }
         singletonInstance.sfxSource.PlayOneShot(singletonInstance.GetSFX(sfx));
+        singletonInstance.sfxSource.volume = .9f;
     }
 
     private AudioClip GetSFX(SFX sfx)
@@ -67,8 +77,12 @@ public class SoundManager : MonoBehaviour
         else if (sfx == SFX.ProjectileHitsBrick) return singletonInstance.projectileHitsBrick;
         else if (sfx == SFX.ProjectileHitsWall) return singletonInstance.projectileHitsWall;
         else if (sfx == SFX.ExplosionEnemyRegular) return singletonInstance.explosionEnemyRegular;
+        else if (sfx == SFX.ExplosionEnemyArmored) return singletonInstance.explosionEnemyArmored;
+        else if (sfx == SFX.ExplosionPlayer) return singletonInstance.explosionPlayer;
+        else if (sfx == SFX.ExplosionEagle) return singletonInstance.explosionEagle;
         else if (sfx == SFX.PowerUpSpawn) return singletonInstance.powerUpSpawn;
         else if (sfx == SFX.Target) return singletonInstance.target;
+        else if (sfx == SFX.InteractUI) return singletonInstance.interactUI;
 
         else
             throw new Exception("SFX not found");

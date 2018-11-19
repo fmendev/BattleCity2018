@@ -10,11 +10,13 @@ public class ProjectileCollisions : MonoBehaviour
     public GameObject shooter;
     public GameObject explosion;
 
+    private GameObject logicController;
     private GameObject brick;
 
     void Start()
     {
         brick = GameObject.FindGameObjectWithTag("Brick");
+        logicController = GameObject.FindGameObjectWithTag("LogicController");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -94,7 +96,7 @@ public class ProjectileCollisions : MonoBehaviour
                 Instantiate(explosion);
                 if (collision.gameObject.GetComponent<EnemyProperties>().enemyType == EnemyType.Armored)
                 {
-
+                    SoundManager.PlaySfx(SFX.ExplosionEnemyArmored);
                 }
                 else
                 {
@@ -118,6 +120,7 @@ public class ProjectileCollisions : MonoBehaviour
 
                 Instantiate(explosion);
                 LivesController.DecreaseLives();
+                SoundManager.PlaySfx(SFX.ExplosionPlayer);
                 collision.gameObject.SetActive(false);
             }
         }
@@ -130,10 +133,12 @@ public class ProjectileCollisions : MonoBehaviour
             gameOverAnim.SetBool("isEagleDestroyed", true);
             eagleAnim.SetBool("isEagleDestroyed", true);
 
-            for (int i = 0; i < players.Length; i++)
-            {
-                players[i].GetComponent<PlayerController>().enabled = false;
-            }
+            SoundManager.PlaySfx(SFX.ExplosionEagle);
+
+            logicController.GetComponent<PlayerController>().enabled = false;
+            logicController.GetComponent<WeaponsController>().enabled = false;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
         }
 
         if (collision.gameObject != shooter)

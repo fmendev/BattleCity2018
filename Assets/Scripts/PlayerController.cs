@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     private static PlayerController singletonInstance;
 
+    public bool enabledGUI = true;
+
     [SerializeField]
     private float playerSpeed;
 
@@ -20,6 +22,26 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     private Vector3 moveDirection = Vector3.zero;
     #endregion
+
+    private void OnGUI()
+    {
+        int offsetX = 45;
+        int offsetY = 0;
+
+        if (enabledGUI)
+        {
+            GUI.Label(new Rect(10 + offsetX, 20 + offsetY, 200, 20), "Lives:" + LivesController.GetCurrentLives().ToString());
+            GUI.Label(new Rect(10 + offsetX, 30 + offsetY, 200, 20), "Armor " + ArmorController.GetArmor().ToString());
+            //GUI.Label(new Rect(10 + offsetX, 40 + offsetY, 200, 20), "pLeft " + pNextDirection[2].ToString());
+            //GUI.Label(new Rect(10 + offsetX, 50 + offsetY, 200, 20), "pDown " + pNextDirection[3].ToString());
+            //GUI.Label(new Rect(10 + offsetX, 60 + offsetY, 200, 20), "Dir Prev" + previousDirection.ToString());
+            //GUI.Label(new Rect(10 + offsetX, 70 + offsetY, 200, 20), "Dir Cur" + moveDirection.ToString());
+            //GUI.Label(new Rect(10 + offsetX, 80 + offsetY, 200, 20), "pSUM " + pNextDirection.Values.Sum().ToString());
+            //GUI.Label(new Rect(10 + offsetX, 90 + offsetY, 200, 20), "Target Cur: " + currentTarget.ToString());
+            //GUI.Label(new Rect(10 + offsetX, 100 + offsetY, 200, 20), "Barrier[0]: " + barrier0);
+            //GUI.Label(new Rect(10 + offsetX, 110 + offsetY, 200, 20), "Barrier[1]: " + barrier1);
+        }
+    }
 
     private void Awake()
     {

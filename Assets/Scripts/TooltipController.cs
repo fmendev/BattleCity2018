@@ -89,7 +89,10 @@ public class TooltipController : MonoBehaviour
             crosshair.GetComponent<TargetBehavior>().isSelfClosing = isSelfClosing;
         }
 
-        SoundManager.PlaySfx(SFX.Target);
+        if (!isSelfClosing)
+        {
+            SoundManager.PlaySfx(SFX.Target);
+        }
     }
 
     private IEnumerator ShowToolTip(Tooltip key, bool isSelfClosing)

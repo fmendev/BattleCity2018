@@ -51,6 +51,10 @@ public class LivesController : MonoBehaviour {
         singletonInstance = this;
     }
 
+    public static int GetCurrentLives()
+    {
+        return singletonInstance.currentLives;
+    }
     public static void IncreaseLives()
     {
         if (singletonInstance.currentLives < singletonInstance.livesCap)
@@ -70,7 +74,7 @@ public class LivesController : MonoBehaviour {
             PlayerSpawner.SpawnPlayer();
             ArmorController.IncreaseArmor();
         }
-        else
+        else if (singletonInstance.currentLives == 0)
         {
             Animator gameOverAnim = GameObject.FindGameObjectWithTag("GameOver").GetComponent<Animator>();
             gameOverAnim.SetBool("isEagleDestroyed", true);
