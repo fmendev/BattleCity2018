@@ -17,6 +17,7 @@ TagManager:
   - Projectile
   - Bounds
   - Boundary
+  - LogicController
   layers:
   - Default
   - TransparentFX

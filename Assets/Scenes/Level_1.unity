@@ -7705,7 +7705,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTankParentObject: {fileID: 229391928}
-  logicController: {fileID: 1466482583}
 --- !u!114 &708889563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62265,7 +62264,7 @@ GameObject:
   - component: {fileID: 1466482589}
   m_Layer: 0
   m_Name: LogicController
-  m_TagString: Untagged
+  m_TagString: LogicController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62376,6 +62375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da1cb7c50630bc34c81a77f940503dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledGUI: 1
   playerSpeed: 650
 --- !u!114 &1466482591
 MonoBehaviour:

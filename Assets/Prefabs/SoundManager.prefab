@@ -53,7 +53,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -148,7 +148,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.9
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -257,5 +257,10 @@ MonoBehaviour:
   projectileHitsWall: {fileID: 0}
   explosionEnemyRegular: {fileID: 8300000, guid: ecdbc5d34197bda44a532cc4b7d3e426,
     type: 3}
+  explosionEnemyArmored: {fileID: 8300000, guid: cdc6eb685776db14d9996fe8a495ece4,
+    type: 3}
+  explosionPlayer: {fileID: 8300000, guid: 8d12fc340f4f5444a9908490a8568877, type: 3}
+  explosionEagle: {fileID: 8300000, guid: 4a1aeb4ec5eb3754a941f3fef8096532, type: 3}
   powerUpSpawn: {fileID: 8300000, guid: 89bc5b55c8d0b4a41bd327fc15e2d7d7, type: 3}
   target: {fileID: 8300000, guid: afd3ee65baa21224f8e6384c1b4149d2, type: 3}
+  interactUI: {fileID: 8300000, guid: e78e78b35aac0e4428fb015aec38697c, type: 3}
