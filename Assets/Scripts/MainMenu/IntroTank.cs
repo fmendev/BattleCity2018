@@ -98,7 +98,7 @@ public class IntroTank : MonoBehaviour {
                     color = new Color(255, 255, 255, 1);
                     mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = color;
                     optionsFadingIn = false;
-                    SoundManager.PlayMusic(0);
+                    SoundManager.PlayMusic(Music.TwinCannons);
                 }
             }
         }

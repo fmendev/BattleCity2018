@@ -1,23 +1,27 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, ExplosionEnemyArmored, ExplosionPlayer,
                   ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI};
 
+public enum Music { TwinCannons, InDeep, HowlingWind };
+
 public class SoundManager : MonoBehaviour
 {
     private static SoundManager singletonInstance = null;
 
-    public AudioSource sfxSource;                   
-    public AudioSource musicSource;
+    public AudioSource audioSource;                   
 
-    public AudioClip[] music;
+    //Music
+    public AudioClip twinCannons;
+    public AudioClip inDeep;
+    public AudioClip howlingWind;
 
     //Intro and Main Menu
     public AudioClip introTankRolling;
     public AudioClip introTankFiring;
     public AudioClip mouseOnOption;
-    public AudioClip startGame;
 
     //In game
     public AudioClip playerFire;
@@ -32,12 +36,14 @@ public class SoundManager : MonoBehaviour
     public AudioClip spawnEnemy;
     public AudioClip spawnPowerUp;
 
+    private float fadeOutTime = 3f;
+
     void Awake()
     {
         InitializaSingleton();
         DontDestroyOnLoad(gameObject);
-        sfxSource.volume = .8f;
-        musicSource.volume = .8f;
+        audioSource.volume = .8f;
+        audioSource.volume = .8f;
     }
 
     private void InitializaSingleton()
@@ -52,21 +58,81 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public static void PlayMusic(int levelNumber)
+    public static void PlayMusic(Music music)
     {
-        singletonInstance.sfxSource.clip = singletonInstance.music[levelNumber];
-        singletonInstance.sfxSource.loop = true;
-        singletonInstance.sfxSource.Play();
+        singletonInstance.StopAllCoroutines();
+        singletonInstance.audioSource.Stop();
+        singletonInstance.audioSource.volume = .8f;
+        singletonInstance.audioSource.clip = singletonInstance.GetMusic(music);
+        singletonInstance.audioSource.loop = true;
+        singletonInstance.audioSource.Play();
     }
 
     public static void PlaySfx(SFX sfx)
     {
         if (sfx == SFX.ExplosionPlayer || sfx == SFX.ExplosionEnemyArmored || sfx == SFX.ExplosionEagle)
         {
-            singletonInstance.sfxSource.volume = 1f;
+            singletonInstance.audioSource.volume = 1f;
         }
-        singletonInstance.sfxSource.PlayOneShot(singletonInstance.GetSFX(sfx));
-        singletonInstance.sfxSource.volume = .8f;
+        singletonInstance.audioSource.PlayOneShot(singletonInstance.GetSFX(sfx));
+        singletonInstance.audioSource.volume = .8f;
+    }
+
+    public static void FadeOutMusic(float fadeOutTime)
+    {
+        singletonInstance.StartCoroutine(singletonInstance.BeginFadingOutMusic(fadeOutTime));
+    }
+
+    private IEnumerator BeginFadingOutMusic(float fadeOutTime)
+    {
+        float startVolume = audioSource.volume;
+
+        if (audioSource.isPlaying)
+        {
+            
+            while (audioSource.volume > 0)
+            {
+                Debug.Log("Current volume: " + audioSource.volume);
+                audioSource.volume -= startVolume * Time.deltaTime / fadeOutTime;
+                yield return null;
+            }
+            audioSource.Stop();
+        }
+
+        audioSource.volume = startVolume;
+    }
+
+    public static void FadeInMusic(Music music, float fadeInTime)
+    {
+        singletonInstance.StartCoroutine(singletonInstance.BeginFadingInMusic(music, fadeInTime));
+    }
+
+    private IEnumerator BeginFadingInMusic(Music music, float fadeInTime)
+    {
+        singletonInstance.audioSource.clip = singletonInstance.GetMusic(music);
+
+        audioSource.Play();
+        audioSource.volume = 0f;
+        while (audioSource.volume < 1)
+        {
+            audioSource.volume += Time.deltaTime / fadeInTime;
+            yield return null;
+        }
+    }
+
+    public static void SetMusicVolume(float volume)
+    {
+        singletonInstance.audioSource.volume = volume;
+    }
+
+    private AudioClip GetMusic(Music music)
+    {
+        if (music == Music.TwinCannons) return singletonInstance.twinCannons;
+        else if (music == Music.InDeep) return singletonInstance.inDeep;
+        else if (music == Music.HowlingWind) return singletonInstance.howlingWind;
+
+        else
+            throw new Exception("Music file not found");
     }
 
     private AudioClip GetSFX(SFX sfx)
@@ -74,7 +140,6 @@ public class SoundManager : MonoBehaviour
         if (sfx == SFX.IntroTankFiring) return singletonInstance.introTankFiring;
         else if (sfx == SFX.IntroTankRolling) return singletonInstance.introTankRolling;
         else if (sfx == SFX.MouseOnOption) return singletonInstance.mouseOnOption;
-        else if (sfx == SFX.StartGame) return singletonInstance.startGame;
         else if (sfx == SFX.PlayerFire) return singletonInstance.playerFire;
         else if (sfx == SFX.ProjectileHitsBrick) return singletonInstance.projectileHitsBrick;
         else if (sfx == SFX.ProjectileHitsWall) return singletonInstance.projectileHitsWall;

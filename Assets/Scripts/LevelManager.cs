@@ -17,6 +17,8 @@ public class LevelManager : MonoBehaviour
 
     private Vector3 initialPlayerOrientation;
 
+    private bool onSpawnSfx = true;
+
     private void Awake()
     {
         InitializeSingleton();
@@ -29,7 +31,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start ()
     {
-        SoundManager.PlayMusic(currentLevel);
+        SoundManager.PlayMusic(Music.InDeep);
         StartCoroutine(PlayScriptedTooltipAnimations());
 
         initialPlayerOrientation = Vector3.up;
@@ -53,6 +55,7 @@ public class LevelManager : MonoBehaviour
         //Freeze as soon as spawned has been called on the 3rd enemy
         yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 3);
         PauseManager.FreezeDynamicObjects();
+        onSpawnSfx = false;
 
         //Show crosshairs once all three enemies are spawned and on scene
         yield return new WaitWhile(() => enemyTankParentObject.transform.childCount != 3);
@@ -86,6 +89,11 @@ public class LevelManager : MonoBehaviour
     public static void SetPlayerReadyStatus(bool status)
     {
         singletonInstance.isPlayerReady = status;
+    }
+
+    public static bool GetSpawnSfxStatus()
+    {
+        return singletonInstance.onSpawnSfx;
     }
 
     private List<EnemyType> GenerateEnemyTankList()

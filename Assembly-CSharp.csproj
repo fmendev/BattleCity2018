@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\MainMenu\IntroTank.cs" />
     <Compile Include="Assets\Scripts\MainMenu\MenuSelectionSprite.cs" />
     <Compile Include="Assets\Scripts\MainMenu\SceneLoader.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\Story.cs" />
     <Compile Include="Assets\Scripts\PauseManager.cs" />
     <Compile Include="Assets\Scripts\PlayerCollisions.cs" />
     <Compile Include="Assets\Scripts\PlayerController.cs" />
