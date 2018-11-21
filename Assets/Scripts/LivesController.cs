@@ -67,6 +67,7 @@ public class LivesController : MonoBehaviour {
         {
             Animator gameOverAnim = GameObject.FindGameObjectWithTag("GameOver").GetComponent<Animator>();
             gameOverAnim.SetBool("isEagleDestroyed", true);
+            LevelEndManager.ShowLevelEndScreen(Outcome.Defeat);
         }
     }
 }

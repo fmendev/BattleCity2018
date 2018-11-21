@@ -35,7 +35,7 @@ public class EnemyAI : MonoBehaviour
     private GameObject eagle;
 
     //Fire function variables
-    private int ammoPoolCount = 20;
+    private int ammoPoolCount = 10;
     private GameObject bigAmmoPool;
     private List<GameObject> ammoPool = new List<GameObject>();
 
@@ -382,6 +382,11 @@ public class EnemyAI : MonoBehaviour
                 ammoPool[i].GetComponent<ProjectileCollisions>().firedByPlayer = false;
                 ammoPool[i].GetComponent<ProjectileCollisions>().shooter = gameObject;
                 break;
+            }
+
+            if (shellsFired == ammoPoolCount)
+            {
+                throw new Exception("Ammo pool not large enough for enemy: " + gameObject);
             }
         }
 

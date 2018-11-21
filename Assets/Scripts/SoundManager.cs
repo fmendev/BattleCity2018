@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, ExplosionEnemyArmored, ExplosionPlayer,
-                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI};
+                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI, DamageEnemy};
 
 public enum Music { TwinCannons, InDeep, HowlingWind };
 
@@ -35,6 +35,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip interactUI;
     public AudioClip spawnEnemy;
     public AudioClip spawnPowerUp;
+    public AudioClip damageEnemy;
 
     private float fadeOutTime = 3f;
 
@@ -150,6 +151,7 @@ public class SoundManager : MonoBehaviour
         else if (sfx == SFX.SpawnPowerUp) return singletonInstance.spawnPowerUp;
         else if (sfx == SFX.SpawnEnemy) return singletonInstance.spawnEnemy;
         else if (sfx == SFX.Target) return singletonInstance.target;
+        else if (sfx == SFX.InteractUI) return singletonInstance.interactUI;
         else if (sfx == SFX.InteractUI) return singletonInstance.interactUI;
 
         else

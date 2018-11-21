@@ -103,6 +103,7 @@ public class ProjectileCollisions : MonoBehaviour
                     SoundManager.PlaySfx(SFX.ExplosionEnemyRegular);
                 }
                 Destroy(collision.gameObject);
+                LevelEndManager.IncreaseKillCount();
             }
             else
             {

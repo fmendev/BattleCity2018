@@ -155,8 +155,8 @@ MonoBehaviour:
   introTankFiring: {fileID: 8300000, guid: 2e2255535391b654dad07c28abe443ad, type: 3}
   mouseOnOption: {fileID: 8300000, guid: 75ea2ec0f75570b45b61e933d49ae6a9, type: 3}
   playerFire: {fileID: 8300000, guid: 8a21640b4c40a0e44afc5a66ec4d54d8, type: 3}
-  projectileHitsBrick: {fileID: 0}
-  projectileHitsWall: {fileID: 0}
+  projectileHitsBrick: {fileID: 8300000, guid: b35c93283321e344ea1f7a6635a88e18, type: 3}
+  projectileHitsWall: {fileID: 8300000, guid: 75029e631d63f3746a165e25259c776f, type: 3}
   explosionEnemyRegular: {fileID: 8300000, guid: ecdbc5d34197bda44a532cc4b7d3e426,
     type: 3}
   explosionEnemyArmored: {fileID: 8300000, guid: cdc6eb685776db14d9996fe8a495ece4,
@@ -166,4 +166,5 @@ MonoBehaviour:
   target: {fileID: 8300000, guid: afd3ee65baa21224f8e6384c1b4149d2, type: 3}
   interactUI: {fileID: 8300000, guid: e78e78b35aac0e4428fb015aec38697c, type: 3}
   spawnEnemy: {fileID: 8300000, guid: 75f55d368c2986044af11e3927a0841a, type: 3}
-  spawnPowerUp: {fileID: 0}
+  spawnPowerUp: {fileID: 8300000, guid: 89bc5b55c8d0b4a41bd327fc15e2d7d7, type: 3}
+  damageEnemy: {fileID: 0}

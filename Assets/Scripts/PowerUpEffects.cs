@@ -3,7 +3,7 @@
 public class PowerUpEffects : MonoBehaviour
 {
     public PowerUpType puType;
-    public float timer = 15f;
+    public float timer = 20f;
 
     private GameObject player;
     private Animator anim;
