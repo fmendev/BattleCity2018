@@ -18,10 +18,18 @@ public class IntroTank : MonoBehaviour {
     private bool flashing = false;
     private bool optionsFadingIn = false;
 
-    void Start ()
+    private void Awake()
     {
         gameObject.GetComponent<RawImage>().enabled = false;
 
+        for (int i = 0; i < mainMenuPanel.transform.childCount; i++)
+        {
+            mainMenuPanel.transform.GetChild(i).GetComponent<Button>().interactable = false;
+        }
+
+    }
+    void Start ()
+    {
         SoundManager.PlaySfx(SFX.IntroTankRolling);
 
         color = new Color(0, 0, 0, 255);
@@ -99,6 +107,8 @@ public class IntroTank : MonoBehaviour {
                     mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = color;
                     optionsFadingIn = false;
                     SoundManager.PlayMusic(Music.TwinCannons);
+
+                    mainMenuPanel.transform.GetChild(i).GetComponent<Button>().interactable = true;
                 }
             }
         }
