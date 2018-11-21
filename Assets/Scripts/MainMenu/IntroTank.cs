@@ -13,10 +13,13 @@ public class IntroTank : MonoBehaviour {
     public GameObject title;
 
     private Color color;
+    private Color menuOrange = new Color(255, 199, 0, 1);
     private float alphaDelta = .005f;
     private float rgbDelta = .25f;
     private bool flashing = false;
     private bool optionsFadingIn = false;
+
+    private bool introEscaped = false;
 
     private void Awake()
     {
@@ -26,7 +29,6 @@ public class IntroTank : MonoBehaviour {
         {
             mainMenuPanel.transform.GetChild(i).GetComponent<Button>().interactable = false;
         }
-
     }
     void Start ()
     {
@@ -70,6 +72,33 @@ public class IntroTank : MonoBehaviour {
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!introEscaped)
+            {
+                StopAllCoroutines();
+                SoundManager.Stop();
+                transform.GetChild(0).gameObject.SetActive(false);
+                transform.GetChild(1).gameObject.SetActive(false);
+                transform.GetChild(2).gameObject.SetActive(false);
+                flashPanel.SetActive(false);
+                flashing = false;
+                optionsFadingIn = false;
+
+                title.gameObject.SetActive(true);
+                background.GetComponent<RawImage>().color = Color.white;
+
+                for (int i = 0; i < mainMenuPanel.transform.childCount; i++)
+                {
+                    mainMenuPanel.transform.GetChild(i).GetComponent<Button>().interactable = true;
+                    mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = menuOrange;
+                }
+
+                SoundManager.PlayMusic(Music.TwinCannons);
+                introEscaped = true;
+            }
+        }
+
         if (flashing)
         {
             float alpha = flashPanel.GetComponent<RawImage>().color.a;
@@ -82,11 +111,6 @@ public class IntroTank : MonoBehaviour {
 
             if (flashColor.a <= 0)
             {
-                flashColor = new Color(255, 255, 255, 1);
-                backgroundColor = new Color(255, 255, 255, 255);
-                flashPanel.GetComponent<RawImage>().color = flashColor;
-                background.GetComponent<RawImage>().color = backgroundColor;
-
                 flashing = false;
                 flashPanel.SetActive(false);
                 optionsFadingIn = true;
@@ -103,8 +127,6 @@ public class IntroTank : MonoBehaviour {
 
                 if (color.a >= 1)
                 {
-                    color = new Color(255, 255, 255, 1);
-                    mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = color;
                     optionsFadingIn = false;
                     SoundManager.PlayMusic(Music.TwinCannons);
 

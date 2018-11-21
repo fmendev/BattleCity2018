@@ -126,6 +126,11 @@ public class SoundManager : MonoBehaviour
         singletonInstance.audioSource.volume = volume;
     }
 
+    public static void Stop()
+    {
+        singletonInstance.audioSource.Stop();
+    }
+
     private AudioClip GetMusic(Music music)
     {
         if (music == Music.TwinCannons) return singletonInstance.twinCannons;

@@ -25,6 +25,9 @@ public class Story : MonoBehaviour
     private List<string> storyText;
     private float alphaDeltaStoryText = .01f;
 
+    private bool cutsceneEscaped = false;
+    private bool escapeCutsceneEnabled = false;
+
     void Start ()
     {
         storyPanel = frame.gameObject.transform.GetChild(0).gameObject;
@@ -43,6 +46,18 @@ public class Story : MonoBehaviour
 	
 	private void Update ()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!cutsceneEscaped && escapeCutsceneEnabled)
+            {
+                StopAllCoroutines();
+                SoundManager.Stop();
+                storyPanelFadingOut = true;
+
+                cutsceneEscaped = true;
+            }
+        }
+
         if (mainMenuFadingOut)
         {
             for (int i = 0; i < mainMenuPanel.transform.childCount; i++)
@@ -104,6 +119,7 @@ public class Story : MonoBehaviour
 
     public void BeginStoryAnimation()
     {
+        escapeCutsceneEnabled = true;
         SoundManager.FadeOutMusic(3f);
         mainMenuFadingOut = true;
     }
