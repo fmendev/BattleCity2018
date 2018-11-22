@@ -3,9 +3,9 @@ using System.Collections;
 using UnityEngine;
 
 public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, ExplosionEnemyArmored, ExplosionPlayer,
-                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI, DamageEnemy};
+                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI, DamageEnemy, PickUpPowerUp, MoneyPickUp};
 
-public enum Music { TwinCannons, InDeep, HowlingWind };
+public enum Music { TwinCannons, InDeep, HowlingWind, Defeat, Victory };
 
 public class SoundManager : MonoBehaviour
 {
@@ -17,6 +17,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip twinCannons;
     public AudioClip inDeep;
     public AudioClip howlingWind;
+    public AudioClip defeat;
+    public AudioClip victory;
 
     //Intro and Main Menu
     public AudioClip introTankRolling;
@@ -35,7 +37,9 @@ public class SoundManager : MonoBehaviour
     public AudioClip interactUI;
     public AudioClip spawnEnemy;
     public AudioClip spawnPowerUp;
+    public AudioClip pickupPowerUp;
     public AudioClip damageEnemy;
+    public AudioClip moneyPickUp;
 
     private float fadeOutTime = 3f;
 
@@ -90,7 +94,6 @@ public class SoundManager : MonoBehaviour
 
         if (audioSource.isPlaying)
         {
-            
             while (audioSource.volume > 0)
             {
                 Debug.Log("Current volume: " + audioSource.volume);
@@ -100,6 +103,7 @@ public class SoundManager : MonoBehaviour
             audioSource.Stop();
         }
 
+        audioSource.clip = null;
         audioSource.volume = startVolume;
     }
 
@@ -136,6 +140,8 @@ public class SoundManager : MonoBehaviour
         if (music == Music.TwinCannons) return singletonInstance.twinCannons;
         else if (music == Music.InDeep) return singletonInstance.inDeep;
         else if (music == Music.HowlingWind) return singletonInstance.howlingWind;
+        else if (music == Music.Victory) return singletonInstance.victory;
+        else if (music == Music.Defeat) return singletonInstance.defeat;
 
         else
             throw new Exception("Music file not found");
@@ -157,7 +163,9 @@ public class SoundManager : MonoBehaviour
         else if (sfx == SFX.SpawnEnemy) return singletonInstance.spawnEnemy;
         else if (sfx == SFX.Target) return singletonInstance.target;
         else if (sfx == SFX.InteractUI) return singletonInstance.interactUI;
-        else if (sfx == SFX.InteractUI) return singletonInstance.interactUI;
+        else if (sfx == SFX.PickUpPowerUp) return singletonInstance.pickupPowerUp;
+        else if (sfx == SFX.DamageEnemy) return singletonInstance.damageEnemy;
+        else if (sfx == SFX.MoneyPickUp) return singletonInstance.moneyPickUp;
 
         else
             throw new Exception("SFX not found");

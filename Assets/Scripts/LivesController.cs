@@ -65,9 +65,8 @@ public class LivesController : MonoBehaviour {
         }
         else if (singletonInstance.currentLives == 0)
         {
-            Animator gameOverAnim = GameObject.FindGameObjectWithTag("GameOver").GetComponent<Animator>();
-            gameOverAnim.SetBool("isEagleDestroyed", true);
             LevelEndManager.ShowLevelEndScreen(Outcome.Defeat);
+            SoundManager.FadeOutMusic(3f);
         }
     }
 }

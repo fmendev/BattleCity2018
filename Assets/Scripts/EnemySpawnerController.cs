@@ -93,7 +93,7 @@ public class EnemySpawnerController : MonoBehaviour
 
     public static void PauseEnemySpawning()
     {
-        Debug.Log("Spawning paused");
+        //Debug.Log("Spawning paused");
         singletonInstance.CancelInvoke();
     }
 

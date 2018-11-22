@@ -12,16 +12,16 @@ public class ProjectileCollisions : MonoBehaviour
 
     private GameObject logicController;
     private GameObject brick;
+    private GameObject concrete;
 
     void Start()
     {
-        brick = GameObject.FindGameObjectWithTag("Brick");
         logicController = GameObject.FindGameObjectWithTag("LogicController");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == brick)
+        if (collision.gameObject.CompareTag("Brick"))
         {
             Vector3Int tileHit, adjacentTileHit;
             Vector3 normal = Vector3.zero, point;
@@ -74,7 +74,10 @@ public class ProjectileCollisions : MonoBehaviour
 
             tilemap.SetTile(tileHit, null);
             tilemap.SetTile(adjacentTileHit, null);
-
+            if (firedByPlayer)
+            {
+                SoundManager.PlaySfx(SFX.ProjectileHitsBrick);
+            }
         }
 
         //Enemy is hit by player's bullet
@@ -107,9 +110,14 @@ public class ProjectileCollisions : MonoBehaviour
             }
             else
             {
+                if (collision.gameObject.GetComponent<EnemyProperties>().enemyType == EnemyType.Armored)
+                {
+                    SoundManager.PlaySfx(SFX.DamageEnemy);
+                }
                 collision.gameObject.GetComponent<EnemyProperties>().armor = health;
             }
         }
+        //Player is hit by a bullet that is not his own
         else if (collision.gameObject.CompareTag("Player") && collision.gameObject != shooter)
         {
             Animator playerAnim = collision.gameObject.GetComponent<Animator>();
@@ -125,23 +133,29 @@ public class ProjectileCollisions : MonoBehaviour
                 collision.gameObject.SetActive(false);
             }
         }
-        else if (collision.gameObject.tag == "Eagle")
+        //Bullet hits eagle
+        else if (collision.gameObject.CompareTag("Eagle"))
         {
-            Animator gameOverAnim = GameObject.FindGameObjectWithTag("GameOver").GetComponent<Animator>();
             Animator eagleAnim = GameObject.FindGameObjectWithTag("Eagle").GetComponent<Animator>();
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
-            gameOverAnim.SetBool("isEagleDestroyed", true);
             eagleAnim.SetBool("isEagleDestroyed", true);
 
+            SoundManager.Stop();
             SoundManager.PlaySfx(SFX.ExplosionEagle);
+            LevelEndManager.ShowLevelEndScreen(Outcome.Defeat);
 
             logicController.GetComponent<PlayerController>().enabled = false;
             logicController.GetComponent<WeaponsController>().enabled = false;
             GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>().enabled = false;
             GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
         }
-
+        else if ((collision.gameObject.CompareTag("Concrete") || collision.gameObject.CompareTag("Boundary")) && firedByPlayer)
+        {
+            SoundManager.PlaySfx(SFX.ProjectileHitsWall);
+        }
+        
         if (collision.gameObject != shooter)
         {
             gameObject.SetActive(false);

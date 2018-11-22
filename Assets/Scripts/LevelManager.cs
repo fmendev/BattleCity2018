@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
 
         currentLevel = 1;
 
-        customTankOrder = "000212111333";
+        customTankOrder = "000";
         enemyTankList = GenerateEnemyTankList();
     }
 

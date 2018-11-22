@@ -48,7 +48,8 @@ public class PowerUpController : MonoBehaviour
         singletonInstance.powerUpTemplate.transform.localPosition = GetRandomLocation();
         GetRandomPowerUp();
 
-        Instantiate(singletonInstance.powerUpTemplate); 
+        Instantiate(singletonInstance.powerUpTemplate);
+        SoundManager.PlaySfx(SFX.SpawnPowerUp);
     }
 
     private static void GetRandomPowerUp()

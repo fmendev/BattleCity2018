@@ -116,6 +116,14 @@ public class PowerUpEffects : MonoBehaviour
                 }
             }
 
+            if (puType == PowerUpType.Money)
+            {
+                SoundManager.PlaySfx(SFX.MoneyPickUp);  
+            }
+            else
+            {
+                SoundManager.PlaySfx(SFX.PickUpPowerUp);
+            }
             Destroy(gameObject);
         }
     }

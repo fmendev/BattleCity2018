@@ -37,7 +37,7 @@ public class PauseManager : MonoBehaviour
 
     public static void FreezeDynamicObjects()
     {
-        Debug.Log("Freeze called");
+        //Debug.Log("Freeze called");
         singletonInstance.StartCoroutine("BeginFreezingDynamicObjects");
         singletonInstance.isFrozen = true;
     }
