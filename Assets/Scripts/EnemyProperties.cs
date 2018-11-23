@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,7 +10,7 @@ public class EnemyProperties : MonoBehaviour
     public EnemyType enemyType;
 
     public bool hasPU = false;
-    public bool spawnedPU = false;
+    public bool alreadySpawnedPU = false;
     private List<int> indexTankWithPU;
 
     private Animator anim;
@@ -38,14 +36,14 @@ public class EnemyProperties : MonoBehaviour
     {
         if (enemyType == EnemyType.Small)
         {
-            tankSpeed = 500;
-            shellSpeed = 1200;
+            tankSpeed = 600;
+            shellSpeed = 1300;
 
             armor = 1;
 
-            primaryDirection = .45f;
-            secondaryDirection = .45f;
-            awayDirection = .05f;
+            primaryDirection = .5f;
+            secondaryDirection = .5f;
+            awayDirection = .000001f;
 
             minMoveChangeDelay = 3f;
             maxMoveChangeDelay = 5f;
@@ -57,14 +55,14 @@ public class EnemyProperties : MonoBehaviour
         }
         else if (enemyType == EnemyType.Fast)
         {
-            tankSpeed = 850;
-            shellSpeed = 1200;
+            tankSpeed = 1000;
+            shellSpeed = 1300;
 
             armor = 1;
 
-            primaryDirection = .45f;
-            secondaryDirection = .45f;
-            awayDirection = .05f;
+            primaryDirection = .65f;
+            secondaryDirection = .35f;
+            awayDirection = .00001f;
 
             minMoveChangeDelay = 1f;
             maxMoveChangeDelay = 5f;
@@ -76,14 +74,14 @@ public class EnemyProperties : MonoBehaviour
         }
         else if (enemyType == EnemyType.Heavy)
         {
-            tankSpeed = 500;
-            shellSpeed = 1800;
+            tankSpeed = 600;
+            shellSpeed = 2000;
 
             armor = 1;
 
-            primaryDirection = .75f;
+            primaryDirection = .8f;
             secondaryDirection = .2f;
-            awayDirection = .025f;
+            awayDirection = .0000001f;
 
             minMoveChangeDelay = 3f;
             maxMoveChangeDelay = 5f;
@@ -96,13 +94,13 @@ public class EnemyProperties : MonoBehaviour
         else if (enemyType == EnemyType.Armored)
         {
             tankSpeed = 400;
-            shellSpeed = 1800;
+            shellSpeed = 2200;
 
             armor = 4;
 
-            primaryDirection = .75f;
+            primaryDirection = .8f;
             secondaryDirection = .2f;
-            awayDirection = .025f;
+            awayDirection = .000001f;
 
             minMoveChangeDelay = 5f;
             maxMoveChangeDelay = 6f;
@@ -114,8 +112,7 @@ public class EnemyProperties : MonoBehaviour
         }
 
         //PU and respective animation
-        //indexTankWithPU = new List<int>() { 2, 6, 12, 18 };
-        indexTankWithPU = new List<int>() { 0, 1, 2, 3 };
+        indexTankWithPU = new List<int>() { 4, 8, 10, 13, 16, 17, 18 };
         int siblingIndex = transform.GetSiblingIndex();
 
         if (indexTankWithPU.Any(i => i == siblingIndex))

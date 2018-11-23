@@ -88,10 +88,10 @@ public class ProjectileCollisions : MonoBehaviour
 
             if (health == 0)
             {
-                if (collision.gameObject.GetComponent<EnemyProperties>().hasPU && !collision.gameObject.GetComponent<EnemyProperties>().spawnedPU)
+                if (collision.gameObject.GetComponent<EnemyProperties>().hasPU && !collision.gameObject.GetComponent<EnemyProperties>().alreadySpawnedPU)
                 {
                     PowerUpController.SpawnPowerup();
-                    collision.gameObject.GetComponent<EnemyProperties>().spawnedPU = true;
+                    collision.gameObject.GetComponent<EnemyProperties>().alreadySpawnedPU = true;
                 }
 
                 explosion.transform.localPosition = collision.gameObject.transform.localPosition;

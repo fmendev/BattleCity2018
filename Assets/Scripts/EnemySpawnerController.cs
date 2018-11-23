@@ -18,13 +18,13 @@ public class EnemySpawnerController : MonoBehaviour
     {
         InitializeSingleton();
 
-        enemiesSpawned = 0;
+        enemiesSpawned = 0; //counted as soon as function is called, for tooltip scripting purposes
         currentSpawnPoint = 0;
         currentEnemySpawning = 0;
         spawningStartTime = 2.1f;
         spawningFrequencyRate = 4f;
 
-        Debug.Log("Spawning invoked (start, freq): " + spawningStartTime + " " + spawningFrequencyRate);
+        //Debug.Log("Spawning invoked (start, freq): " + spawningStartTime + " " + spawningFrequencyRate);
         InvokeRepeating("SpawnEnemy", spawningStartTime, spawningFrequencyRate);
     }
 
@@ -56,7 +56,7 @@ public class EnemySpawnerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Reached end of enemy list. Invoke canceled");
+            //Debug.Log("Reached end of enemy list. Invoke canceled");
             CancelInvoke("SpawnEnemy");
         }
     }
@@ -104,6 +104,5 @@ public class EnemySpawnerController : MonoBehaviour
             //Debug.Log("Spawning resumed (start, freq): " + singletonInstance.spawningStartTime + ", " + singletonInstance.spawningFrequencyRate);
             singletonInstance.InvokeRepeating("SpawnEnemy", singletonInstance.spawningStartTime, singletonInstance.spawningFrequencyRate);
         }
-        
     }
 }

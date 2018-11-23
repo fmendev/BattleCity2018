@@ -21,15 +21,21 @@ public class ReadyScreenBehavior : MonoBehaviour
 
     private bool isReady = false;
 
-    private void Start()
+    void Awake()
     {
+        GetComponent<Image>().enabled = true;
+    }
+
+    void Start()
+    {
+        GetComponent<Image>().enabled = true;
         gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Level " + LevelManager.GetCurrentLevel().ToString();
         gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Ready";
         //gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = "...";
 
         textColor = gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color;
-        //StartCoroutine(AnimateReadyText());
 
+        //StartCoroutine(AnimateReadyText());
         EnemySpawnerController.PauseEnemySpawning();
     }
 
