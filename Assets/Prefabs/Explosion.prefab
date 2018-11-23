@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4041432171662610}
   - component: {fileID: 212065092761776066}
   - component: {fileID: 95227035153135778}
+  - component: {fileID: 114717948631645648}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Enemy
@@ -35,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1286967844662432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.900002, y: -27.505749, z: 0}
+  m_LocalPosition: {x: -32.61587, y: -9.124722, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -59,6 +60,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114717948631645648
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1286967844662432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1479d4125e69ba3479639d04ef37cf95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212065092761776066
 SpriteRenderer:
   m_ObjectHideFlags: 1

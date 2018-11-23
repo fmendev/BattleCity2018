@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PowerUpEffects : MonoBehaviour
 {
     public PowerUpType puType;
-    public float timer = 20f;
+    public GameObject powerUpText;
 
     private GameObject player;
     private Animator anim;
 
+    private float timer = 20f;
     private float shellSpeedCap = 2500;
     private float tankSpeedCap = 1050;
     private int armorCap = 4;
@@ -56,6 +58,7 @@ public class PowerUpEffects : MonoBehaviour
                 {
                     WeaponsController.IncreaseMaxAmmo();
                     ShellDisplay.UpdateAmmoDisplay();
+                    powerUpText.GetComponentInChildren<Text>().text = "+Max Ammo";
                 }
             }
 
@@ -64,13 +67,15 @@ public class PowerUpEffects : MonoBehaviour
                 if (WeaponsController.GetShellSpeed() < shellSpeedCap)
                 {
                     float shellSpeed = WeaponsController.GetShellSpeed();
-                    WeaponsController.SetShellSpeed(shellSpeed * 1.15f);
+                    WeaponsController.SetShellSpeed(shellSpeed * 1.25f);
+                    powerUpText.GetComponentInChildren<Text>().text = "+Bullet Speed";
                 }
             }
 
             else if (puType == PowerUpType.Money)
             {
                 TowerController.AddMoney(200);
+                powerUpText.GetComponentInChildren<Text>().text = "$$$";
             }
 
             else if (puType == PowerUpType.TankSpeed)
@@ -79,7 +84,8 @@ public class PowerUpEffects : MonoBehaviour
 
                 if (tankSpeed < tankSpeedCap)
                 {
-                    PlayerController.SetPlayerSpeed(tankSpeed * 1.15f);
+                    PlayerController.SetPlayerSpeed(tankSpeed * 1.25f);
+                    powerUpText.GetComponentInChildren<Text>().text = "+Speed";
                 }
             }
 
@@ -108,12 +114,15 @@ public class PowerUpEffects : MonoBehaviour
                     //Increase max armor and set it to the new max
                     ArmorController.IncreaseMaxArmor();
                     ArmorController.SetArmor(ArmorController.GetMaxArmor());
+             
                 }
                 else
                 {
                     //if already at max, just refill armor
                     ArmorController.SetArmor(ArmorController.GetMaxArmor());
                 }
+
+                powerUpText.GetComponentInChildren<Text>().text = "+Max Armor";
             }
 
             if (puType == PowerUpType.Money)
@@ -124,6 +133,14 @@ public class PowerUpEffects : MonoBehaviour
             {
                 SoundManager.PlaySfx(SFX.PickUpPowerUp);
             }
+
+            //CanvasToWorldSpacePositioner.TranslateCanvasToWorldPosition(powerUpText.GetComponent<RectTransform>(), gameObject);
+
+            GameObject text;
+            text = Instantiate(powerUpText, transform.position, Quaternion.identity);
+            text.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            text.GetComponent<RectTransform>().position = Camera.main.WorldToScreenPoint(transform.position);
+
             Destroy(gameObject);
         }
     }
