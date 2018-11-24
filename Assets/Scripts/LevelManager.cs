@@ -18,6 +18,7 @@ public class LevelManager : MonoBehaviour
     private Vector3 initialPlayerOrientation;
 
     private bool onSpawnSfx = true;
+    private bool isEagleIntact = true;
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class LevelManager : MonoBehaviour
 
         currentLevel = 1;
 
-        customTankOrder = "000111222333010121";
+        customTankOrder = "00011122233301012133";
         enemyTankList = GenerateEnemyTankList();
     }
 
@@ -46,7 +47,7 @@ public class LevelManager : MonoBehaviour
     {
         yield return new WaitWhile(() => isPlayerReady == false);
         PlayerSpawner.SpawnPlayer();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
         TooltipController.PlayTooltipAnimation(Tooltip.Eagle, false);
         PauseManager.FreezeDynamicObjects();
         EnemySpawnerController.SetSpawnFrequency(.8f);
@@ -60,7 +61,7 @@ public class LevelManager : MonoBehaviour
         //Show crosshairs once all three enemies are spawned and on scene
         yield return new WaitWhile(() => enemyTankParentObject.transform.childCount != 3);
         TooltipController.PlayTooltipAnimation(Tooltip.FirstWave, false);
-        EnemySpawnerController.SetSpawnFrequency(6f);
+        EnemySpawnerController.SetSpawnFrequency(4f);
         EnemySpawnerController.SetSpawnStartTime(1f);
 
         yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 4);
@@ -111,5 +112,15 @@ public class LevelManager : MonoBehaviour
         }
 
         return list;
+    }
+
+    public static bool GetEagleStatus()
+    {
+        return singletonInstance.isEagleIntact;
+    }
+
+    public static void SetEagleStatus(bool status)
+    {
+        singletonInstance.isEagleIntact = status;
     }
 }

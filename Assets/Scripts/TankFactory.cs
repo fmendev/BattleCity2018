@@ -7,7 +7,6 @@ public class TankFactory : MonoBehaviour
 {
     private static TankFactory singletonInstance;
 
-    public GameObject player;
     public GameObject enemySmall;
     public GameObject enemyHeavy;
     public GameObject enemyFast;
@@ -21,11 +20,6 @@ public class TankFactory : MonoBehaviour
     private void InitializeSingleton()
     {
         singletonInstance = this;
-    }
-    
-    public static GameObject GetPlayerTank()
-    {
-        return singletonInstance.player;
     }
 
     public static GameObject GetEnemyTank(EnemyType type)

@@ -41,9 +41,9 @@ public class EnemyProperties : MonoBehaviour
 
             armor = 1;
 
-            primaryDirection = .5f;
-            secondaryDirection = .5f;
-            awayDirection = .000001f;
+            primaryDirection = .45f;
+            secondaryDirection = .45f;
+            awayDirection = .05f;
 
             minMoveChangeDelay = 3f;
             maxMoveChangeDelay = 5f;
@@ -60,9 +60,9 @@ public class EnemyProperties : MonoBehaviour
 
             armor = 1;
 
-            primaryDirection = .65f;
-            secondaryDirection = .35f;
-            awayDirection = .00001f;
+            primaryDirection = .6f;
+            secondaryDirection = .3f;
+            awayDirection = .05f;
 
             minMoveChangeDelay = 1f;
             maxMoveChangeDelay = 5f;
@@ -81,7 +81,7 @@ public class EnemyProperties : MonoBehaviour
 
             primaryDirection = .8f;
             secondaryDirection = .2f;
-            awayDirection = .0000001f;
+            awayDirection = .00000000001f;
 
             minMoveChangeDelay = 3f;
             maxMoveChangeDelay = 5f;
@@ -100,7 +100,7 @@ public class EnemyProperties : MonoBehaviour
 
             primaryDirection = .8f;
             secondaryDirection = .2f;
-            awayDirection = .000001f;
+            awayDirection = .00000000001f;
 
             minMoveChangeDelay = 5f;
             maxMoveChangeDelay = 6f;
@@ -112,8 +112,8 @@ public class EnemyProperties : MonoBehaviour
         }
 
         //PU and respective animation
-        indexTankWithPU = new List<int>() { 4, 8, 10, 13, 16, 17, 18 };
-        int siblingIndex = transform.GetSiblingIndex();
+        indexTankWithPU = new List<int>() { 7, 10, 13, 16, 17, 18 };
+        int siblingIndex = EnemySpawnerController.GetNumberEnemiesSpawned();
 
         if (indexTankWithPU.Any(i => i == siblingIndex))
             hasPU = true;

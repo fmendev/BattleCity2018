@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IntroTank : MonoBehaviour {
-
+public class IntroTank : MonoBehaviour
+{
     public Texture2D introTank;
     public GameObject flashPanel;
     public GameObject mainMenuPanel;
@@ -134,5 +134,10 @@ public class IntroTank : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void DestroyIntroTank()
+    {
+        Destroy(gameObject);
     }
 }

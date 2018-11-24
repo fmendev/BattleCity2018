@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, ExplosionEnemyArmored, ExplosionPlayer,
-                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI, DamageEnemy, PickUpPowerUp, MoneyPickUp};
+                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI, DamageArmor, PickUpPowerUp, MoneyPickUp};
 
 public enum Music { TwinCannons, InDeep, HowlingWind, Defeat, Victory };
 
@@ -38,10 +38,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip spawnEnemy;
     public AudioClip spawnPowerUp;
     public AudioClip pickupPowerUp;
-    public AudioClip damageEnemy;
+    public AudioClip damageArmor;
     public AudioClip moneyPickUp;
-
-    private float fadeOutTime = 3f;
 
     void Awake()
     {
@@ -96,7 +94,6 @@ public class SoundManager : MonoBehaviour
         {
             while (audioSource.volume > 0)
             {
-                Debug.Log("Current volume: " + audioSource.volume);
                 audioSource.volume -= startVolume * Time.deltaTime / fadeOutTime;
                 yield return null;
             }
@@ -164,7 +161,7 @@ public class SoundManager : MonoBehaviour
         else if (sfx == SFX.Target) return singletonInstance.target;
         else if (sfx == SFX.InteractUI) return singletonInstance.interactUI;
         else if (sfx == SFX.PickUpPowerUp) return singletonInstance.pickupPowerUp;
-        else if (sfx == SFX.DamageEnemy) return singletonInstance.damageEnemy;
+        else if (sfx == SFX.DamageArmor) return singletonInstance.damageArmor;
         else if (sfx == SFX.MoneyPickUp) return singletonInstance.moneyPickUp;
 
         else

@@ -8,10 +8,8 @@ public class ArmorController : MonoBehaviour
     public GameObject armorBar;
     public GameObject flashBar;
 
-    [SerializeField]
-    private int currentArmor;
-    [SerializeField]
-    private int maxArmor;
+    private int currentArmor = 1;
+    private int maxArmor = 1;
 
     private int limit;
     private float alphaDelta = .04f;
@@ -22,8 +20,6 @@ public class ArmorController : MonoBehaviour
     private void Awake ()
     {
         InitializeSingleton();
-
-        currentArmor = maxArmor = 1;
 
         green = new Color32(76, 255, 0, 255);
         red = new Color32(127, 0, 0, 255);
@@ -58,6 +54,7 @@ public class ArmorController : MonoBehaviour
 
                         flashingAdded = flashingRemoved = false;
                         flashBar.transform.GetChild(i).gameObject.SetActive(false);
+                        UpdateArmorBar();
                     }
                 }
             }
@@ -123,6 +120,11 @@ public class ArmorController : MonoBehaviour
     {
         singletonInstance.maxArmor++;
         singletonInstance.UpdateArmorBar();
+    }
+
+    public static void SetMaxArmor(int maxArmor)
+    {
+        singletonInstance.maxArmor = maxArmor;
     }
 
     private void FlashAddedBars()

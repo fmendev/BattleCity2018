@@ -54,6 +54,8 @@ public class Story : MonoBehaviour
                 SoundManager.Stop();
                 storyPanelFadingOut = true;
 
+                mainMenuFadingOut = false;
+                storyPanelFadingIn = false;
                 cutsceneEscaped = true;
             }
         }

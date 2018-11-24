@@ -21,7 +21,7 @@ public class EnemySpawnerController : MonoBehaviour
         enemiesSpawned = 0; //counted as soon as function is called, for tooltip scripting purposes
         currentSpawnPoint = 0;
         currentEnemySpawning = 0;
-        spawningStartTime = 2.1f;
+        spawningStartTime = 5f;
         spawningFrequencyRate = 4f;
 
         //Debug.Log("Spawning invoked (start, freq): " + spawningStartTime + " " + spawningFrequencyRate);

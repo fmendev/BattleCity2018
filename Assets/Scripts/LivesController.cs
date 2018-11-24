@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class LivesController : MonoBehaviour {
 
     private static LivesController singletonInstance;
 
-    public GameObject playerPrefab;
+    public GameObject playerObject;
     public GameObject livesDisplay;
 
     private int currentLives = 3;
     private int livesCap = 5;
 
-    private float playerRespawnDelay = 2f;
-
-    private void Awake()
+    void Awake()
     {
         InitializeSingleton();
         UpdateLivesDisplay();
@@ -56,12 +51,11 @@ public class LivesController : MonoBehaviour {
     public static void DecreaseLives()
     {
         singletonInstance.currentLives--;
+        singletonInstance.UpdateLivesDisplay();
 
         if (singletonInstance.currentLives > 0)
         {
-            singletonInstance.UpdateLivesDisplay();
             PlayerSpawner.SpawnPlayer();
-            ArmorController.IncreaseArmor();
         }
         else if (singletonInstance.currentLives == 0)
         {

@@ -112,7 +112,7 @@ public class ProjectileCollisions : MonoBehaviour
             {
                 if (collision.gameObject.GetComponent<EnemyProperties>().enemyType == EnemyType.Armored)
                 {
-                    SoundManager.PlaySfx(SFX.DamageEnemy);
+                    SoundManager.PlaySfx(SFX.DamageArmor);
                 }
                 collision.gameObject.GetComponent<EnemyProperties>().armor = health;
             }
@@ -126,15 +126,19 @@ public class ProjectileCollisions : MonoBehaviour
             if (ArmorController.GetArmor() == 0)
             {
                 explosion.transform.localPosition = collision.gameObject.transform.localPosition;
+                PlayerController.ResetPlayerStats();
 
                 Instantiate(explosion);
                 LivesController.DecreaseLives();
                 SoundManager.PlaySfx(SFX.ExplosionPlayer);
-                collision.gameObject.SetActive(false);
+            }
+            else
+            {
+                SoundManager.PlaySfx(SFX.DamageArmor);
             }
         }
         //Bullet hits eagle
-        else if (collision.gameObject.CompareTag("Eagle"))
+        else if (collision.gameObject.CompareTag("Eagle") && LevelManager.GetEagleStatus())
         {
             Animator eagleAnim = GameObject.FindGameObjectWithTag("Eagle").GetComponent<Animator>();
             GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -150,6 +154,8 @@ public class ProjectileCollisions : MonoBehaviour
             GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>().enabled = false;
             GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
+
+            LevelManager.SetEagleStatus(true);
         }
         else if ((collision.gameObject.CompareTag("Concrete") || collision.gameObject.CompareTag("Boundary")) && firedByPlayer)
         {

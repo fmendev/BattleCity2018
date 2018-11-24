@@ -9,8 +9,8 @@ public class WeaponsController : MonoBehaviour
 
     public GameObject shellPrefab;
 
-    [SerializeField]
-    private float shellSpeed;
+    private float initialShellSpeed = 1250;
+    private float shellSpeed = 1250;
 
     private int currentMaxAmmo = 3;
     private int currentShellAmmo = 3;
@@ -148,5 +148,10 @@ public class WeaponsController : MonoBehaviour
     public static void SetShellSpeed(float speed)
     {
         singletonInstance.shellSpeed = speed;
+    }
+
+    public static void ResetShellSpeed()
+    {
+        singletonInstance.shellSpeed = singletonInstance.initialShellSpeed;
     }
 }

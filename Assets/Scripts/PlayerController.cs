@@ -6,51 +6,59 @@ public class PlayerController : MonoBehaviour
 {
     private static PlayerController singletonInstance;
 
+    public GameObject playerObject;
     public bool enabledGUI = true;
 
-    [SerializeField]
-    private float playerSpeed;
+    private float initialPlayerSpeed = 700;
+    private float playerSpeed = 700;
 
-    private string currentSizeParameter;
-    private GameObject playerObject;
+    private string initialSizeParameter = "isMoving_S0";   
+    private string currentSizeParameter = "isMoving_S0";   
 
-    #region Movement variables
     private bool lastMoveUpOrDown;
     private float horizontalMove = 0f;
     private float verticalMove = 0f;
     private Animator anim;
     private Rigidbody2D rb2d;
     private Vector3 moveDirection = Vector3.zero;
-    #endregion
+    private Vector3 offscreenPosition;
 
-    private void OnGUI()
-    {
-        int offsetX = 45;
-        int offsetY = 0;
+    //private void OnGUI()
+    //{
+    //    int offsetX = 45;
+    //    int offsetY = 0;
 
-        if (enabledGUI)
-        {
-            GUI.Label(new Rect(10 + offsetX, 20 + offsetY, 200, 20), "Lives:" + LivesController.GetCurrentLives().ToString());
-            GUI.Label(new Rect(10 + offsetX, 30 + offsetY, 200, 20), "Armor " + ArmorController.GetArmor().ToString());
-            //GUI.Label(new Rect(10 + offsetX, 40 + offsetY, 200, 20), "pLeft " + pNextDirection[2].ToString());
-            //GUI.Label(new Rect(10 + offsetX, 50 + offsetY, 200, 20), "pDown " + pNextDirection[3].ToString());
-            //GUI.Label(new Rect(10 + offsetX, 60 + offsetY, 200, 20), "Dir Prev" + previousDirection.ToString());
-            //GUI.Label(new Rect(10 + offsetX, 70 + offsetY, 200, 20), "Dir Cur" + moveDirection.ToString());
-            //GUI.Label(new Rect(10 + offsetX, 80 + offsetY, 200, 20), "pSUM " + pNextDirection.Values.Sum().ToString());
-            //GUI.Label(new Rect(10 + offsetX, 90 + offsetY, 200, 20), "Target Cur: " + currentTarget.ToString());
-            //GUI.Label(new Rect(10 + offsetX, 100 + offsetY, 200, 20), "Barrier[0]: " + barrier0);
-            //GUI.Label(new Rect(10 + offsetX, 110 + offsetY, 200, 20), "Barrier[1]: " + barrier1);
-        }
-    }
+    //    if (enabledGUI)
+    //    {
+    //        GUI.Label(new Rect(10 + offsetX, 20 + offsetY, 200, 20), "Lives:" + LivesController.GetCurrentLives().ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 30 + offsetY, 200, 20), "Armor " + ArmorController.GetArmor().ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 40 + offsetY, 200, 20), "pLeft " + pNextDirection[2].ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 50 + offsetY, 200, 20), "pDown " + pNextDirection[3].ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 60 + offsetY, 200, 20), "Dir Prev" + previousDirection.ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 70 + offsetY, 200, 20), "Dir Cur" + moveDirection.ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 80 + offsetY, 200, 20), "pSUM " + pNextDirection.Values.Sum().ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 90 + offsetY, 200, 20), "Target Cur: " + currentTarget.ToString());
+    //        GUI.Label(new Rect(10 + offsetX, 100 + offsetY, 200, 20), "Barrier[0]: " + barrier0);
+    //        GUI.Label(new Rect(10 + offsetX, 110 + offsetY, 200, 20), "Barrier[1]: " + barrier1);
+    //    }
+    //}
 
-    private void Awake()
+    void Awake()
     {
         InitializeSingleton();
 
-        currentSizeParameter = "isMoving_S0";
+        anim = playerObject.GetComponent<Animator>();
+        rb2d = playerObject.GetComponent<Rigidbody2D>();
+
+        offscreenPosition = new Vector3(-9f, -33f, 0);
     }
 
-    private void Update()
+    void Start()
+    {
+        ResetPlayerStats();
+    }
+
+    void Update()
     {
         if (lastMoveUpOrDown)
         {
@@ -132,20 +140,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public static void RefreshPlayerController()
-    {
-        singletonInstance.StartCoroutine(singletonInstance.RefreshWhenPlayerActive());
-    }
-
-    private IEnumerator RefreshWhenPlayerActive()
-    {
-        yield return new WaitUntil(() => GameObject.FindGameObjectWithTag("Player") != null);
-
-        playerObject = GameObject.FindGameObjectWithTag("Player");
-        rb2d = playerObject.GetComponent<Rigidbody2D>();
-        anim = playerObject.GetComponent<Animator>();
-    }
-
     public static GameObject GetPlayerObject()
     {
         return singletonInstance.playerObject;
@@ -165,6 +159,11 @@ public class PlayerController : MonoBehaviour
         singletonInstance.playerSpeed = speed;
     }
 
+    public static void ResetPlayerSpeed()
+    {
+        singletonInstance.playerSpeed = singletonInstance.initialPlayerSpeed;
+    }
+
     public static string GetSizeParameter()
     {
         return singletonInstance.currentSizeParameter;
@@ -175,9 +174,31 @@ public class PlayerController : MonoBehaviour
         singletonInstance.currentSizeParameter = param;
     }
 
+    public static void ResetSizeParameter()
+    {
+        singletonInstance.currentSizeParameter = singletonInstance.initialSizeParameter;
+    }
+
     public static void SetAnimationParameter(string param, bool value)
     {
         singletonInstance.anim.SetBool(param, value);
+    }
+
+    public static void ResetPlayerStats()
+    {
+        Debug.Log("Resetting");
+        singletonInstance.playerObject.transform.position = singletonInstance.offscreenPosition;
+        string param = PlayerController.GetSizeParameter();
+
+        SetAnimationParameter(param, false);
+        ResetPlayerSpeed();
+        ResetSizeParameter();
+        WeaponsController.ResetShellSpeed();
+
+        singletonInstance.gameObject.GetComponent<PlayerController>().enabled = false;
+        singletonInstance.gameObject.GetComponent<WeaponsController>().enabled = false;
+        singletonInstance.playerObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        singletonInstance.playerObject.GetComponent<Animator>().enabled = false;
     }
 }
 
