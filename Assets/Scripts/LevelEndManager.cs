@@ -164,7 +164,7 @@ public class LevelEndManager : MonoBehaviour
             {
                 if (levelWon)
                 {
-                    SoundManager.FadeInMusic(Music.Victory, 3);
+                    SoundManager.PlaySfx(SFX.Victory);
                 }
                 else
                 {

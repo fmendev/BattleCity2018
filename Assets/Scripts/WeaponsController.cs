@@ -53,6 +53,10 @@ public class WeaponsController : MonoBehaviour
 
     private void Fire()
     {
+        if (currentShellAmmo == 0)
+        {
+            SoundManager.PlaySfx(SFX.NoAmmo);
+        }
         for (int i = 0; i < ammoPool.Count; i++)
         {
             if (ammoPool[i].gameObject.activeSelf == false && currentShellAmmo > 0)

@@ -152,7 +152,6 @@ MonoBehaviour:
   inDeep: {fileID: 8300000, guid: 84f571def3a847d49bc66dcc47b1af7d, type: 3}
   howlingWind: {fileID: 8300000, guid: 62638a6b3e3a6be49848f4ebf0f101a9, type: 3}
   defeat: {fileID: 8300000, guid: c0bf43b876ba673448ba90ad1066ffba, type: 3}
-  victory: {fileID: 8300000, guid: c0bf43b876ba673448ba90ad1066ffba, type: 3}
   introTankRolling: {fileID: 8300000, guid: 464200a939f832341af2a5239eb7cef8, type: 3}
   introTankFiring: {fileID: 8300000, guid: 2e2255535391b654dad07c28abe443ad, type: 3}
   mouseOnOption: {fileID: 8300000, guid: 75ea2ec0f75570b45b61e933d49ae6a9, type: 3}
@@ -170,5 +169,7 @@ MonoBehaviour:
   spawnEnemy: {fileID: 8300000, guid: 75f55d368c2986044af11e3927a0841a, type: 3}
   spawnPowerUp: {fileID: 8300000, guid: 89bc5b55c8d0b4a41bd327fc15e2d7d7, type: 3}
   pickupPowerUp: {fileID: 8300000, guid: a08eb35731f5e6d4c9e2c72c6d26e613, type: 3}
-  damageEnemy: {fileID: 8300000, guid: 55e2f30a143ad864aa1497a258e1dfce, type: 3}
+  damageArmor: {fileID: 8300000, guid: 3d0adf41825493c4e945f82153e9e885, type: 3}
   moneyPickUp: {fileID: 8300000, guid: 51f2b2af0918797449eb543b5ebeb335, type: 3}
+  noAmmo: {fileID: 8300000, guid: 3d0adf41825493c4e945f82153e9e885, type: 3}
+  victory: {fileID: 8300000, guid: 4964c98f56ff7034394f44e31799224d, type: 3}

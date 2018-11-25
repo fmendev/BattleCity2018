@@ -3,9 +3,9 @@ using System.Collections;
 using UnityEngine;
 
 public enum SFX { IntroTankRolling, IntroTankFiring, MouseOnOption, StartGame, PlayerFire, ProjectileHitsBrick, ProjectileHitsWall, ExplosionEnemyRegular, ExplosionEnemyArmored, ExplosionPlayer,
-                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI, DamageArmor, PickUpPowerUp, MoneyPickUp};
+                  ExplosionEagle, SpawnPowerUp, SpawnEnemy, Target, InteractUI, DamageArmor, PickUpPowerUp, MoneyPickUp, NoAmmo, Victory };
 
-public enum Music { TwinCannons, InDeep, HowlingWind, Defeat, Victory };
+public enum Music { TwinCannons, InDeep, HowlingWind, Defeat };
 
 public class SoundManager : MonoBehaviour
 {
@@ -18,7 +18,6 @@ public class SoundManager : MonoBehaviour
     public AudioClip inDeep;
     public AudioClip howlingWind;
     public AudioClip defeat;
-    public AudioClip victory;
 
     //Intro and Main Menu
     public AudioClip introTankRolling;
@@ -40,6 +39,8 @@ public class SoundManager : MonoBehaviour
     public AudioClip pickupPowerUp;
     public AudioClip damageArmor;
     public AudioClip moneyPickUp;
+    public AudioClip noAmmo;
+    public AudioClip victory;
 
     void Awake()
     {
@@ -137,7 +138,6 @@ public class SoundManager : MonoBehaviour
         if (music == Music.TwinCannons) return singletonInstance.twinCannons;
         else if (music == Music.InDeep) return singletonInstance.inDeep;
         else if (music == Music.HowlingWind) return singletonInstance.howlingWind;
-        else if (music == Music.Victory) return singletonInstance.victory;
         else if (music == Music.Defeat) return singletonInstance.defeat;
 
         else
@@ -163,6 +163,8 @@ public class SoundManager : MonoBehaviour
         else if (sfx == SFX.PickUpPowerUp) return singletonInstance.pickupPowerUp;
         else if (sfx == SFX.DamageArmor) return singletonInstance.damageArmor;
         else if (sfx == SFX.MoneyPickUp) return singletonInstance.moneyPickUp;
+        else if (sfx == SFX.NoAmmo) return singletonInstance.noAmmo;
+        else if (sfx == SFX.Victory) return singletonInstance.victory;
 
         else
             throw new Exception("SFX not found");
