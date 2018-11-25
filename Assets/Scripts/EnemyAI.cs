@@ -12,7 +12,6 @@ public class EnemyAI : MonoBehaviour
 
     private int enemySpeed;
     private int shellSpeed;
-    private int health;
     private float primaryDirection;
     private float secondaryDirection;
     private float awayDirection;
@@ -122,8 +121,6 @@ public class EnemyAI : MonoBehaviour
 
         enemySpeed = properties.tankSpeed;
         shellSpeed = properties.shellSpeed;
-
-        health = properties.armor;
 
         primaryDirection = properties.primaryDirection;
         secondaryDirection = properties.secondaryDirection;

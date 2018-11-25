@@ -17,6 +17,8 @@ public class ArmorController : MonoBehaviour
     private bool flashingRemoved = false;
     private Color green, red, disabled, white;
 
+    private bool isInvulnerable = false;
+
     private void Awake ()
     {
         InitializeSingleton();
@@ -105,7 +107,6 @@ public class ArmorController : MonoBehaviour
 
     public static void SetArmor(int armorAmount)
     {
-        int addedArmor = armorAmount - singletonInstance.currentArmor;
         singletonInstance.FlashAddedBars();
         singletonInstance.currentArmor = armorAmount;
         singletonInstance.UpdateArmorBar();
@@ -125,6 +126,16 @@ public class ArmorController : MonoBehaviour
     public static void SetMaxArmor(int maxArmor)
     {
         singletonInstance.maxArmor = maxArmor;
+    }
+
+    public static bool GetInvulnerabilityStatus()
+    {
+        return singletonInstance.isInvulnerable;
+    }
+
+    public static void SetInvulnerabilityStatus(bool status)
+    {
+        singletonInstance.isInvulnerable = status;
     }
 
     private void FlashAddedBars()

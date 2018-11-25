@@ -120,21 +120,23 @@ public class ProjectileCollisions : MonoBehaviour
         //Player is hit by a bullet that is not his own
         else if (collision.gameObject.CompareTag("Player") && collision.gameObject != shooter)
         {
-            Animator playerAnim = collision.gameObject.GetComponent<Animator>();
-            ArmorController.TakeDamage();
-
-            if (ArmorController.GetArmor() == 0)
+            if (!ArmorController.GetInvulnerabilityStatus())
             {
-                explosion.transform.localPosition = collision.gameObject.transform.localPosition;
-                PlayerController.ResetPlayerStats();
+                ArmorController.TakeDamage();
 
-                Instantiate(explosion);
-                LivesController.DecreaseLives();
-                SoundManager.PlaySfx(SFX.ExplosionPlayer);
-            }
-            else
-            {
-                SoundManager.PlaySfx(SFX.DamageArmor);
+                if (ArmorController.GetArmor() == 0)
+                {
+                    explosion.transform.localPosition = collision.gameObject.transform.localPosition;
+                    PlayerController.ResetPlayerStats();
+
+                    Instantiate(explosion);
+                    LivesController.DecreaseLives();
+                    SoundManager.PlaySfx(SFX.ExplosionPlayer);
+                }
+                else
+                {
+                    SoundManager.PlaySfx(SFX.DamageArmor);
+                }
             }
         }
         //Bullet hits eagle

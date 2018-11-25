@@ -7,6 +7,8 @@ public class PauseManager : MonoBehaviour
     private static PauseManager singletonInstance;
 
     public GameObject enemyTankParentObject;
+    public GameObject pauseScreen;
+    private bool isPaused = false;
 
     private GameObject ammoPool;
     private GameObject logicController;
@@ -15,7 +17,7 @@ public class PauseManager : MonoBehaviour
     private List<Vector2> projectileVelocitiesAtFreeze;
     private List<Vector2> tankVelocitiesAtFreeze;
 
-    private void Awake()
+    void Awake()
     {
         InitializeSingleton();
 
@@ -25,9 +27,29 @@ public class PauseManager : MonoBehaviour
         logicController = GameObject.FindGameObjectWithTag("LogicController");
     }
 
-    private void Start()
+    void Start()
     {
         ammoPool = GameObject.FindGameObjectWithTag("AmmoPool");
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+            //if (!isPaused)
+            //{
+            //    FreezeDynamicObjects();
+            //    pauseScreen.gameObject.SetActive(true);
+            //    isPaused = true;
+            //}
+            //else if (isPaused)
+            //{
+            //    UnfreezeDynamicObjects();
+            //    pauseScreen.gameObject.SetActive(false);
+            //    isPaused = false;
+            //}
+        }
     }
 
     private void InitializeSingleton()
@@ -50,10 +72,14 @@ public class PauseManager : MonoBehaviour
         //Freeze bullets
         for (int i = 0; i < ammoPool.transform.childCount; i++)
         {
+            Vector2 velocity = ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity;
+            projectileVelocitiesAtFreeze.Add(velocity);
+
+            Debug.Log("Freezing: " + ammoPool.transform.childCount);
             if (ammoPool.transform.GetChild(i).gameObject.activeSelf)
             {
-                Vector2 velocity = ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity;
-                projectileVelocitiesAtFreeze.Add(velocity);
+                Debug.Log("Active bullet");
+                
 
                 ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
@@ -93,11 +119,14 @@ public class PauseManager : MonoBehaviour
         //Unfreeze bullets
         for (int i = 0; i < singletonInstance.ammoPool.transform.childCount; i++)
         {
+            Debug.Log("Unreezing: " + singletonInstance.ammoPool.transform.childCount);
             if (singletonInstance.ammoPool.transform.GetChild(i).gameObject.activeSelf)
             {
+                Debug.Log("Active Bullet (U)");
                 singletonInstance.ammoPool.transform.GetChild(i).GetComponent<Rigidbody2D>().velocity = singletonInstance.projectileVelocitiesAtFreeze[i];
             }
         }
+        singletonInstance.projectileVelocitiesAtFreeze.Clear();
 
         //Reactivate player controller
         singletonInstance.logicController.GetComponent<PlayerController>().enabled = true;

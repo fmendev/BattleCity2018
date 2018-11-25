@@ -70,6 +70,11 @@ public class LevelManager : MonoBehaviour
         TooltipController.PlayTooltipAnimation(Tooltip.HealthBar, true);
         yield return new WaitForSeconds(.5f);
         TooltipController.PlayTooltipAnimation(Tooltip.Lives, true);
+
+        //Show tooltip on first enemy that has power up
+        yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 7);
+        TooltipController.PlayTooltipAnimation(Tooltip.FirstPU, false);
+        PauseManager.FreezeDynamicObjects();
     }
 
     public static List<EnemyType> GetEnemyTankList()

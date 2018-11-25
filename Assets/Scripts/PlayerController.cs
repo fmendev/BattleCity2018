@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         InitializeSingleton();
+        DontDestroyOnLoad(gameObject);
 
         anim = playerObject.GetComponent<Animator>();
         rb2d = playerObject.GetComponent<Rigidbody2D>();
@@ -186,7 +187,6 @@ public class PlayerController : MonoBehaviour
 
     public static void ResetPlayerStats()
     {
-        Debug.Log("Resetting");
         singletonInstance.playerObject.transform.position = singletonInstance.offscreenPosition;
         string param = PlayerController.GetSizeParameter();
 

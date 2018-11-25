@@ -32,7 +32,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private void ActivatePlayer()
     {
-        Debug.Log("Activating");
+        StartCoroutine("ActivateInvulnerability");
 
         playerObject.transform.position = gameObject.transform.position;
         logicController.GetComponent<PlayerController>().enabled = true;
@@ -43,5 +43,16 @@ public class PlayerSpawner : MonoBehaviour
         ArmorController.SetArmor(1);
 
         GetComponent<Animator>().SetBool("isSpawning", false);
+    }
+
+    private IEnumerator ActivateInvulnerability()
+    {
+        ArmorController.SetInvulnerabilityStatus(true);
+        playerObject.GetComponent<Animator>().SetBool("isInvulnerable", true);
+
+        yield return new WaitForSeconds(3f);
+
+        ArmorController.SetInvulnerabilityStatus(false);
+        playerObject.GetComponent<Animator>().SetBool("isInvulnerable", false);
     }
 }

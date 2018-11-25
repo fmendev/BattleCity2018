@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public enum Tooltip { Eagle, FirstWave, Ammo, HealthBar, Lives};
+public enum Tooltip { Eagle, FirstWave, Ammo, HealthBar, Lives, FirstPU};
 
 public class TooltipController : MonoBehaviour
 {
@@ -19,11 +19,13 @@ public class TooltipController : MonoBehaviour
     public GameObject crosshairAmmoPosition;
     public GameObject crosshairHealthBarPosition;
     public GameObject crosshairLivesPosition;
+    public GameObject crosshairFirstPUPosition;
     public GameObject tooltipEaglePosition;
     public GameObject tooltipFirstWavePosition;
     public GameObject tooltipAmmoPosition;
     public GameObject tooltipHealthBarPosition;
     public GameObject tooltipLivesPosition;
+    public GameObject tooltipFirstPUPosition;
 
     private Dictionary<Tooltip, string> tooltipMessages;
     private Dictionary<Tooltip, GameObject> tooltipPositions;
@@ -44,7 +46,8 @@ public class TooltipController : MonoBehaviour
             { Tooltip.FirstWave, "Foreign invaders, defiling our land\nDestroy them all!!!" },
             { Tooltip.Ammo, "Ammo" },
             { Tooltip.HealthBar, "Health" },
-            { Tooltip.Lives, "Lives" }
+            { Tooltip.Lives, "Lives" },
+            { Tooltip.FirstPU, "Some of the invaders have technology\nthat can aid you" }
         };
 
         tooltipPositions = new Dictionary<Tooltip, GameObject>()
@@ -53,7 +56,8 @@ public class TooltipController : MonoBehaviour
             { Tooltip.FirstWave, tooltipFirstWavePosition },
             { Tooltip.Ammo, tooltipAmmoPosition },
             { Tooltip.HealthBar, tooltipHealthBarPosition },
-            { Tooltip.Lives, tooltipLivesPosition }
+            { Tooltip.Lives, tooltipLivesPosition },
+            { Tooltip.FirstPU, tooltipFirstPUPosition }
         };
 
         crosshairPositions = new Dictionary<Tooltip, List<GameObject>>
@@ -62,7 +66,8 @@ public class TooltipController : MonoBehaviour
             { Tooltip.FirstWave, new List<GameObject>() { crosshairFirstWavePosition1, crosshairFirstWavePosition2, crosshairFirstWavePosition3 } },
             { Tooltip.Ammo, new List<GameObject>() { crosshairAmmoPosition } },
             { Tooltip.HealthBar, new List<GameObject>() { crosshairHealthBarPosition } },
-            { Tooltip.Lives, new List<GameObject>() { crosshairLivesPosition } }
+            { Tooltip.Lives, new List<GameObject>() { crosshairLivesPosition } },
+            { Tooltip.FirstPU, new List<GameObject>() { crosshairFirstPUPosition } }
         };
     }
 
