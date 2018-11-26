@@ -157,7 +157,7 @@ public class ProjectileCollisions : MonoBehaviour
             GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>().enabled = false;
             GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
 
-            LevelManager.SetEagleStatus(true);
+            LevelManager.SetEagleStatus(false);
         }
         else if ((collision.gameObject.CompareTag("Concrete") || collision.gameObject.CompareTag("Boundary")) && firedByPlayer)
         {

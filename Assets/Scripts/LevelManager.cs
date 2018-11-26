@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
         }
         else if (currentLevel == 2)
         {
-            customTankOrder = "333";// 11122233301012133";
+            customTankOrder = "33322212111103020333";
         }
         
         enemyTankList = GenerateEnemyTankList();

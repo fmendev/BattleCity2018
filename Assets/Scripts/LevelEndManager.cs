@@ -32,7 +32,7 @@ public class LevelEndManager : MonoBehaviour
 
     private bool levelWon;
 
-    float alphaDelta = .005f;
+    float alphaDelta = .75f;
 
     private void Awake()
     {
@@ -125,32 +125,30 @@ public class LevelEndManager : MonoBehaviour
         while (newColor.a < 1)
         {
             float alpha = fadeInPanel.GetComponent<Image>().color.a;
-            newColor = new Color(0, 0, 0, alpha + alphaDelta);
+            newColor = new Color(0, 0, 0, alpha + Time.deltaTime * alphaDelta);
             fadeInPanel.GetComponent<Image>().color = newColor;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(Time.deltaTime);
         }
 
-            if (singletonInstance.levelWon)
+        if (singletonInstance.levelWon)
+        {
+            if (LevelManager.GetCurrentLevel() == 2) //or whatever the final level is
             {
-                if (LevelManager.GetCurrentLevel() == 2) //or whatever the final level is
-                {
-                    //End game screen!!!
-                }
-                else
-                {
-                    SceneManager.LoadScene(LevelManager.GetCurrentLevel() + 1);
-                }
+                //End game screen!!!
             }
             else
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene(LevelManager.GetCurrentLevel() + 1);
             }
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     private IEnumerator BeginLevelEndAnimation()
     {
-        bool isMusicOn = false; //so that it calls music only once
-
         yield return new WaitForSeconds(1.5f);
 
         fadeInPanel.gameObject.SetActive(true);
@@ -159,23 +157,19 @@ public class LevelEndManager : MonoBehaviour
 
         while (color.a >= 0)
         {
-            if (color.a >.8f && !isMusicOn)
-            {
-                if (levelWon)
-                {
-                    SoundManager.PlaySfx(SFX.Victory);
-                }
-                else
-                {
-                    SoundManager.FadeInMusic(Music.Defeat, 3);
-                }
-
-                isMusicOn = true;
-            }
             float alpha = fadeInPanel.GetComponent<Image>().color.a;
-            color = new Color(0, 0, 0, alpha - alphaDelta);
+            color = new Color(0, 0, 0, alpha - Time.deltaTime * alphaDelta);
             fadeInPanel.GetComponent<Image>().color = color;
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        if (levelWon)
+        {
+            SoundManager.PlaySfx(SFX.Victory);
+        }
+        else
+        {
+            SoundManager.FadeInMusic(Music.Defeat, 3);
         }
 
         fadeInPanel.gameObject.SetActive(false);

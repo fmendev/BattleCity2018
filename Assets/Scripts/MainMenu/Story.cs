@@ -16,14 +16,14 @@ public class Story : MonoBehaviour
     private GameObject storyPanel;
     private bool storyPanelFadingIn = false;
     private bool storyPanelFadingOut = false;
-    private float alphaDeltaStoryPanel = .005f;
+    private float alphaDeltaStoryPanel = .5f;
 
     private bool mainMenuFadingOut = false;
-    private float alphaDeltaMainMenu = .01f;
+    private float alphaDeltaMainMenu = .25f;
 
     private GameObject storyTextPanel;
     private List<string> storyText;
-    private float alphaDeltaStoryText = .01f;
+    private float alphaDeltaStoryText = .75f;
 
     private bool cutsceneEscaped = false;
     private bool escapeCutsceneEnabled = false;
@@ -67,11 +67,11 @@ public class Story : MonoBehaviour
                 float alpha = mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color.a;
                 Color optionsColor = mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color;
 
-                optionsColor.a = alpha - alphaDeltaMainMenu;
+                optionsColor.a = alpha - Time.deltaTime * alphaDeltaMainMenu;
 
                 mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = optionsColor;
                 title.GetComponent<RawImage>().color = new Color(255, 255, 255, alpha - .05f);
-                background.GetComponent<RawImage>().color = new Color(255, 255, 255, alpha - alphaDeltaMainMenu);
+                background.GetComponent<RawImage>().color = new Color(255, 255, 255, alpha - Time.deltaTime * alphaDeltaMainMenu);
 
                 if (optionsColor.a <= 0)
                 {
@@ -87,7 +87,7 @@ public class Story : MonoBehaviour
         if (storyPanelFadingIn)
         {
             float alpha = storyPanel.GetComponent<Image>().color.a;
-            Color storyPanelColor = new Color(255, 255, 255, alpha + alphaDeltaStoryPanel);
+            Color storyPanelColor = new Color(255, 255, 255, alpha + Time.deltaTime * alphaDeltaStoryPanel);
             storyPanel.GetComponent<Image>().color = storyPanelColor;
 
             if (storyPanelColor.a >= 1)
@@ -105,7 +105,7 @@ public class Story : MonoBehaviour
         if (storyPanelFadingOut)
         {
             float alpha = storyPanel.GetComponent<Image>().color.a;
-            Color storyPanelColor = new Color(255, 255, 255, alpha - alphaDeltaStoryPanel);
+            Color storyPanelColor = new Color(255, 255, 255, alpha - Time.deltaTime * alphaDeltaStoryPanel);
             storyPanel.GetComponent<Image>().color = storyPanelColor;
 
             if (storyPanelColor.a <= 0)
@@ -136,9 +136,9 @@ public class Story : MonoBehaviour
             while (storyTextColor.a <= 1)
             {
                 float alphaText = storyTextPanel.GetComponent<TextMeshProUGUI>().color.a;
-                storyTextColor = new Color(255, 255, 255, alphaText + alphaDeltaStoryText);
+                storyTextColor = new Color(255, 255, 255, alphaText + Time.deltaTime * alphaDeltaStoryText);
                 storyTextPanel.GetComponent<TextMeshProUGUI>().color = storyTextColor;
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(Time.deltaTime);
             }
 
             if (storyTextColor.a >= 1)

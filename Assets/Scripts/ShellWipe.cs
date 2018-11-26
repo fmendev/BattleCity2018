@@ -10,8 +10,9 @@ public class ShellWipe : MonoBehaviour {
 
     private Color[,] targetTextureColors;
     private Texture2D tmpTexture;
-    private int currentPixelRow = 0;
-    private int increment = 1;
+
+    private bool isCurrentlyLoading = false;
+    private float reloadingTimeFactor = .8f;
 
     private void Awake()
     {
@@ -27,47 +28,46 @@ public class ShellWipe : MonoBehaviour {
         var isOtherReloading = otherReloadingStatus.Any(s => s == 1);
 
         //If no other shells are reloading, start reloading this shell
-        if (increment < targetTexture.height && !isOtherReloading)
+        if (!isOtherReloading && !isCurrentlyLoading)
         {
-            Debug.Log("Start");
             StartCoroutine("DrawPixels");
-        }
-        else if (increment == targetTexture.height)
-        {
-            increment = 1;
-            currentPixelRow = 0;
-
-            int ammo = WeaponsController.GetCurrentAmmo();
-            WeaponsController.SetCurrentAmmo(ammo + 1);
-
-            ShellDisplay.isReloading[shellDisplayIndex] = 0;
-            WeaponsController.SetShellAsLoaded(shellDisplayIndex);
-
-            ResetTextures();
-            enabled = false;
         }
     }
 
     IEnumerator DrawPixels()
     {
-        ShellDisplay.isReloading[shellDisplayIndex] = 1;
-        increment = currentPixelRow + 1;
-        Debug.Log("increment: " + increment);
-        //filling a part of the temporary texture with the target texture 
-        for (int y = currentPixelRow; y < increment; y++)
-        {
-            for (int x = 0; x < tmpTexture.width; x++)
-            {
-                tmpTexture.SetPixel(x, y, targetTextureColors[x, y]);
-            }
+        int currentPixelRow = 0;
+        ShellDisplay.isReloading[shellDisplayIndex] = 1; //this line is so that other shells now this one is reloading
+        isCurrentlyLoading = true; //this is one is so that the coroutine just runs once
 
-            tmpTexture.Apply();
+        //filling a part of the temporary texture with the target texture
+        while (currentPixelRow < targetTexture.height)
+        {
+            //Debug.Log("currentPixel: " + currentPixelRow);
+            for (int y = currentPixelRow; y < currentPixelRow + 1; y++)
+            {
+                for (int x = 0; x < tmpTexture.width; x++)
+                {
+                    tmpTexture.SetPixel(x, y, targetTextureColors[x, y]);
+                }
+
+                tmpTexture.Apply();
+                gameObject.GetComponent<RawImage>().texture = tmpTexture;
+            }
+            currentPixelRow++;
+            yield return new WaitForSeconds(Time.deltaTime * reloadingTimeFactor);
         }
 
-        currentPixelRow++;
-        Debug.Log("currentPixel: " + currentPixelRow);
-        gameObject.GetComponent<RawImage>().texture = tmpTexture;
-        yield return null;
+        isCurrentlyLoading = false;
+
+        int ammo = WeaponsController.GetCurrentAmmo();
+        WeaponsController.SetCurrentAmmo(ammo + 1);
+
+        ShellDisplay.isReloading[shellDisplayIndex] = 0;
+        WeaponsController.SetShellAsLoaded(shellDisplayIndex);
+
+        ResetTextures();
+        enabled = false;
     }
 
     private void LoadTextures()

@@ -7,7 +7,7 @@ public class ReadyScreenBehavior : MonoBehaviour
 {
     //Typewrite effect
     private int currentCharIndex = 0;
-    private float typewriterSpeed = 1f;
+    private float typewriterSpeed = .1f;
 
     //Fade out
     private bool fadingOut = false;
@@ -107,7 +107,7 @@ public class ReadyScreenBehavior : MonoBehaviour
             for (int i = 0; i < (message[currentCharIndex].Length + 1); i++)
             {
                 gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = message[currentCharIndex].Substring(0, i);
-                yield return new WaitForSeconds(typewriterSpeed);
+                yield return new WaitForSeconds(Time.deltaTime * typewriterSpeed);
             }
         }
     }
