@@ -11,11 +11,11 @@ public class ReadyScreenBehavior : MonoBehaviour
 
     //Fade out
     private bool fadingOut = false;
-    private float alphaDeltaFadeOut = .04f;
+    private float alphaDeltaFadeOut = .5f;
     private Color textColor;
 
     //Blinking effect
-    private float alphaDeltaBlinking = .02f;
+    private float alphaDeltaBlinking = .75f;
     private bool continueBlinking = true;
     private bool blinkFadingIn = false;
 
@@ -54,9 +54,9 @@ public class ReadyScreenBehavior : MonoBehaviour
             float alphaScreen = gameObject.GetComponent<Image>().color.a;
             float alphaText = gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color.a;
 
-            Color fadeOutScreenColor = new Color(0, 0, 0, alphaScreen - alphaDeltaFadeOut);
+            Color fadeOutScreenColor = new Color(0, 0, 0, alphaScreen - Time.deltaTime * alphaDeltaFadeOut);
 
-            textColor.a = alphaText - alphaDeltaFadeOut;
+            textColor.a = alphaText - Time.deltaTime * alphaDeltaFadeOut;
 
             gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().color = textColor;
             gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().color = textColor;
@@ -76,11 +76,11 @@ public class ReadyScreenBehavior : MonoBehaviour
 
             if (blinkFadingIn)
             {
-                blinkingColor.a = alpha + alphaDeltaBlinking;
+                blinkingColor.a = alpha + Time.deltaTime * alphaDeltaBlinking;
             }
             else
             {
-                blinkingColor.a = alpha - alphaDeltaBlinking;
+                blinkingColor.a = alpha - Time.deltaTime * alphaDeltaBlinking;
             }
 
             gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().color = blinkingColor;

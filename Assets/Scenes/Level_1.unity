@@ -3675,7 +3675,7 @@ MonoBehaviour:
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 2
+    m_MinSize: 18
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -66325,7 +66325,7 @@ MonoBehaviour:
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 2
+    m_MinSize: 18
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -66789,6 +66789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 1125371623}
   enabledGUI: 1
+  playerSpeed: 700
 --- !u!114 &1466482591
 MonoBehaviour:
   m_ObjectHideFlags: 0

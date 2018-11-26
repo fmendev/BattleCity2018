@@ -19,6 +19,7 @@ public class LevelEndManager : MonoBehaviour
     private GameObject killValueText;
     private GameObject timeValueText;
     private GameObject livesValueText;
+    private GameObject options;
     private GameObject optionText;
     private GameObject fadeInPanel;
 
@@ -31,8 +32,6 @@ public class LevelEndManager : MonoBehaviour
 
     private bool levelWon;
 
-    private bool continueReplayFadeOutDone = false;
-
     float alphaDelta = .005f;
 
     private void Awake()
@@ -44,6 +43,7 @@ public class LevelEndManager : MonoBehaviour
         killValueText = levelEndScreen.transform.GetChild(1).GetChild(1).GetChild(0).gameObject;
         timeValueText = levelEndScreen.transform.GetChild(1).GetChild(1).GetChild(1).gameObject;
         livesValueText = levelEndScreen.transform.GetChild(1).GetChild(1).GetChild(2).gameObject;
+        options = levelEndScreen.transform.GetChild(2).gameObject;
         optionText = levelEndScreen.transform.GetChild(2).GetChild(1).GetChild(0).gameObject;
         fadeInPanel = levelEndScreen.transform.GetChild(3).gameObject;
 
@@ -96,9 +96,40 @@ public class LevelEndManager : MonoBehaviour
     public static void ContinueReplay()
     {
         singletonInstance.StartCoroutine("ContinueReplayLevelEndAnimation");
+    }
 
-        if (singletonInstance.continueReplayFadeOutDone)
+    public static void IncreaseKillCount()
+    {
+        singletonInstance.kills++;
+
+        if (singletonInstance.kills == LevelManager.GetEnemyTankList().Count)
         {
+            ShowLevelEndScreen(Outcome.Victory);
+            SoundManager.FadeOutMusic(1.5f);
+            singletonInstance.logicController.GetComponent<PlayerController>().enabled = false;
+            singletonInstance.logicController.GetComponent<WeaponsController>().enabled = false;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>().enabled = false;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
+        }
+    }
+
+    private IEnumerator ContinueReplayLevelEndAnimation()
+    {
+        fadeInPanel.gameObject.SetActive(true);
+        options.transform.GetChild(0).GetComponent<Button>().interactable = false;
+        options.transform.GetChild(1).GetComponent<Button>().interactable = false;
+
+        Color newColor = fadeInPanel.GetComponent<Image>().color;
+
+        while (newColor.a < 1)
+        {
+            float alpha = fadeInPanel.GetComponent<Image>().color.a;
+            newColor = new Color(0, 0, 0, alpha + alphaDelta);
+            fadeInPanel.GetComponent<Image>().color = newColor;
+            yield return new WaitForEndOfFrame();
+        }
+
             if (singletonInstance.levelWon)
             {
                 if (LevelManager.GetCurrentLevel() == 2) //or whatever the final level is
@@ -112,47 +143,15 @@ public class LevelEndManager : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
-        }
-    }
-
-    public static void IncreaseKillCount()
-    {
-        singletonInstance.kills++;
-
-        if (singletonInstance.kills == LevelManager.GetEnemyTankList().Count)
-        {
-            ShowLevelEndScreen(Outcome.Victory);
-            SoundManager.FadeOutMusic(3f);
-            singletonInstance.logicController.GetComponent<PlayerController>().enabled = false;
-            singletonInstance.logicController.GetComponent<WeaponsController>().enabled = false;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>().enabled = false;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().enabled = false;
-        }
-    }
-
-    private IEnumerator ContinueReplayLevelEndAnimation()
-    {
-        Color color = fadeInPanel.GetComponent<Image>().color;
-
-        while (color.a <= 1)
-        {
-            float alpha = fadeInPanel.GetComponent<Image>().color.a;
-            Color newColor = new Color(0, 0, 0, alpha + alphaDelta);
-            fadeInPanel.GetComponent<Image>().color = newColor;
-            yield return new WaitForEndOfFrame();
-        }
-
-        continueReplayFadeOutDone = true;
     }
 
     private IEnumerator BeginLevelEndAnimation()
     {
-        bool isMusicOn = false;
+        bool isMusicOn = false; //so that it calls music only once
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
 
         fadeInPanel.gameObject.SetActive(true);
         levelEndScreen.gameObject.SetActive(true);
@@ -160,7 +159,7 @@ public class LevelEndManager : MonoBehaviour
 
         while (color.a >= 0)
         {
-            if (color.a >.5f && !isMusicOn)
+            if (color.a >.8f && !isMusicOn)
             {
                 if (levelWon)
                 {

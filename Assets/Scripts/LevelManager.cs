@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -24,16 +25,24 @@ public class LevelManager : MonoBehaviour
     {
         InitializeSingleton();
 
-        currentLevel = 1;
+        currentLevel = SceneManager.GetActiveScene().buildIndex;
 
-        customTankOrder = "00011122233301012133";
+        if (currentLevel == 1)
+        {
+            customTankOrder = "00011122233301012133";
+        }
+        else if (currentLevel == 2)
+        {
+            customTankOrder = "333";// 11122233301012133";
+        }
+        
         enemyTankList = GenerateEnemyTankList();
     }
 
     private void Start ()
     {
         SoundManager.PlayMusic(Music.InDeep);
-        StartCoroutine(PlayScriptedTooltipAnimations());
+        StartCoroutine(PlayCurrentLevelScript());
 
         initialPlayerOrientation = Vector3.up;
 	}
@@ -43,38 +52,46 @@ public class LevelManager : MonoBehaviour
         singletonInstance = this;
     }
 
-    private IEnumerator PlayScriptedTooltipAnimations()
+    private IEnumerator PlayCurrentLevelScript()
     {
-        yield return new WaitWhile(() => isPlayerReady == false);
-        PlayerSpawner.SpawnPlayer();
-        yield return new WaitForSeconds(4f);
-        TooltipController.PlayTooltipAnimation(Tooltip.Eagle, false);
-        PauseManager.FreezeDynamicObjects();
-        EnemySpawnerController.SetSpawnFrequency(.8f);
-        EnemySpawnerController.SetSpawnStartTime(0f);
+        if (currentLevel == 1)
+        {
+            yield return new WaitWhile(() => isPlayerReady == false);
+            PlayerSpawner.SpawnPlayer();
+            yield return new WaitForSeconds(4f);
+            TooltipController.PlayTooltipAnimation(Tooltip.Eagle, false);
+            PauseManager.FreezeDynamicObjects();
+            EnemySpawnerController.SetSpawnFrequency(.8f);
+            EnemySpawnerController.SetSpawnStartTime(0f);
 
-        //Freeze as soon as spawned has been called on the 3rd enemy
-        yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 3);
-        PauseManager.FreezeDynamicObjects();
-        onSpawnSfx = false;
+            //Freeze as soon as spawned has been called on the 3rd enemy
+            yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 3);
+            PauseManager.FreezeDynamicObjects();
+            onSpawnSfx = false;
 
-        //Show crosshairs once all three enemies are spawned and on scene
-        yield return new WaitWhile(() => enemyTankParentObject.transform.childCount != 3);
-        TooltipController.PlayTooltipAnimation(Tooltip.FirstWave, false);
-        EnemySpawnerController.SetSpawnFrequency(4f);
-        EnemySpawnerController.SetSpawnStartTime(1f);
+            //Show crosshairs once all three enemies are spawned and on scene
+            yield return new WaitWhile(() => enemyTankParentObject.transform.childCount != 3);
+            TooltipController.PlayTooltipAnimation(Tooltip.FirstWave, false);
+            EnemySpawnerController.SetSpawnFrequency(4f);
+            EnemySpawnerController.SetSpawnStartTime(1f);
 
-        yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 4);
-        TooltipController.PlayTooltipAnimation(Tooltip.Ammo, true);
-        yield return new WaitForSeconds(.5f);
-        TooltipController.PlayTooltipAnimation(Tooltip.HealthBar, true);
-        yield return new WaitForSeconds(.5f);
-        TooltipController.PlayTooltipAnimation(Tooltip.Lives, true);
+            yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 4);
+            TooltipController.PlayTooltipAnimation(Tooltip.Ammo, true);
+            yield return new WaitForSeconds(.5f);
+            TooltipController.PlayTooltipAnimation(Tooltip.HealthBar, true);
+            yield return new WaitForSeconds(.5f);
+            TooltipController.PlayTooltipAnimation(Tooltip.Lives, true);
 
-        //Show tooltip on first enemy that has power up
-        yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 7);
-        TooltipController.PlayTooltipAnimation(Tooltip.FirstPU, false);
-        PauseManager.FreezeDynamicObjects();
+            //Show tooltip on first enemy that has power up
+            yield return new WaitWhile(() => EnemySpawnerController.GetNumberEnemiesSpawned() != 7);
+            TooltipController.PlayTooltipAnimation(Tooltip.FirstPU, false);
+            PauseManager.FreezeDynamicObjects();
+        }
+        else if (currentLevel == 2)
+        {
+            yield return new WaitWhile(() => isPlayerReady == false);
+            PlayerSpawner.SpawnPlayer();
+        }
     }
 
     public static List<EnemyType> GetEnemyTankList()

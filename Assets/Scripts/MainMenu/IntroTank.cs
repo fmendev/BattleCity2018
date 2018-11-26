@@ -14,8 +14,8 @@ public class IntroTank : MonoBehaviour
 
     private Color color;
     private Color menuOrange = new Color(255, 199, 0, 1);
-    private float alphaDelta = .005f;
-    private float rgbDelta = .25f;
+    private float flashingDelta = .25f;
+    private float optionFadeInDelta = .5f;
     private bool flashing = false;
     private bool optionsFadingIn = false;
 
@@ -34,7 +34,7 @@ public class IntroTank : MonoBehaviour
     {
         SoundManager.PlaySfx(SFX.IntroTankRolling);
 
-        color = new Color(0, 0, 0, 255);
+        color = new Color(255, 255, 255, 0);
         background.GetComponent<RawImage>().color = color;
 
         for (int i = 0; i < mainMenuPanel.transform.childCount; i++)
@@ -102,11 +102,10 @@ public class IntroTank : MonoBehaviour
         if (flashing)
         {
             float alpha = flashPanel.GetComponent<RawImage>().color.a;
-            Color flashColor = new Color(255, 255, 255, alpha - alphaDelta);
+            Color flashColor = new Color(255, 255, 255, alpha - Time.deltaTime * flashingDelta);
             flashPanel.GetComponent<RawImage>().color = flashColor;
 
-            float rgb = background.GetComponent<RawImage>().color.r;
-            Color backgroundColor = new Color(rgb + rgbDelta, rgb + rgbDelta, rgb + rgbDelta, 255);
+            Color backgroundColor = new Color(255, 255, 255, 255);
             background.GetComponent<RawImage>().color = backgroundColor;
 
             if (flashColor.a <= 0)
@@ -122,7 +121,7 @@ public class IntroTank : MonoBehaviour
             for (int i = 0; i < mainMenuPanel.transform.childCount; i++)
             {
                 float alpha = mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color.a;
-                color = new Color(255, 255, 255, alpha + .01f);
+                color = new Color(255, 255, 255, alpha + Time.deltaTime * optionFadeInDelta);
                 mainMenuPanel.transform.GetChild(i).GetComponentInChildren<Text>().color = color;
 
                 if (color.a >= 1)

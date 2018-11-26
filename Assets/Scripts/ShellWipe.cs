@@ -23,12 +23,13 @@ public class ShellWipe : MonoBehaviour {
     private void Update()
     {
         //Check if other shells are currently reloading
-        var reloadingStatus = ShellDisplay.isReloading.Where((s, i) => i != shellDisplayIndex).ToList();
-        var otherReloading = reloadingStatus.Any(s => s == 1);
+        var otherReloadingStatus = ShellDisplay.isReloading.Where((s, i) => i != shellDisplayIndex).ToList();
+        var isOtherReloading = otherReloadingStatus.Any(s => s == 1);
 
         //If no other shells are reloading, start reloading this shell
-        if (increment < targetTexture.height && !otherReloading)
+        if (increment < targetTexture.height && !isOtherReloading)
         {
+            Debug.Log("Start");
             StartCoroutine("DrawPixels");
         }
         else if (increment == targetTexture.height)
@@ -51,7 +52,7 @@ public class ShellWipe : MonoBehaviour {
     {
         ShellDisplay.isReloading[shellDisplayIndex] = 1;
         increment = currentPixelRow + 1;
-
+        Debug.Log("increment: " + increment);
         //filling a part of the temporary texture with the target texture 
         for (int y = currentPixelRow; y < increment; y++)
         {
@@ -64,8 +65,8 @@ public class ShellWipe : MonoBehaviour {
         }
 
         currentPixelRow++;
+        Debug.Log("currentPixel: " + currentPixelRow);
         gameObject.GetComponent<RawImage>().texture = tmpTexture;
-
         yield return null;
     }
 
