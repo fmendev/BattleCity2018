@@ -23,7 +23,7 @@ public class Story : MonoBehaviour
 
     private GameObject storyTextPanel;
     private List<string> storyText;
-    private float alphaDeltaStoryText = .75f;
+    private float alphaDeltaStoryText = .9f;
 
     private bool cutsceneEscaped = false;
     private bool escapeCutsceneEnabled = false;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,6 +13,7 @@ public class LevelEndManager : MonoBehaviour
 
     public GameObject levelEndScreen;
     public GameObject logicController;
+    public GameObject endGameScene;
 
     private GameObject outcome;
     private GameObject killValueText;
@@ -65,7 +65,7 @@ public class LevelEndManager : MonoBehaviour
     {
         singletonInstance.timeFinished = DateTime.Now;
         singletonInstance.timeElapsed = singletonInstance.timeFinished.Subtract(singletonInstance.timeStart);
-        string time = singletonInstance.timeElapsed.ToString();
+        string time = string.Format("{0:00}:{1:00}", singletonInstance.timeElapsed.Minutes, singletonInstance.timeElapsed.Seconds);
 
         string outcome = null;
         string option = null;
@@ -134,7 +134,7 @@ public class LevelEndManager : MonoBehaviour
         {
             if (LevelManager.GetCurrentLevel() == 2) //or whatever the final level is
             {
-                //End game screen!!!
+                endGameScene.gameObject.SetActive(true);
             }
             else
             {

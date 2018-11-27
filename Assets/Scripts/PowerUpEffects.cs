@@ -11,7 +11,7 @@ public class PowerUpEffects : MonoBehaviour
 
     private float timer = 20f;
     private float shellSpeedCap = 2500;
-    private float tankSpeedCap = 1050;
+    private float tankSpeedCap = 1200;
     private int armorCap = 4;
     private int ammoCap = 7;
 
@@ -81,11 +81,22 @@ public class PowerUpEffects : MonoBehaviour
             else if (puType == PowerUpType.TankSpeed)
             {
                 float tankSpeed = PlayerController.GetPlayerSpeed();
+                float bulletSpeed = WeaponsController.GetShellSpeed();
 
                 if (tankSpeed < tankSpeedCap)
                 {
                     PlayerController.SetPlayerSpeed(tankSpeed * 1.25f);
                     powerUpText.GetComponentInChildren<Text>().text = "+Speed";
+                }
+
+                if (bulletSpeed < tankSpeed)
+                {
+                    WeaponsController.SetShellSpeed(tankSpeed * 1.1f);
+
+                    if (WeaponsController.GetShellSpeed() > shellSpeedCap)
+                    {
+                        WeaponsController.SetShellSpeed(shellSpeedCap);
+                    }
                 }
             }
 

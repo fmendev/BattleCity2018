@@ -9,9 +9,9 @@ public class PlayerController : MonoBehaviour
     public GameObject playerObject;
     public bool enabledGUI = true;
 
-    private float initialPlayerSpeed = 700;
+    private float initialPlayerSpeed = 800;
     [SerializeField]
-    private float playerSpeed = 700;
+    private float playerSpeed = 800;
 
     private string initialSizeParameter = "isMoving_S0";   
     private string currentSizeParameter = "isMoving_S0";   

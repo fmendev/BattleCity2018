@@ -33,7 +33,7 @@ public class LevelManager : MonoBehaviour
         }
         else if (currentLevel == 2)
         {
-            customTankOrder = "33322212111103020333";
+            customTankOrder = "333";// 22212111103020333";
         }
         
         enemyTankList = GenerateEnemyTankList();
@@ -89,6 +89,7 @@ public class LevelManager : MonoBehaviour
         }
         else if (currentLevel == 2)
         {
+            onSpawnSfx = false;
             yield return new WaitWhile(() => isPlayerReady == false);
             PlayerSpawner.SpawnPlayer();
         }
