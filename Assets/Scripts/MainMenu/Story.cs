@@ -150,7 +150,7 @@ public class Story : MonoBehaviour
         }
 
         storyPanel.GetComponent<Animator>().SetBool("isScrolling", true);
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(16f);
         storyPanelFadingOut = true;
     }
 }
