@@ -20,7 +20,10 @@ public class TowerController : MonoBehaviour {
     private Color disabled;
     private Color available;
 
-	private void Awake ()
+    private List<bool> towerAvailability = new List<bool>();
+    private int towerTypeCount = 4;
+
+    private void Awake ()
     {
         InitializeSingleton();
 
@@ -29,6 +32,11 @@ public class TowerController : MonoBehaviour {
 
         moneyDisplay.GetComponent<TextMeshProUGUI>().text = currentMoney.ToString();
         towerAvailableDisplay.GetComponent<TextMeshProUGUI>().text = availableTowers.ToString();
+
+        for (int i = 0; i < towerTypeCount; i++)
+        {
+            towerAvailability.Add(false);
+        }
 
         UpdateTowerDisplay();
     }
@@ -45,6 +53,18 @@ public class TowerController : MonoBehaviour {
         singletonInstance.UpdateTowerDisplay();
     }
 
+    public static void SpendMoney(int moneyToSubtract)
+    {
+        singletonInstance.currentMoney -= moneyToSubtract;
+        singletonInstance.UpdateMoneyDisplay();
+        singletonInstance.UpdateTowerDisplay();
+    }
+
+    public static bool GetTowerAvailability(int index)
+    {
+        return singletonInstance.towerAvailability[index];
+    }
+
     private void UpdateMoneyDisplay()
     {
         moneyDisplay.GetComponent<TextMeshProUGUI>().text = currentMoney.ToString();
@@ -58,11 +78,14 @@ public class TowerController : MonoBehaviour {
 
             if (currentMoney >= cost)
             {
-                towers.transform.GetChild(i).GetChild(5).gameObject.GetComponent<RawImage>().color = available;
+                towers.transform.GetChild(i).GetChild(5).gameObject.SetActive(false);
+                towerAvailability[i] = true;
             }
             else
             {
+                towers.transform.GetChild(i).GetChild(5).gameObject.SetActive(true);
                 towers.transform.GetChild(i).GetChild(5).gameObject.GetComponent<RawImage>().color = disabled;
+                towerAvailability[i] = false;
             }
         }
     }
